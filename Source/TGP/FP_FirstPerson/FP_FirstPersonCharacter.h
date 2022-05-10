@@ -147,11 +147,25 @@ protected:
 	 */
 	void TryEnableTouchscreenMovement(UInputComponent* InputComponent);
 
+
+	// Weapon Stuff
+
+	UPROPERTY() class AGunHostActor* _currentWeapon;
+	UPROPERTY() class UWeaponComponent* _currentWeaponComponent;
+	void RaycastForWeapon();
+
+	void PickupWeapon();
+
+	void DropWeapon();
+
+	bool _weaponQueued;
+
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	virtual void BeginPlay() override;
 };
 

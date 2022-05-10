@@ -18,9 +18,15 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay) class UStaticMeshComponent* _mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay) class USceneComponent* _sceneRoot;
 
+	UPROPERTY() class UWeaponComponent* _weapon;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void DebugMessage();
+	class UWeaponComponent* GetWeaponComponent() { return _weapon; }
 };

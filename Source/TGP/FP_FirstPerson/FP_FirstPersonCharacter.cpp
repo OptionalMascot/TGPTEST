@@ -5,6 +5,8 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "Weapons/GunHostActor.h"
+#include "Weapons/WeaponComponent.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -66,6 +68,7 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_FirstPersonCharacter::OnFire);
+	PlayerInputComponent->BindAction("Pickup", IE_Pressed, this, &AFP_FirstPersonCharacter::RaycastForWeapon);
 	
 	// Attempt to enable touch screen movement
 	TryEnableTouchscreenMovement(PlayerInputComponent);
@@ -132,7 +135,7 @@ void AFP_FirstPersonCharacter::OnFire()
 	// If we hit an actor, with a component that is simulating physics, apply an impulse
 	if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr) && DamagedComponent->IsSimulatingPhysics())
 	{
-		DamagedComponent->AddImpulseAtLocation(ShootDir * WeaponDamage, Impact.Location);
+		//DamagedComponent->AddImpulseAtLocation(ShootDir * WeaponDamage, Impact.Location);
 	}
 }
 
@@ -256,3 +259,62 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AFP_FirstPersonCharacter::EndTouch);
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AFP_FirstPersonCharacter::TouchUpdate);	
 }
+
+void AFP_FirstPersonCharacter::RaycastForWeapon()
+{
+	if(_currentWeapon == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("StartWepRaycast"));
+		// get the camera transform
+		FVector CameraLoc;
+		FRotator CameraRot;
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		PlayerController->GetPlayerViewPoint(CameraLoc, CameraRot);
+
+		FVector Start = CameraLoc;
+		// you need to add a uproperty to the header file for a float PlayerInteractionDistance
+		FVector End = CameraLoc + (CameraRot.Vector() * 10000.0f);
+
+		FHitResult hitResult;
+
+		//  do the line trace
+		bool DidTrace = GetWorld()->LineTraceSingleByChannel(
+			hitResult,		//result
+			Start,		//start
+			End,		//end
+			ECC_Visibility	//collision channel
+			);
+
+		if(DidTrace)
+		{
+			AGunHostActor* test = (AGunHostActor*) hitResult.GetActor();
+			if(test != nullptr)
+			{
+				_currentWeapon = test;
+				PickupWeapon();
+			}
+		}
+	}
+}
+
+void AFP_FirstPersonCharacter::PickupWeapon()
+{
+	_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
+	_currentWeaponComponent->PickupWeapon(this);
+	FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true);
+	_currentWeapon->AttachToComponent(Mesh1P, rules, TEXT("GripPoint"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Successful Raycast"));
+}
+
+void AFP_FirstPersonCharacter::DropWeapon()
+{
+
+}
+
+void AFP_FirstPersonCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	_currentWeapon = nullptr;
+	_currentWeaponComponent = nullptr;
+}
+
