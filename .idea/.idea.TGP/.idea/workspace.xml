@@ -5,13 +5,7 @@
     <projectFile>Intermediate/ProjectFiles/UE4.vcxproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/MyGunHostActor.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/MyGunHostActor.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" afterDir="false" />
-    </list>
+    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -277,7 +271,7 @@
       <workItem from="1652201964635" duration="3631000" />
       <workItem from="1652206573220" duration="1113000" />
       <workItem from="1652207740010" duration="3900000" />
-      <workItem from="1652212102459" duration="308000" />
+      <workItem from="1652212102459" duration="691000" />
     </task>
     <servers />
   </component>
