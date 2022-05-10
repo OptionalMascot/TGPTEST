@@ -25,7 +25,10 @@ void UWeaponComponent::BeginPlay()
 }
 
 
-
+void UWeaponComponent::OnFire()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pew Pew"));
+}
 
 // Called every frame
 void UWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -48,7 +51,7 @@ void UWeaponComponent::PickupWeapon(AActor* parent)
 void UWeaponComponent::DropWeapon()
 {
 	_parent = nullptr;
-	_parentMesh->SetSimulatePhysics(true);
+	_parentMesh->SetSimulatePhysics(false);
 	_parentMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 

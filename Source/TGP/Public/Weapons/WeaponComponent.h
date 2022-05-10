@@ -25,9 +25,13 @@ protected:
 
 	UPROPERTY() class UStaticMeshComponent* _parentMesh;
 	
+	
+	
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual void OnFire();
 	
 	void PickupWeapon(AActor* parent);
 	void DropWeapon();

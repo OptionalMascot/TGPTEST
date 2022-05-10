@@ -69,6 +69,7 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_FirstPersonCharacter::OnFire);
 	PlayerInputComponent->BindAction("Pickup", IE_Pressed, this, &AFP_FirstPersonCharacter::RaycastForWeapon);
+	PlayerInputComponent->BindAction("Drop", IE_Pressed, this, &AFP_FirstPersonCharacter::DropWeapon);
 	
 	// Attempt to enable touch screen movement
 	TryEnableTouchscreenMovement(PlayerInputComponent);
@@ -136,6 +137,12 @@ void AFP_FirstPersonCharacter::OnFire()
 	if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr) && DamagedComponent->IsSimulatingPhysics())
 	{
 		//DamagedComponent->AddImpulseAtLocation(ShootDir * WeaponDamage, Impact.Location);
+	}
+
+
+	if(_currentWeaponComponent != nullptr)
+	{
+		_currentWeaponComponent->OnFire();
 	}
 }
 
@@ -308,7 +315,15 @@ void AFP_FirstPersonCharacter::PickupWeapon()
 
 void AFP_FirstPersonCharacter::DropWeapon()
 {
-
+	if(_currentWeapon != nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Detach"));
+		_currentWeaponComponent->DropWeapon();
+		_currentWeaponComponent = nullptr;
+		FDetachmentTransformRules rules = FDetachmentTransformRules(EDetachmentRule::KeepWorld, EDetachmentRule::KeepWorld, EDetachmentRule::KeepWorld, false);
+		_currentWeapon->DetachFromActor(rules);
+		_currentWeapon = nullptr;
+	}
 }
 
 void AFP_FirstPersonCharacter::BeginPlay()

@@ -6,23 +6,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/Crosshair.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Maps/GeorgeMap.umap" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/MyGunHostActor.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponHoldComponent.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponHoldComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/MyGunHostActor.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/MyGunHostActor.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,10 +31,10 @@
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
     </changedPaths>
   </component>
@@ -289,6 +277,7 @@
       <workItem from="1652201964635" duration="3631000" />
       <workItem from="1652206573220" duration="1113000" />
       <workItem from="1652207740010" duration="3900000" />
+      <workItem from="1652212102459" duration="308000" />
     </task>
     <servers />
   </component>
