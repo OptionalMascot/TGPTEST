@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SceneComponent.h"
 #include "Weapons/WeaponComponent.h"
+#include "Weapons/HitscanWeaponComponent.h"
 
 // Sets default values
 AGunHostActor::AGunHostActor()
@@ -19,7 +20,7 @@ AGunHostActor::AGunHostActor()
 	_mesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 	_mesh->SetupAttachment(_sceneRoot);
 
-	_weapon = CreateDefaultSubobject<UWeaponComponent>(TEXT("Weapon"));
+	_weapon = CreateDefaultSubobject<UHitscanWeaponComponent>(TEXT("Weapon"));
 	AddOwnedComponent(_weapon);
 }
 

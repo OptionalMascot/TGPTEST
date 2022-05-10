@@ -3,6 +3,7 @@
 
 #include "Weapons/WeaponComponent.h"
 #include "Components/SceneComponent.h"
+#include "Item/ItemInfo.h"
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()
@@ -12,6 +13,8 @@ UWeaponComponent::UWeaponComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	
 	// ...
+	_canUse = true;
+	_weaponInfo = nullptr;
 }
 
 
@@ -53,5 +56,10 @@ void UWeaponComponent::DropWeapon()
 	_parent = nullptr;
 	_parentMesh->SetSimulatePhysics(false);
 	_parentMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+}
+
+void UWeaponComponent::InitializeWeapon(UGunInfo* info)
+{
+	_weaponInfo = info;
 }
 

@@ -25,7 +25,9 @@ protected:
 
 	UPROPERTY() class UStaticMeshComponent* _parentMesh;
 	
-	
+	bool _canUse;
+
+	UPROPERTY() class UGunInfo* _weaponInfo;
 	
 public:	
 	// Called every frame
@@ -36,5 +38,8 @@ public:
 	void PickupWeapon(AActor* parent);
 	void DropWeapon();
 	void SetParentMesh(class UStaticMeshComponent* mesh) { _parentMesh = mesh; }
-		
+	void InitializeWeapon(class UGunInfo* info);
+
+	void StartUse(){ _canUse = false;	}
+	void EndUse(){ _canUse = true;	}
 };
