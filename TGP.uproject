@@ -1,8 +1,5 @@
 {
 	"FileVersion": 3,
-=======
-	"EngineAssociation": "4.26",
->>>>>>> 94809fa9d82dfd68341d3040f713ff3e1cd00fdb
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -15,5 +12,6 @@
 				"CoreUObject"
 			]
 		}
-	]
+	],
+	"EngineAssociation": "{760F201E-4022-B9FC-FB9B-1E90DFBB9ECD}"
 }
