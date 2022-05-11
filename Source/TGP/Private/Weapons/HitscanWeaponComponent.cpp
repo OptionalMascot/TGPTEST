@@ -3,6 +3,8 @@
 
 #include "Weapons/HitscanWeaponComponent.h"
 
+#include <string>
+
 UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
@@ -10,7 +12,57 @@ UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
     PrimaryComponentTick.bCanEverTick = true;
 }
 
+void UHitscanWeaponComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	reloadTime = 1.0f;
+	currentAmmoClip = 30;
+	currentReserves = 90;
+	maxAmmo = 30;
+}
+
 void UHitscanWeaponComponent::OnFire()
 {
-	
+	if(_canUse)
+	{
+		if(TryUseAmmo(_parent, 1))
+		{
+			StartWaitTimer(_parent, 0.2f);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
+			TryReload(_parent);
+		}
+	}
+}
+
+void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
+{
+	if(!reloading)
+	{
+		reloading = true;
+		UWorld* world = actor->GetWorld();
+		world->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
+	}
+}
+
+void UHitscanWeaponComponent::StartWaitTimer(AActor* actor, float time)
+{
+	StartUse();
+	UWorld* world = actor->GetWorld();
+	world->GetTimerManager().SetTimer(waitTimeHandler, this, &UHitscanWeaponComponent::EndUse, time, false);
+}
+
+void UHitscanWeaponComponent::CancelReload(AActor* actor)
+{
+	UWorld* world = actor->GetWorld();
+	world->GetTimerManager().ClearTimer(reloadTimerHandler);
+}
+
+void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                            FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }

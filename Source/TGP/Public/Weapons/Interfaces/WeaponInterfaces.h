@@ -6,24 +6,6 @@
 #include "UObject/Interface.h"
 #include "WeaponInterfaces.generated.h"
 
-// This class does not need to be modified.
-UINTERFACE(MinimalAPI)
-class UDealDamage : public UInterface
-{
-	GENERATED_BODY()
-};
-
-/**
- * 
- */
-class TGP_API IDealDamage
-{
-	GENERATED_BODY()
-
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
-public:
-};
-
 UINTERFACE(MinimalAPI)
 class UHealth : public UInterface
 {
@@ -39,6 +21,25 @@ class TGP_API IHealth
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
+};
+
+// This class does not need to be modified.
+UINTERFACE(MinimalAPI)
+class UDealDamage : public UInterface
+{
+	GENERATED_BODY()
+};
+
+/**
+ * 
+ */
+class TGP_API IDealDamage
+{
+	GENERATED_BODY()
+
+	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+	public:
+	void DealDamage(float amount, IHealth* target){};
 };
 
 UINTERFACE(MinimalAPI)
@@ -73,6 +74,26 @@ class TGP_API IHasAmmo
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
+	int maxAmmo;
+	int currentAmmoClip;
+	int currentReserves;
+
+	bool reloading;
+	float reloadTime;
+
+	bool infiniteReserves;
+
+	FTimerHandle reloadTimerHandler;
+	
+	bool TryUseAmmo(AActor* actor, int amount);
+	UFUNCTION()	virtual void StartReloadAmmo(AActor* actor);
+	void TryReload(AActor* actor);
+	UFUNCTION() virtual void ReloadEnded();
+	void SetMaxAmmo(int ammo) { maxAmmo = ammo;}
+	int GetAmmoCount() { return currentAmmoClip; }
+	int GetReserves() { return currentReserves; }
+	void AddAmmo(int amount) { currentReserves += amount; }
+	virtual void CancelReload(AActor* actor);
 };
 
 UINTERFACE(MinimalAPI)
@@ -90,4 +111,6 @@ class TGP_API IWaitTimer
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
+	FTimerHandle waitTimeHandler;
+	virtual void StartWaitTimer(AActor* actor, float time) {};
 };

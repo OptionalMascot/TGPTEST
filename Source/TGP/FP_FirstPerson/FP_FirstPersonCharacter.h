@@ -68,6 +68,10 @@ protected:
 	/** Fires a virtual projectile. */
 	void OnFire();
 
+	void OnFireWeapon();
+
+	void OnFireWeaponRelease();
+	
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
@@ -152,12 +156,16 @@ protected:
 
 	UPROPERTY() class AGunHostActor* _currentWeapon;
 	UPROPERTY() class UWeaponComponent* _currentWeaponComponent;
+	bool _fireHeld;
+	
 	void RaycastForWeapon();
 
 	void PickupWeapon();
 
 	void DropWeapon();
 
+	void ReloadWeapon();
+	
 	bool _weaponQueued;
 
 public:
@@ -167,5 +175,7 @@ public:
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
 };
 

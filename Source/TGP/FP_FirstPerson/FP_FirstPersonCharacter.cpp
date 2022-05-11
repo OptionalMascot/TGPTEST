@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Weapons/GunHostActor.h"
 #include "Weapons/WeaponComponent.h"
+#include "Weapons/Interfaces/WeaponInterfaces.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -14,6 +15,8 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
 AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 {
+	PrimaryActorTick.bCanEverTick = true;
+	
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -67,9 +70,11 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_FirstPersonCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_FirstPersonCharacter::OnFireWeapon);
+	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFP_FirstPersonCharacter::OnFireWeaponRelease);
 	PlayerInputComponent->BindAction("Pickup", IE_Pressed, this, &AFP_FirstPersonCharacter::RaycastForWeapon);
 	PlayerInputComponent->BindAction("Drop", IE_Pressed, this, &AFP_FirstPersonCharacter::DropWeapon);
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AFP_FirstPersonCharacter::ReloadWeapon);
 	
 	// Attempt to enable touch screen movement
 	TryEnableTouchscreenMovement(PlayerInputComponent);
@@ -145,7 +150,6 @@ void AFP_FirstPersonCharacter::OnFire()
 		_currentWeaponComponent->OnFire();
 	}
 }
-
 
 void AFP_FirstPersonCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
@@ -304,6 +308,19 @@ void AFP_FirstPersonCharacter::RaycastForWeapon()
 	}
 }
 
+
+void AFP_FirstPersonCharacter::OnFireWeapon()
+{
+	_fireHeld = true;
+	FTimerHandle reloadTimerHandler;
+	UWorld* world = GetWorld();
+}
+
+void AFP_FirstPersonCharacter::OnFireWeaponRelease()
+{
+	_fireHeld = false;
+}
+
 void AFP_FirstPersonCharacter::PickupWeapon()
 {
 	_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
@@ -326,10 +343,34 @@ void AFP_FirstPersonCharacter::DropWeapon()
 	}
 }
 
+void AFP_FirstPersonCharacter::ReloadWeapon()
+{
+	if(_currentWeapon != nullptr)
+	{
+		IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
+		if(AmmoRef != nullptr)
+		{
+			AmmoRef->TryReload(_currentWeapon);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+		}
+	}
+}
+
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	_currentWeapon = nullptr;
 	_currentWeaponComponent = nullptr;
+	_fireHeld = false;
+}
+
+void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if(_fireHeld && _currentWeapon != nullptr)
+	{
+		_currentWeaponComponent->OnFire();
+	}
 }
 
