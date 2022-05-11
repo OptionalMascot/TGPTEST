@@ -4,25 +4,15 @@
     <projectFile>Intermediate/ProjectFiles/TGP.vcxproj</projectFile>
     <projectFile>Intermediate/ProjectFiles/UE4.vcxproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/Animations/Rifle/BP_RifleAniamtions.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Animations/Rifle/RifleIdleWalkRun.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Animations/Rifle/Rifle_Run.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Animations/Rifle/Rifle_Sprint.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_AnimationGameMode.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Player.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/TGP/Private/PlayerAnimInstance.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/TGP/Public/PlayerAnimInstance.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/GameModes/BP_BaseGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/GameModes/BP_BaseGameMode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Aki.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Aki.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Characters/SK_Character_Alien_Male_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Characters/SK_Character_Alien_Male_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Characters/SK_Character_SciFiCity_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Characters/SK_Character_SciFiCity_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TGP.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/TGP.uproject" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +35,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="C++ Project.TGP">
@@ -278,7 +272,7 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
