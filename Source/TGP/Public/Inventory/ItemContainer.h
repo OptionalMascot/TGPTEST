@@ -18,8 +18,9 @@ public:
 
 	void Initialize(int ContainerSize);
 
-	UBaseItem* GetItemAt(int Slot) { return InBounds(Slot) ? Items[Slot] : nullptr; }
+	UBaseItem* GetItemAt(int Slot);
 	int FindFirstValidItem();
+	int FindFirstInValidItem();
 	
 	bool AddItem(UBaseItem* Item);
 	bool AddItem(UBaseItem* Item, int Slot);
@@ -28,5 +29,5 @@ public:
 	bool RemoveItem(int Index, int Amount);
 	bool RemoveItem(int Slot);
 
-	bool InBounds(int Slot) const { return Slot >= 0 && Slot < Items.Num(); }
+	bool InBounds(int Slot) const;
 };

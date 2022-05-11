@@ -8,6 +8,12 @@ UBaseItem::UBaseItem()
 	
 }
 
+void UBaseItem::Init(UItemInfo* Info, int Amount)
+{
+	this->ItemInfo = Info;
+	this->ItemAmount = Amount;
+}
+
 void UBaseItem::OnUse()
 {
 	ItemAmount -= 1;

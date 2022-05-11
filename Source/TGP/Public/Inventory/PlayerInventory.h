@@ -8,10 +8,14 @@ class UItemContainer;
 class UWeaponItem;
 class UThrowableItem;
 
-enum EWeaponSlot : uint8
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponChanged, UWeaponItem*, WeaponItem);
+
+UENUM()
+enum EWeaponSlot
 {
 	Primary = 0,
-	Secondary = 1
+	Secondary = 1,
+	Melee = 2
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -24,12 +28,9 @@ class TGP_API UPlayerInventory : public UActorComponent
 	
 	UPROPERTY() UItemContainer* UtilityContainer;
 	UPROPERTY() UItemContainer* ConsumableContainer;
-
-	UPROPERTY() UWeaponItem* PrimaryWeapon;
-	UPROPERTY() UWeaponItem* SecondaryWeapon;
+	UPROPERTY() UItemContainer* WeaponContainer;
 
 	EWeaponSlot SelectedWeapon;
-	
 	uint8 SelectedUtilitySlot = 0;
 
 	void TryFindAndSelectValidUtility();
@@ -44,7 +45,12 @@ public:
 	bool AddUtility(UThrowableItem* ThrowableItem) const;
 	void SelectUtility(uint8 Slot);
 
-	void PickUpWeapon(UWeaponItem* WeaponItem);
-	void ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate = false);
-	void DropWeapon();
+	UPROPERTY(BlueprintAssignable, Category="WeaponChangedEvent")
+	FOnWeaponChanged OnWeaponChangedEvent;
+	
+	UFUNCTION(BlueprintCallable) void PickUpWeapon(UWeaponItem* WeaponItem);
+	UFUNCTION(BlueprintCallable) void ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate = false);
+	UFUNCTION(BlueprintCallable) void DropWeapon();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure) class UWeaponItem* GetSelectedWeapon();
 };

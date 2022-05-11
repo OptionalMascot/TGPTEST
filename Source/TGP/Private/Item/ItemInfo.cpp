@@ -6,15 +6,29 @@
 
 void UItemInfo::GenerateStats()
 {
+	if (UniqueId == 0)
+	{
+		FMath::RandInit(FDateTime::Now().GetMillisecond() + FDateTime::Now().GetSecond());
+		UniqueId = FMath::RandRange(78000, INT32_MAX);
+	}
+	
 	ItemShortName = FString::Printf(TEXT("%s.%s"), *UEnum::GetValueAsString(ItemCategory), *ItemName);
+}
+
+FPrimaryAssetId UItemInfo::GetPrimaryAssetId() const
+{
+	return FPrimaryAssetId("ItemInfo", GetFName());
 }
 
 UItemInfo::UItemInfo()
 {
-	FMath::RandInit(FDateTime::Now().GetMillisecond() + FDateTime::Now().GetSecond());
-	UniqueId = FMath::RandRange(78000, INT32_MAX);
-	
+	UniqueId = 0;
 	ItemClass = UBaseItem::StaticClass();
+}
+
+FPrimaryAssetId UGunInfo::GetPrimaryAssetId() const
+{
+	return FPrimaryAssetId("ItemInfo", GetFName());
 }
 
 UGunInfo::UGunInfo()
@@ -34,6 +48,11 @@ UThrowableInfo::UThrowableInfo()
 {
 	ItemClass = UThrowableItem::StaticClass();
 	ItemCategory = EItemCategory::Weapon;
+}
+
+FPrimaryAssetId UThrowableInfo::GetPrimaryAssetId() const
+{
+	return FPrimaryAssetId("ItemInfo", GetFName());
 }
 
 void UThrowableInfo::GenerateStats()

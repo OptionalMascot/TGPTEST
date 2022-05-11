@@ -12,4 +12,8 @@ Saved
 *.suo
 *.xcodeproj
 *.xcworkspace
+<<<<<<< Updated upstream
 /Plugins/
+=======
+Plugins/Developer/RiderLink/
+>>>>>>> Stashed changes

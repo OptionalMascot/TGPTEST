@@ -1,6 +1,5 @@
 
 #include "Inventory/ItemContainer.h"
-
 #include "Item/BaseItem.h"
 
 UItemContainer::UItemContainer()
@@ -13,10 +12,24 @@ void UItemContainer::Initialize(int ContainerSize)
 	Items.Init(nullptr, ContainerSize); // Reserve with NULL items
 }
 
+UBaseItem* UItemContainer::GetItemAt(int Slot)
+{
+	return InBounds(Slot) ? Items[Slot] : nullptr;
+}
+
 int UItemContainer::FindFirstValidItem()
 {
 	for (uint8 i = 0; i < Items.Num(); i++)
 		if(Items[i])
+			return i;
+	
+	return -1;
+}
+
+int UItemContainer::FindFirstInValidItem()
+{
+	for (uint8 i = 0; i < Items.Num(); i++)
+		if(!Items[i])
 			return i;
 	
 	return -1;
@@ -36,7 +49,7 @@ bool UItemContainer::AddItem(UBaseItem* Item)
 			{
 				FirstNullPos = i;
 			}
-			else
+			else if (ItemAtSlot != nullptr)
 			{
 				Item->SetAmount(ItemAtSlot->TryStack(Item));
 
@@ -108,4 +121,9 @@ bool UItemContainer::RemoveItem(int Slot)
 	}
 
 	return false;
+}
+
+bool UItemContainer::InBounds(int Slot) const
+{
+	return Slot >= 0 && Slot < Items.Num();
 }
