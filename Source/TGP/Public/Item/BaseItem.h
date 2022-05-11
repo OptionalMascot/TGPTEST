@@ -20,8 +20,9 @@ protected:
 public:
 	UBaseItem();
 
-	UItemInfo* GetItemInfo() const { return ItemInfo;}
+	UFUNCTION(BlueprintCallable, BlueprintPure) UItemInfo* GetItemInfo() const { return ItemInfo; }
 
+	virtual void Init(UItemInfo* Info, int Amount);
 	void SetOwningContainer(UItemContainer* Container) { OwningContainer = Container; }
 	
 	int GetAmount() const { return ItemAmount; }

@@ -54,6 +54,8 @@ public:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Identifiers") int32 UniqueId;
 
 	UFUNCTION(CallInEditor, Category = "Identifiers") virtual void GenerateStats();
+	
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
 
 UCLASS(Blueprintable, BlueprintType)
@@ -83,6 +85,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "DEBUG") bool UnlimitedAmmo = false;
 
 	virtual void GenerateStats() override;
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
 
 UCLASS(Blueprintable, BlueprintType)
@@ -99,4 +102,5 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") float ThrowForce = 100.f;
 
 	virtual void GenerateStats() override;
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
