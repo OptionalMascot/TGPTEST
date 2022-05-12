@@ -2,8 +2,10 @@
 
 
 #include "Weapons/UI/MyDamageMarker.h"
-
+#include "Kismet/KismetMathLibrary.h"
 #include "Components/SceneComponent.h"
+#include "Weapons/UI/UserWidgetTest.h"
+#include "Components/WidgetComponent.h"
 
 // Sets default values
 AMyDamageMarker::AMyDamageMarker()
@@ -14,21 +16,45 @@ AMyDamageMarker::AMyDamageMarker()
 	_root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(_root);
 	
-	//_widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
-	//_widget->SetupAttachment(_root);
+	_widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	_widget->SetupAttachment(_root);
 }
 
 // Called when the game starts or when spawned
 void AMyDamageMarker::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	_spawnedBy = nullptr;
+	_aliveTime = 1.0f;
 }
 
 // Called every frame
 void AMyDamageMarker::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(_spawnedBy)
+	{
+		FVector start =_widget->GetComponentTransform().GetLocation();
+		FVector target = _spawnedBy->GetActorLocation();
+		FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
+		SetActorRotation(rotator);
+	}
+	SetActorLocation(GetActorLocation() + FVector(0.0f, 0.0f, 300.0f * DeltaTime));
+	_aliveTime -= DeltaTime;
+	if(_aliveTime <= 0.0f)
+	{
+		Destroy();
+	}
+}
 
+void AMyDamageMarker::SetText(int num)
+{
+	UWidgetComponent* widget = GetWidget();
+	UUserWidget* userWid = widget->GetUserWidgetObject();
+	UUserWidgetTest* castedWidget = Cast<UUserWidgetTest>(userWid);
+	if(castedWidget)
+	{
+		castedWidget->SetText(10.0f);
+	}
 }
 

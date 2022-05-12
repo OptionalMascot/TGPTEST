@@ -19,6 +19,11 @@ protected:
 	virtual void StartReloadAmmo(AActor* actor) override;
 	virtual void StartWaitTimer(AActor* actor, float time) override;
 	virtual void CancelReload(AActor* actor) override;
+
+
+	
+    UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
+	
 public:
 	UHitscanWeaponComponent();
 	virtual void BeginPlay() override;

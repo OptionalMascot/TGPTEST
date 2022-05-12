@@ -21,7 +21,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay) class UStaticMeshComponent* _mesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay) class USceneComponent* _sceneRoot;
 
-	UPROPERTY() class UWeaponComponent* _weapon;
+	UPROPERTY(EditAnywhere) class UWeaponComponent* _weapon;
 	
 public:	
 	// Called every frame

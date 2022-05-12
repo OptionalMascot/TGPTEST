@@ -2,9 +2,13 @@
 
 
 #include "Weapons/HitscanWeaponComponent.h"
+#include "Weapons/UI/MyDamageMarker.h"
+#include "Weapons/UI/UserWidgetTest.h"
 #include "Weapons/HealthComponent.h"
 
 #include <string>
+
+#include "Components/WidgetComponent.h"
 
 UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
 {
@@ -41,6 +45,11 @@ void UHitscanWeaponComponent::OnFire()
 				if(healthComponent != nullptr)
 				{
 					healthComponent->AdjustHealth(10.0f);
+					UWorld* const World = GetWorld();
+					FActorSpawnParameters ActorSpawnParams;
+					AMyDamageMarker* object = World->SpawnActor<AMyDamageMarker>(_damageMarker, result.Location, FRotator(0.0f, 0.0f, 0.0f), ActorSpawnParams);
+					object->SetSpawnedBy(_parent);
+					object->SetText(10.0f);
 				}
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));

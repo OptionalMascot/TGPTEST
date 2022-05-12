@@ -20,10 +20,15 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY() class USceneComponent* _root;
-	//UPROPERTY() UWidgetComponent* _widget;
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) class UWidgetComponent* _widget;
+
+	UPROPERTY() AActor* _spawnedBy;
+
+	float _aliveTime;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void SetText(int num);
+	void SetSpawnedBy(AActor* spawned) { _spawnedBy = spawned; }
+	UWidgetComponent* GetWidget() { return _widget; }
 };
