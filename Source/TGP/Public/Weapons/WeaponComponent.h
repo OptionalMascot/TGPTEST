@@ -23,7 +23,7 @@ protected:
 	UPROPERTY() AActor* _parent;
 	UPROPERTY() USceneComponent* _holdPoint;
 
-	UPROPERTY() class UStaticMeshComponent* _parentMesh;
+	UPROPERTY() class USkeletalMeshComponent* _parentMesh;
 	
 	bool _canUse;
 
@@ -38,7 +38,7 @@ public:
 	
 	void PickupWeapon(AActor* parent);
 	virtual void DropWeapon();
-	void SetParentMesh(class UStaticMeshComponent* mesh) { _parentMesh = mesh; }
+	void SetParentMesh(class USkeletalMeshComponent* mesh) { _parentMesh = mesh; }
 	virtual void InitializeWeapon(class UGunItem* gunItem);
 
 	void StartUse(){ _canUse = false;	}

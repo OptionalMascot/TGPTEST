@@ -9,7 +9,7 @@
 #include "HitscanWeaponComponent.generated.h"
 
 UCLASS()
-class TGP_API UHitscanWeaponComponent : public UWeaponComponent, public IWaitTimer, public IDealDamage, public IHasAmmo, public ICanHitScan
+class TGP_API UHitscanWeaponComponent : public UWeaponComponent, public IWaitTimer, public IDealDamage, public IHasAmmo, public ICanHitScan, public IUseRecoil
 {
 	GENERATED_BODY()
 protected:

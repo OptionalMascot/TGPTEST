@@ -2,6 +2,9 @@
 
 
 #include "Weapons/HitscanWeaponComponent.h"
+
+#include <mftransform.h>
+
 #include "Weapons/UI/MyDamageMarker.h"
 #include "Weapons/UI/UserWidgetTest.h"
 #include "Weapons/HealthComponent.h"
@@ -9,6 +12,8 @@
 #include "Item/ItemInfo.h"
 #include <string>
 #include "Components/WidgetComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "DrawDebugHelpers.h"
 
 UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
 {
@@ -30,7 +35,7 @@ void UHitscanWeaponComponent::OnFire()
 {
 	if(_canUse)
 	{
-		if(TryUseAmmo(_parent, 1.0f))
+		if(TryUseAmmo(_parent, 0.0f))
 		{
 			StartWaitTimer(_parent, _weaponInfo->AttackRate);
 			FHitResult result;
@@ -38,6 +43,8 @@ void UHitscanWeaponComponent::OnFire()
 			FRotator CameraRot;
 			APlayerController* PlayerController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
 			PlayerController->GetPlayerViewPoint(CameraLoc, CameraRot);
+			
+			DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
 			if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility))
 			{
 				AActor* hit = result.GetActor();
@@ -55,6 +62,7 @@ void UHitscanWeaponComponent::OnFire()
 					}
 				}
 			}
+			ApplyRecoil(PlayerController);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 		}
 		else

@@ -105,3 +105,8 @@ void IHasAmmo::CancelReload(AActor* actor)
 {
 	
 }
+
+void IUseRecoil::ApplyRecoil(APlayerController* controller)
+{
+	controller->AddPitchInput(-0.5f);
+}

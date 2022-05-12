@@ -409,7 +409,7 @@ void AFP_FirstPersonCharacter::BeginPlay()
 
 	_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
 	_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
-
+	_currentWeaponComponent->SetParentMesh(FP_Gun);
 	_currentWeaponComponent->PickupWeapon(this);
 	
 	//_currentWeapon = nullptr;

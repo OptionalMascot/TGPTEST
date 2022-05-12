@@ -5,6 +5,7 @@
 #include "Components/SceneComponent.h"
 #include "Item/BaseItem.h"
 #include "Item/ItemInfo.h"
+#include "Components/SkeletalMeshComponent.h"
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()

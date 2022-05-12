@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Camera/CameraComponent.h"
 #include "UObject/Interface.h"
 #include "WeaponInterfaces.generated.h"
 
@@ -123,4 +125,24 @@ class TGP_API IWaitTimer
 	public:
 	FTimerHandle waitTimeHandler;
 	virtual void StartWaitTimer(AActor* actor, float time) {};
+};
+
+
+// This class does not need to be modified.
+UINTERFACE(MinimalAPI)
+class UUseRecoil : public UInterface
+{
+	GENERATED_BODY()
+};
+
+/**
+* 
+*/
+class TGP_API IUseRecoil
+{
+	GENERATED_BODY()
+
+	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
+	public:
+	void ApplyRecoil(APlayerController* controller);
 };
