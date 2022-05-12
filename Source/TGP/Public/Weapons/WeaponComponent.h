@@ -20,6 +20,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	bool CheckMouseReleased();
+	
 	UPROPERTY() AActor* _parent;
 	UPROPERTY() APlayerController* _parentController;
 	UPROPERTY() USceneComponent* _holdPoint;
@@ -27,9 +29,11 @@ protected:
 	UPROPERTY() class USkeletalMeshComponent* _parentMesh;
 	
 	bool _canUse;
-
+	bool _singleFireCheck;
+	
 	UPROPERTY() class UGunItem* _weaponItem;
 	UPROPERTY() class UGunInfo* _weaponInfo;
+	
 	
 public:	
 	// Called every frame

@@ -16,6 +16,7 @@ UWeaponComponent::UWeaponComponent()
 	
 	// ...
 	_canUse = true;
+	_singleFireCheck = false;
 	_weaponInfo = nullptr;
 }
 
@@ -27,6 +28,20 @@ void UWeaponComponent::BeginPlay()
 
 	// ...
 	
+}
+
+bool UWeaponComponent::CheckMouseReleased()
+{
+	if(_weaponInfo->FireType == EFireType::Single)
+	{
+		if(!_singleFireCheck)
+		{
+			_singleFireCheck = true;
+			return true;
+		}
+		return false;
+	}
+	return true;
 }
 
 

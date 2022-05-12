@@ -29,10 +29,14 @@ void UHitscanWeaponComponent::BeginPlay()
 	currentAmmoClip = 30;
 	currentReserves = 90;
 	maxAmmo = 30;
+	_singleFireRecoilStarted = false;
 }
 
 void UHitscanWeaponComponent::OnFire()
 {
+	if(!CheckMouseReleased())
+		return;
+	
 	if(_canUse)
 	{
 		if(TryUseAmmo(_parent, 0.0f))
@@ -40,7 +44,11 @@ void UHitscanWeaponComponent::OnFire()
 			recoilTimeline.Play();
 			recoilTimeline.SetPlayRate(1.0f);
 			recoilTimelineForward = true;
-
+			if(_weaponInfo->FireType == EFireType::Single)
+			{
+				_singleFireRecoilStarted = true;
+				recoilTimeline.SetNewTime(0);
+			}
 			
 			StartWaitTimer(_parent, _weaponInfo->AttackRate);
 			FHitResult result;
@@ -81,9 +89,13 @@ void UHitscanWeaponComponent::OnFire()
 
 void UHitscanWeaponComponent::OnFireEnd()
 {
-	recoilTimeline.Reverse();
-	recoilTimelineForward = false;
-	recoilTimeline.SetPlayRate(2.0f);
+	if(_weaponInfo->FireType != EFireType::Single)
+	{
+		recoilTimeline.Reverse();
+		recoilTimelineForward = false;
+		recoilTimeline.SetPlayRate(_weaponInfo->RecoilRecoveryModifier);
+	}
+	_singleFireCheck = false;
 }
 
 void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
@@ -125,6 +137,16 @@ void UHitscanWeaponComponent::RecoilTimelineProgressYaw(float Value)
 	ApplyRecoilYaw(_parentController, Value * recoilTimeline.GetPlayRate());
 }
 
+void UHitscanWeaponComponent::SingleFireRecoilReset()
+{
+	if(_weaponInfo->FireType == EFireType::Single && !recoilTimeline.IsReversing() && _singleFireRecoilStarted)
+	{
+		recoilTimeline.Reverse();
+		recoilTimelineForward = false;
+		recoilTimeline.SetPlayRate(_weaponInfo->RecoilRecoveryModifier);
+		_singleFireRecoilStarted = false;
+	}
+}
 
 
 void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -135,9 +157,7 @@ void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType
 }
 
 void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "142312");
-	
+{	
 	Super::InitializeWeapon(gunItem);
 
 	reloadTime = _weaponInfo->ReloadSpeed;
@@ -145,6 +165,7 @@ void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 	currentReserves = gunItem->GetAmmoCount();
 	maxAmmo = _weaponInfo->ClipSize;
 	
+	recoilTimeline = FTimeline();
 	if(_weaponInfo->RecoilCurvePitch && _weaponInfo->RecoilCurveYaw)
 	{
 		FOnTimelineFloat TimelineProgressPitch;
@@ -153,8 +174,9 @@ void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 		TimelineProgressYaw.BindUFunction(this, FName("RecoilTimelineProgressYaw"));
 	    recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurvePitch, TimelineProgressPitch);
 		recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurveYaw, TimelineProgressYaw);
-		//recoilTimeline.SetNewTime(0);
-		//recoilTimeline.PlayFromStart();
+		FOnTimelineEvent TimelineProgressSingleFire;
+		TimelineProgressSingleFire.BindUFunction(this, FName("SingleFireRecoilReset"));
+		recoilTimeline.SetTimelineFinishedFunc(TimelineProgressSingleFire);
 	}
 }
 
