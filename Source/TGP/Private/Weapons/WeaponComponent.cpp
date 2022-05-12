@@ -54,7 +54,7 @@ void UWeaponComponent::PickupWeapon(AActor* parent)
 void UWeaponComponent::DropWeapon()
 {
 	_parent = nullptr;
-	_parentMesh->SetSimulatePhysics(false);
+	_parentMesh->SetSimulatePhysics(true);
 	_parentMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 

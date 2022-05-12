@@ -9,6 +9,31 @@
 // Add default functionality here for any IWeaponInterfaces functions that are not pure virtual.
 
 
+bool IHealth::AdjustHealth(float damage)
+{
+	health -= damage;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Hit! Health: ") + FString::FromInt(health));
+	if(health <= 0)
+	{
+		dead = true;
+		KillObject();
+	}
+	return dead;
+}
+
+bool ICanHitScan::DoRaycastReturnResult(UWorld* world, FHitResult& result, FVector startPoint, FVector endPoint, ECollisionChannel collisionChannel)
+{
+	bool DidTrace = world->LineTraceSingleByChannel(
+			result,		//result
+			startPoint,		//start
+			endPoint,		//end
+			collisionChannel	//collision channel
+			);
+	
+	return DidTrace;
+}
+
+
 bool IHasAmmo::TryUseAmmo(AActor* actor, int amount)
 {
 	if(currentAmmoClip > 0)

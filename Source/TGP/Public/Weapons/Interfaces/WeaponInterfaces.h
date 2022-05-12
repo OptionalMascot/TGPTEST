@@ -21,6 +21,12 @@ class TGP_API IHealth
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
+	int health;
+	bool dead;
+	void SetHealth(float newHealth) { health = newHealth; dead = false; }
+	bool AdjustHealth(float damage);
+	bool isDead() { return dead; }
+	virtual void KillObject() {}
 };
 
 // This class does not need to be modified.
@@ -57,6 +63,8 @@ class TGP_API ICanHitScan
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
+	bool DoRaycastReturnResult(UWorld* world, FHitResult& result, FVector startPoint, FVector endPoint, ECollisionChannel collisionChannel);
+	
 };
 
 UINTERFACE(MinimalAPI)

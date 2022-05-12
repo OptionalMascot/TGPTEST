@@ -10,15 +10,16 @@
 // Sets default values
 AGunHostActor::AGunHostActor()
 {
-	_sceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
-	SetRootComponent(_sceneRoot);
+	//_sceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+
 	
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	_mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	_mesh->SetSimulatePhysics(true);
 	_mesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
-	_mesh->SetupAttachment(_sceneRoot);
+	SetRootComponent(_mesh);
+	//_mesh->SetupAttachment(_sceneRoot);
 
 	_weapon = CreateDefaultSubobject<UHitscanWeaponComponent>(TEXT("Weapon"));
 	AddOwnedComponent(_weapon);

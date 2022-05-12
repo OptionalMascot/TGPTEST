@@ -298,7 +298,7 @@ void AFP_FirstPersonCharacter::RaycastForWeapon()
 
 		if(DidTrace)
 		{
-			AGunHostActor* test = (AGunHostActor*) hitResult.GetActor();
+			AGunHostActor* test = Cast<AGunHostActor>(hitResult.GetActor());
 			if(test != nullptr)
 			{
 				_currentWeapon = test;

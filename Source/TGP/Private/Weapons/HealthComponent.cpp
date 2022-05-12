@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapons/WeaponHoldComponent.h"
+#include "Weapons/HealthComponent.h"
 
 // Sets default values for this component's properties
-UWeaponHoldComponent::UWeaponHoldComponent()
+UHealthComponent::UHealthComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -15,21 +15,25 @@ UWeaponHoldComponent::UWeaponHoldComponent()
 
 
 // Called when the game starts
-void UWeaponHoldComponent::BeginPlay()
+void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	// ...
-	
-	
+	SetHealth(healthBase);
 }
 
 
 // Called every frame
-void UWeaponHoldComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UHealthComponent::KillObject()
+{
+	GetOwner()->Destroy();
 }
 

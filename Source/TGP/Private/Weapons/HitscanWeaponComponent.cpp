@@ -2,6 +2,7 @@
 
 
 #include "Weapons/HitscanWeaponComponent.h"
+#include "Weapons/HealthComponent.h"
 
 #include <string>
 
@@ -28,6 +29,20 @@ void UHitscanWeaponComponent::OnFire()
 		if(TryUseAmmo(_parent, 1))
 		{
 			StartWaitTimer(_parent, 0.2f);
+			FHitResult result;
+			FVector CameraLoc;
+			FRotator CameraRot;
+			APlayerController* PlayerController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
+			PlayerController->GetPlayerViewPoint(CameraLoc, CameraRot);
+			if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility))
+			{
+				AActor* hit = result.GetActor();
+				UHealthComponent* healthComponent = hit->FindComponentByClass<UHealthComponent>();
+				if(healthComponent != nullptr)
+				{
+					healthComponent->AdjustHealth(10.0f);
+				}
+			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 		}
 		else
