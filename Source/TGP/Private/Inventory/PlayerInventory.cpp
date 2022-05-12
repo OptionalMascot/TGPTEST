@@ -30,9 +30,9 @@ void UPlayerInventory::BeginPlay()
     
     if (GameMode) // DEBUG
     {
-    	bool b = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UWeaponItem>(72953608, 1));
-    	bool b2 = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UWeaponItem>(214248416, 1));
-    	bool b3 = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UWeaponItem>(137833872, 1));
+    	bool b = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UGunItem>(72953608, 1));
+    	bool b2 = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UGunItem>(214248416, 1));
+    	bool b3 = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UGunItem>(137833872, 1));
     }
 }
 

@@ -96,10 +96,10 @@ void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 {
-	DropWeapon();
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "142312");
 	
-	_weaponItem = gunItem;
-	_weaponInfo = Cast<UGunInfo>(gunItem->GetItemInfo());
+	Super::InitializeWeapon(gunItem);
+
 	reloadTime = _weaponInfo->ReloadSpeed;
 	currentAmmoClip = gunItem->GetAmmoInClip();
 	currentReserves = gunItem->GetAmmoCount();
@@ -108,6 +108,9 @@ void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 
 void UHitscanWeaponComponent::DropWeapon()
 {
-	_weaponItem->SetAmmoCount(currentReserves);
-	_weaponItem->SetAmmoInClip(currentAmmoClip);
+	if (_weaponItem != nullptr)
+	{
+		_weaponItem->SetAmmoCount(currentReserves);
+		_weaponItem->SetAmmoInClip(currentAmmoClip);
+	}
 }

@@ -394,7 +394,13 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(nullptr);
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
+	{
 		_currentWeaponComponent->InitializeWeapon(Gun);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NOT VALID");
+	}
 }
 
 void AFP_FirstPersonCharacter::BeginPlay()

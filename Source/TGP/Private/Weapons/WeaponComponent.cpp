@@ -59,6 +59,8 @@ void UWeaponComponent::DropWeapon()
 
 void UWeaponComponent::InitializeWeapon(UGunItem* gunItem) // Get and Update ammo count from _weaponItem
 {
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "grfeasdfewa");
+	
 	DropWeapon();
 	
 	_weaponItem = gunItem;
