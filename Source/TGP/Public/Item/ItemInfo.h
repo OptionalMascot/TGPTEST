@@ -79,7 +79,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float ReloadSpeed = 3.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float AttackRate = 0.03f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float Recoil = 5.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") uint8 ClipSize = 10;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") int ClipSize = 10;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") int DefaultAmmoReserve = 120;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") TEnumAsByte<EFireType> FireType;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") FVector2D Spread = FVector2D(1.f, 1.f);
 	

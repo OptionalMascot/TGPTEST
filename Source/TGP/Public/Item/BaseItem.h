@@ -49,6 +49,8 @@ class TGP_API UGunItem : public UWeaponItem
 	int AmmoInClip;
 	
 public:
+	virtual void Init(UItemInfo* Info, int Amount) override;
+	
 	int GetAmmoInClip() const { return AmmoInClip; }
 	void SetAmmoInClip(int NewAmmo) { AmmoInClip = NewAmmo; }
 	

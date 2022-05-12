@@ -41,3 +41,12 @@ int UBaseItem::TryStack(UBaseItem* Item)
 
 	return Item->GetAmount();
 }
+
+void UGunItem::Init(UItemInfo* Info, int Amount)
+{
+	Super::Init(Info, Amount);
+
+	const UGunInfo* GunInfo = Cast<UGunInfo>(Info);
+	AmmoInClip = GunInfo->ClipSize;
+	AmmoCount = GunInfo->DefaultAmmoReserve;
+}
