@@ -7,14 +7,14 @@
 class UItemInfo;
 class UItemContainer;
 
-UCLASS()
+UCLASS(Abstract, BlueprintType)
 class TGP_API UBaseItem : public UObject
 {
 	GENERATED_BODY()
 
 protected:
 	int ItemAmount = 1;
-	UPROPERTY() UItemInfo* ItemInfo;
+	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn)) UItemInfo* ItemInfo;
 	UPROPERTY() UItemContainer* OwningContainer;
 	
 public:

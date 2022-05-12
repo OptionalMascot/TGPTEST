@@ -7,6 +7,7 @@
 class UItemContainer;
 class UWeaponItem;
 class UThrowableItem;
+class UBaseItem;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWeaponChanged, UWeaponItem*, WeaponItem);
 
@@ -48,9 +49,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="WeaponChangedEvent")
 	FOnWeaponChanged OnWeaponChangedEvent;
 	
-	UFUNCTION(BlueprintCallable) void PickUpWeapon(UWeaponItem* WeaponItem);
-	UFUNCTION(BlueprintCallable) void ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate = false);
+	bool PickUpWeapon(UWeaponItem* WeaponItem);
 	UFUNCTION(BlueprintCallable) void DropWeapon();
-
+	
+	UFUNCTION(BlueprintCallable) void ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate = false);
+	UFUNCTION(BlueprintCallable) bool TryPickUpItem(UBaseItem* Item);
 	UFUNCTION(BlueprintCallable, BlueprintPure) class UWeaponItem* GetSelectedWeapon();
 };

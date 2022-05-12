@@ -9,9 +9,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Items/BP_ItemActor.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_GunInfo.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/GameModes/BP_BaseGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/GameModes/BP_BaseGameMode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Items/BP_BaseItemActor.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun1.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun2.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun2.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/GameInstance/BaseGameInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/GameInstance/BaseGameInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Inventory/ItemContainer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Inventory/ItemContainer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Item/ItemActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Item/ItemActor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Item/BaseItem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Item/BaseItem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Item/ItemActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Item/ItemActor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TGP.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/TGP.uproject" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,6 +39,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -32,6 +58,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.35026455" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -265,6 +293,11 @@
       <updated>1652201957882</updated>
       <workItem from="1652201964635" duration="309000" />
       <workItem from="1652205145513" duration="2339000" />
+      <workItem from="1652300497975" duration="1361000" />
+      <workItem from="1652301968743" duration="937000" />
+      <workItem from="1652303006664" duration="3819000" />
+      <workItem from="1652307245714" duration="1133000" />
+      <workItem from="1652308663957" duration="4051000" />
     </task>
     <servers />
   </component>

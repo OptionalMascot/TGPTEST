@@ -20,6 +20,7 @@ public:
 	UBaseGameInstance();
 	
 	virtual void Init() override;
+	virtual void Shutdown() override;
 
 	UItemInfo* FindInfoShortName(const FString& ItemShortName) const;
 	UItemInfo* FindInfoUniqueId(int UniqueId) const;

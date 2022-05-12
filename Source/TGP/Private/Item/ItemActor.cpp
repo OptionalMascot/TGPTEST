@@ -1,14 +1,21 @@
 #include "Item/ItemActor.h"
 #include "Item/BaseItem.h"
 #include "Item/ItemInfo.h"
+#include "Components/BoxComponent.h"
 
 AItemActor::AItemActor()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
 	ItemMesh->SetupAttachment(RootComponent);
+	ItemMesh->SetRelativeLocation(FVector::ZeroVector);
+	
+	ItemMesh->SetSimulatePhysics(true);
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
+	ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 }
 
 void AItemActor::BeginPlay()

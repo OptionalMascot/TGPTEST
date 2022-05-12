@@ -31,7 +31,7 @@ enum EFireType
 	Auto		UMETA(DisplayName = "Auto")
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Abstract, BlueprintType)
 class TGP_API UItemInfo : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
@@ -58,7 +58,7 @@ public:
 	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class TGP_API UWeaponInfo : public UItemInfo
 {
 	GENERATED_BODY()
@@ -67,7 +67,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponInfo") float Damage = 10.f;
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class TGP_API UGunInfo : public UWeaponInfo
 {
 	GENERATED_BODY()
@@ -88,7 +88,7 @@ public:
 	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class TGP_API UThrowableInfo : public UWeaponInfo
 {
 	GENERATED_BODY()

@@ -50,6 +50,21 @@ void UBaseGameInstance::Init()
 	LoadInfos();
 }
 
+void UBaseGameInstance::Shutdown()
+{
+	Super::Shutdown();
+
+	UAssetManager& AssetManager = UAssetManager::Get();
+
+	if (AssetManager.IsValid())
+	{
+		TArray<FPrimaryAssetId> PrimaryIds;
+		
+		AssetManager.GetPrimaryAssetIdList(FPrimaryAssetType("ItemInfo"), PrimaryIds);
+		AssetManager.UnloadPrimaryAssets(PrimaryIds);
+	}
+}
+
 UItemInfo* UBaseGameInstance::FindInfoShortName(const FString& ItemShortName) const
 {
 	for (UItemInfo* Info : ItemInfos)

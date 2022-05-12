@@ -29,7 +29,7 @@ int UItemContainer::FindFirstValidItem()
 int UItemContainer::FindFirstInValidItem()
 {
 	for (uint8 i = 0; i < Items.Num(); i++)
-		if(!Items[i])
+		if(Items[i] == nullptr)
 			return i;
 	
 	return -1;
@@ -114,9 +114,7 @@ bool UItemContainer::RemoveItem(int Slot)
 	
 	if (Item)
 	{
-		Item->BeginDestroy();
 		Items[Slot] = nullptr;
-		
 		return true;
 	}
 
