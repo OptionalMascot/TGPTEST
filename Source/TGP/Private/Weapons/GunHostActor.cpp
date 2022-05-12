@@ -29,7 +29,7 @@ AGunHostActor::AGunHostActor()
 void AGunHostActor::BeginPlay()
 {
 	Super::BeginPlay();
-	_weapon->SetParentMesh(_mesh);
+	//_weapon->SetParentMesh(_mesh);
 }
 
 // Called every frame

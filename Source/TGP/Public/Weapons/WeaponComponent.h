@@ -27,6 +27,7 @@ protected:
 	
 	bool _canUse;
 
+	UPROPERTY() class UGunItem* _weaponItem;
 	UPROPERTY() class UGunInfo* _weaponInfo;
 	
 public:	
@@ -38,7 +39,7 @@ public:
 	void PickupWeapon(AActor* parent);
 	void DropWeapon();
 	void SetParentMesh(class UStaticMeshComponent* mesh) { _parentMesh = mesh; }
-	void InitializeWeapon(class UGunInfo* info);
+	void InitializeWeapon(class UGunItem* gunItem);
 
 	void StartUse(){ _canUse = false;	}
 	void EndUse(){ _canUse = true;	}

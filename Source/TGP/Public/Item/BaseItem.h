@@ -7,21 +7,22 @@
 class UItemInfo;
 class UItemContainer;
 
-UCLASS()
+UCLASS(Abstract, BlueprintType)
 class TGP_API UBaseItem : public UObject
 {
 	GENERATED_BODY()
 
 protected:
 	int ItemAmount = 1;
-	UPROPERTY() UItemInfo* ItemInfo;
+	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn)) UItemInfo* ItemInfo;
 	UPROPERTY() UItemContainer* OwningContainer;
 	
 public:
 	UBaseItem();
 
-	UItemInfo* GetItemInfo() const { return ItemInfo;}
+	UFUNCTION(BlueprintCallable, BlueprintPure) UItemInfo* GetItemInfo() const { return ItemInfo; }
 
+	virtual void Init(UItemInfo* Info, int Amount);
 	void SetOwningContainer(UItemContainer* Container) { OwningContainer = Container; }
 	
 	int GetAmount() const { return ItemAmount; }
@@ -44,7 +45,15 @@ class TGP_API UGunItem : public UWeaponItem
 {
 	GENERATED_BODY()
 
+	int AmmoCount = 120;
+	int AmmoInClip;
+	
 public:
+	int GetAmmoInClip() const { return AmmoInClip; }
+	void SetAmmoInClip(int NewAmmo) { AmmoInClip = NewAmmo; }
+	
+	int GetAmmoCount() const { return AmmoCount; }
+	void SetAmmoCount(int NewAmmoCount) { AmmoCount = NewAmmoCount; }
 };
 
 

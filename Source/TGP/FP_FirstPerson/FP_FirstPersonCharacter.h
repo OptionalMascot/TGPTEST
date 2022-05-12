@@ -11,6 +11,8 @@ class UCameraComponent;
 class USkeletalMeshComponent;
 class USoundBase;
 class UAnimMontage;
+class UWeaponItem;
+class UPlayerInventory;
 
 UCLASS(config=Game)
 class AFP_FirstPersonCharacter : public ACharacter
@@ -22,12 +24,18 @@ class AFP_FirstPersonCharacter : public ACharacter
 	USkeletalMeshComponent* Mesh1P;
 
 	/** Gun mesh */
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Mesh, meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* FP_Gun;
 
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	UPlayerInventory* PlayerInventory;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	UChildActorComponent* GunActorComponent;
 
 public:
 	AFP_FirstPersonCharacter();
@@ -77,6 +85,8 @@ protected:
 
 	/** Handles strafing movement, left and right */
 	void MoveRight(float Val);
+
+	void ChangeWeapon(float Val);
 
 	/**
 	 * Called via input to turn at a given rate.
@@ -159,14 +169,13 @@ protected:
 	bool _fireHeld;
 	
 	void RaycastForWeapon();
-
 	void PickupWeapon();
-
 	void DropWeapon();
-
 	void ReloadWeapon();
 	
 	bool _weaponQueued;
+
+	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
 
 public:
 	/** Returns Mesh1P subobject **/

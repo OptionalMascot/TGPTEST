@@ -75,7 +75,7 @@ void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
 void UHitscanWeaponComponent::StartWaitTimer(AActor* actor, float time)
 {
 	StartUse();
-	UWorld* world = actor->GetWorld();
+	UWorld* world = GetWorld();
 	world->GetTimerManager().SetTimer(waitTimeHandler, this, &UHitscanWeaponComponent::EndUse, time, false);
 }
 

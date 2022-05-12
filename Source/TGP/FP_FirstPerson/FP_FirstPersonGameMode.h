@@ -13,6 +13,7 @@ class AFP_FirstPersonGameMode : public AGameModeBase
 
 public:
 	AFP_FirstPersonGameMode();
+
 };
 
 

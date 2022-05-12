@@ -31,7 +31,7 @@ enum EFireType
 	Auto		UMETA(DisplayName = "Auto")
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Abstract, BlueprintType)
 class TGP_API UItemInfo : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
@@ -54,18 +54,21 @@ public:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Identifiers") int32 UniqueId;
 
 	UFUNCTION(CallInEditor, Category = "Identifiers") virtual void GenerateStats();
+	
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class TGP_API UWeaponInfo : public UItemInfo
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponInfo") float Damage = 10.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponVisuals") USkeletalMesh* WeaponSkeletalMesh;
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class TGP_API UGunInfo : public UWeaponInfo
 {
 	GENERATED_BODY()
@@ -83,9 +86,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "DEBUG") bool UnlimitedAmmo = false;
 
 	virtual void GenerateStats() override;
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
 
-UCLASS(Blueprintable, BlueprintType)
+UCLASS()
 class TGP_API UThrowableInfo : public UWeaponInfo
 {
 	GENERATED_BODY()
@@ -99,4 +103,5 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") float ThrowForce = 100.f;
 
 	virtual void GenerateStats() override;
+	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
