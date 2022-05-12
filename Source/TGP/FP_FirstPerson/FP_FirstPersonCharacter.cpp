@@ -339,13 +339,12 @@ void AFP_FirstPersonCharacter::RaycastForWeapon()
 void AFP_FirstPersonCharacter::OnFireWeapon()
 {
 	_fireHeld = true;
-	FTimerHandle reloadTimerHandler;
-	UWorld* world = GetWorld();
 }
 
 void AFP_FirstPersonCharacter::OnFireWeaponRelease()
 {
 	_fireHeld = false;
+	_currentWeaponComponent->OnFireEnd();
 }
 
 void AFP_FirstPersonCharacter::PickupWeapon()

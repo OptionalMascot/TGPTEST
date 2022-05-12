@@ -21,6 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY() AActor* _parent;
+	UPROPERTY() APlayerController* _parentController;
 	UPROPERTY() USceneComponent* _holdPoint;
 
 	UPROPERTY() class USkeletalMeshComponent* _parentMesh;
@@ -35,6 +36,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual void OnFire();
+	virtual void OnFireEnd();
 	
 	void PickupWeapon(AActor* parent);
 	virtual void DropWeapon();

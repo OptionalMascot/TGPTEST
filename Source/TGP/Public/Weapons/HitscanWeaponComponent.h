@@ -20,11 +20,17 @@ protected:
 
 	
     UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
-	
+
+	UFUNCTION() void RecoilTimelineProgressPitch(float Value);
+	UFUNCTION() void RecoilTimelineProgressYaw(float Value);
+	FTimeline recoilTimeline;
+	UPROPERTY() class UCurveFloat* _curve;
+	bool recoilTimelineForward;
 public:
 	UHitscanWeaponComponent();
 	virtual void BeginPlay() override;
 	virtual void OnFire() override;
+	virtual void OnFireEnd() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void InitializeWeapon(UGunItem* gunItem) override;
 	virtual void DropWeapon() override;

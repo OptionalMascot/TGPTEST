@@ -37,13 +37,20 @@ void UHitscanWeaponComponent::OnFire()
 	{
 		if(TryUseAmmo(_parent, 0.0f))
 		{
+			recoilTimeline.Play();
+			recoilTimeline.SetPlayRate(1.0f);
+			recoilTimelineForward = true;
+
+			
 			StartWaitTimer(_parent, _weaponInfo->AttackRate);
 			FHitResult result;
 			FVector CameraLoc;
 			FRotator CameraRot;
-			APlayerController* PlayerController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
-			PlayerController->GetPlayerViewPoint(CameraLoc, CameraRot);
-			
+			if(_parentController == nullptr)
+			{
+				_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
+			}
+			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
 			DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
 			if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility))
 			{
@@ -62,7 +69,6 @@ void UHitscanWeaponComponent::OnFire()
 					}
 				}
 			}
-			ApplyRecoil(PlayerController);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 		}
 		else
@@ -71,6 +77,13 @@ void UHitscanWeaponComponent::OnFire()
 			TryReload(_parent);
 		}
 	}
+}
+
+void UHitscanWeaponComponent::OnFireEnd()
+{
+	recoilTimeline.Reverse();
+	recoilTimelineForward = false;
+	recoilTimeline.SetPlayRate(2.0f);
 }
 
 void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
@@ -96,10 +109,29 @@ void UHitscanWeaponComponent::CancelReload(AActor* actor)
 	world->GetTimerManager().ClearTimer(reloadTimerHandler);
 }
 
+void UHitscanWeaponComponent::RecoilTimelineProgressPitch(float Value)
+{
+	if(recoilTimelineForward)
+		Value *= -1;
+
+	ApplyRecoilPitch(_parentController, Value * recoilTimeline.GetPlayRate());
+}
+
+void UHitscanWeaponComponent::RecoilTimelineProgressYaw(float Value)
+{
+	if(recoilTimelineForward)
+		Value *= -1;
+
+	ApplyRecoilYaw(_parentController, Value * recoilTimeline.GetPlayRate());
+}
+
+
+
 void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                             FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	recoilTimeline.TickTimeline(DeltaTime);
 }
 
 void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
@@ -112,6 +144,18 @@ void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 	currentAmmoClip = gunItem->GetAmmoInClip();
 	currentReserves = gunItem->GetAmmoCount();
 	maxAmmo = _weaponInfo->ClipSize;
+	
+	if(_weaponInfo->RecoilCurvePitch && _weaponInfo->RecoilCurveYaw)
+	{
+		FOnTimelineFloat TimelineProgressPitch;
+		TimelineProgressPitch.BindUFunction(this, FName("RecoilTimelineProgressPitch"));
+		FOnTimelineFloat TimelineProgressYaw;
+		TimelineProgressYaw.BindUFunction(this, FName("RecoilTimelineProgressYaw"));
+	    recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurvePitch, TimelineProgressPitch);
+		recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurveYaw, TimelineProgressYaw);
+		//recoilTimeline.SetNewTime(0);
+		//recoilTimeline.PlayFromStart();
+	}
 }
 
 void UHitscanWeaponComponent::DropWeapon()

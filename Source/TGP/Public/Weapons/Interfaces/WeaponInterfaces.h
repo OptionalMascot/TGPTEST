@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 
 #include "Camera/CameraComponent.h"
+#include "Components/TimelineComponent.h"
 #include "UObject/Interface.h"
+#include "Components/TimelineComponent.h"
 #include "WeaponInterfaces.generated.h"
 
 class UGunItem;
@@ -144,5 +146,6 @@ class TGP_API IUseRecoil
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
-	void ApplyRecoil(APlayerController* controller);
+	void ApplyRecoilPitch(APlayerController* controller, float value);
+	void ApplyRecoilYaw(APlayerController* controller, float value);
 };

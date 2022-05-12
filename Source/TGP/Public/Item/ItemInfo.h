@@ -83,6 +83,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") int DefaultAmmoReserve = 120;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") TEnumAsByte<EFireType> FireType;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") FVector2D Spread = FVector2D(1.f, 1.f);
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") UCurveFloat* RecoilCurvePitch;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") UCurveFloat* RecoilCurveYaw;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "DEBUG") bool UnlimitedAmmo = false;
 

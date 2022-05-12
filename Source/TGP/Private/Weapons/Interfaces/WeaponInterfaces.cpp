@@ -106,7 +106,12 @@ void IHasAmmo::CancelReload(AActor* actor)
 	
 }
 
-void IUseRecoil::ApplyRecoil(APlayerController* controller)
+void IUseRecoil::ApplyRecoilPitch(APlayerController* controller, float value)
 {
-	controller->AddPitchInput(-0.5f);
+	controller->AddPitchInput(value);
+}
+
+void IUseRecoil::ApplyRecoilYaw(APlayerController* controller, float value)
+{
+	controller->AddYawInput(value);
 }
