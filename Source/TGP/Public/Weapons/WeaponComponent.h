@@ -37,9 +37,9 @@ public:
 	virtual void OnFire();
 	
 	void PickupWeapon(AActor* parent);
-	void DropWeapon();
+	virtual void DropWeapon();
 	void SetParentMesh(class UStaticMeshComponent* mesh) { _parentMesh = mesh; }
-	void InitializeWeapon(class UGunItem* gunItem);
+	virtual void InitializeWeapon(class UGunItem* gunItem);
 
 	void StartUse(){ _canUse = false;	}
 	void EndUse(){ _canUse = true;	}

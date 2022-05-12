@@ -369,6 +369,7 @@ void AFP_FirstPersonCharacter::DropWeapon()
 	//	_currentWeapon = nullptr;
 	//}
 
+	_currentWeaponComponent->DropWeapon();
 	PlayerInventory->DropWeapon();
 }
 

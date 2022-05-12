@@ -54,13 +54,13 @@ void UWeaponComponent::PickupWeapon(AActor* parent)
 
 void UWeaponComponent::DropWeapon()
 {
-	_parent = nullptr;
-	_parentMesh->SetSimulatePhysics(true);
-	_parentMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	
 }
 
 void UWeaponComponent::InitializeWeapon(UGunItem* gunItem) // Get and Update ammo count from _weaponItem
 {
+	DropWeapon();
+	
 	_weaponItem = gunItem;
 	_weaponInfo = Cast<UGunInfo>(gunItem->GetItemInfo());
 }

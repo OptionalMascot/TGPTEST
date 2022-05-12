@@ -5,9 +5,9 @@
 #include "Weapons/UI/MyDamageMarker.h"
 #include "Weapons/UI/UserWidgetTest.h"
 #include "Weapons/HealthComponent.h"
-
+#include "Item/BaseItem.h"
+#include "Item/ItemInfo.h"
 #include <string>
-
 #include "Components/WidgetComponent.h"
 
 UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
@@ -30,9 +30,9 @@ void UHitscanWeaponComponent::OnFire()
 {
 	if(_canUse)
 	{
-		if(TryUseAmmo(_parent, 1))
+		if(TryUseAmmo(_parent, 1.0f))
 		{
-			StartWaitTimer(_parent, 0.2f);
+			StartWaitTimer(_parent, _weaponInfo->AttackRate);
 			FHitResult result;
 			FVector CameraLoc;
 			FRotator CameraRot;
@@ -44,12 +44,15 @@ void UHitscanWeaponComponent::OnFire()
 				UHealthComponent* healthComponent = hit->FindComponentByClass<UHealthComponent>();
 				if(healthComponent != nullptr)
 				{
-					healthComponent->AdjustHealth(10.0f);
+					healthComponent->AdjustHealth(_weaponInfo->Damage);
 					UWorld* const World = GetWorld();
 					FActorSpawnParameters ActorSpawnParams;
 					AMyDamageMarker* object = World->SpawnActor<AMyDamageMarker>(_damageMarker, result.Location, FRotator(0.0f, 0.0f, 0.0f), ActorSpawnParams);
-					object->SetSpawnedBy(_parent);
-					object->SetText(10.0f);
+					if(object != nullptr)
+					{
+						object->SetSpawnedBy(_parent);
+						object->SetText(_weaponInfo->Damage);
+					}
 				}
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
@@ -89,4 +92,22 @@ void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType
                                             FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
+{
+	DropWeapon();
+	
+	_weaponItem = gunItem;
+	_weaponInfo = Cast<UGunInfo>(gunItem->GetItemInfo());
+	reloadTime = _weaponInfo->ReloadSpeed;
+	currentAmmoClip = gunItem->GetAmmoInClip();
+	currentReserves = gunItem->GetAmmoCount();
+	maxAmmo = _weaponInfo->ClipSize;
+}
+
+void UHitscanWeaponComponent::DropWeapon()
+{
+	_weaponItem->SetAmmoCount(currentReserves);
+	_weaponItem->SetAmmoInClip(currentAmmoClip);
 }
