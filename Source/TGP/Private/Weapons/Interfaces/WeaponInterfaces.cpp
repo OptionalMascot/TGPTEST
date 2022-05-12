@@ -5,6 +5,8 @@
 
 #include <Actor.h>
 
+#include "Item/BaseItem.h"
+
 
 // Add default functionality here for any IWeaponInterfaces functions that are not pure virtual.
 

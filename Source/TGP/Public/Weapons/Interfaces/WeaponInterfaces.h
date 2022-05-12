@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "WeaponInterfaces.generated.h"
 
+class UGunItem;
+
 UINTERFACE(MinimalAPI)
 class UHealth : public UInterface
 {

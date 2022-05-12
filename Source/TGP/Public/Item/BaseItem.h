@@ -45,7 +45,15 @@ class TGP_API UGunItem : public UWeaponItem
 {
 	GENERATED_BODY()
 
+	int AmmoCount = 120;
+	int AmmoInClip;
+	
 public:
+	int GetAmmoInClip() const { return AmmoInClip; }
+	void SetAmmoInClip(int NewAmmo) { AmmoInClip = NewAmmo; }
+	
+	int GetAmmoCount() const { return AmmoCount; }
+	void SetAmmoCount(int NewAmmoCount) { AmmoCount = NewAmmoCount; }
 };
 
 

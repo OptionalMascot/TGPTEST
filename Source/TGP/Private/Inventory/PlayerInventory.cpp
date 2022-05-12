@@ -28,20 +28,11 @@ void UPlayerInventory::BeginPlay()
 	
     ATGPGameModeBase* GameMode = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
     
-    if (GameMode)
+    if (GameMode) // DEBUG
     {
     	bool b = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UWeaponItem>(72953608, 1));
     	bool b2 = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UWeaponItem>(214248416, 1));
     	bool b3 = WeaponContainer->AddItem(GameMode->CreateItemByUniqueId<UWeaponItem>(137833872, 1));
-
-        if (b && b2 && b3)
-        {
-	        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Added");
-        }
-    	else
-    	{
-    		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "FAILED");
-    	}
     }
 }
 
@@ -69,6 +60,11 @@ void UPlayerInventory::SelectUtility(uint8 Slot)
 		SelectedUtilitySlot = Slot;
 }
 
+void UPlayerInventory::ComponentLoadComplete()
+{
+	ChangeWeapon(EWeaponSlot::Primary, true);
+}
+
 bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 {
 	bool bPickedUp = false;
@@ -80,22 +76,18 @@ bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 
 		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, "1");
 	}
-	else if (const int Slot = WeaponContainer->FindFirstInValidItem() != -1) // Check if any slots are available
+	
+	for(int i = 0; i < 2; i++)
 	{
-		//bool b =  WeaponContainer->AddItem(WeaponItem, Slot);
-		//bPickedUp |= b;
-		
-		for(int i = 0; i < 2; i++)
+		const UBaseItem* Item = WeaponContainer->GetItemAt(i);
+		if (Item == nullptr)
 		{
-			auto t = WeaponContainer->GetItemAt(i);
-			if (t == nullptr)
-			{
-				WeaponContainer->AddItem(WeaponItem, i);
-				return true;
-			}
+			WeaponContainer->AddItem(WeaponItem, i);
+			return true;
 		}
 	}
-	else if (SelectedWeapon != EWeaponSlot::Melee)
+	
+	if (!bPickedUp && SelectedWeapon != EWeaponSlot::Melee)
 	{
 		const EWeaponSlot ActiveSlot = SelectedWeapon;
 		
@@ -103,7 +95,6 @@ bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 		SelectedWeapon = ActiveSlot;
 		PickUpWeapon(WeaponItem);
 		ChangeWeapon(SelectedWeapon, true);
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, "3");
 
 		bPickedUp = true;
 	}
@@ -114,7 +105,7 @@ bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 
 void UPlayerInventory::ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate)
 {
-	if (Cast<UWeaponItem>(WeaponContainer->GetItemAt(Slot)) != nullptr || bForceUpdate)
+	if ((Cast<UWeaponItem>(WeaponContainer->GetItemAt(Slot)) != nullptr && Slot != SelectedWeapon) || bForceUpdate)
 	{
 		SelectedWeapon = Slot;
 		OnWeaponChangedEvent.Broadcast(Cast<UWeaponItem>(WeaponContainer->GetItemAt(SelectedWeapon)));

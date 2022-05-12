@@ -46,6 +46,8 @@ public:
 	bool AddUtility(UThrowableItem* ThrowableItem) const;
 	void SelectUtility(uint8 Slot);
 
+	void ComponentLoadComplete();
+
 	UPROPERTY(BlueprintAssignable, Category="WeaponChangedEvent")
 	FOnWeaponChanged OnWeaponChangedEvent;
 	

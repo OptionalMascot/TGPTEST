@@ -3,6 +3,7 @@
 
 #include "Weapons/WeaponComponent.h"
 #include "Components/SceneComponent.h"
+#include "Item/BaseItem.h"
 #include "Item/ItemInfo.h"
 
 // Sets default values for this component's properties
@@ -46,8 +47,8 @@ void UWeaponComponent::PickupWeapon(AActor* parent)
 	if(_parent == nullptr)
 	{
 		_parent = parent;
-		_parentMesh->SetSimulatePhysics(false);
-		_parentMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		//_parentMesh->SetSimulatePhysics(false);
+		//_parentMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 
@@ -58,8 +59,9 @@ void UWeaponComponent::DropWeapon()
 	_parentMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
-void UWeaponComponent::InitializeWeapon(UGunInfo* info)
+void UWeaponComponent::InitializeWeapon(UGunItem* gunItem) // Get and Update ammo count from _weaponItem
 {
-	_weaponInfo = info;
+	_weaponItem = gunItem;
+	_weaponInfo = Cast<UGunInfo>(gunItem->GetItemInfo());
 }
 

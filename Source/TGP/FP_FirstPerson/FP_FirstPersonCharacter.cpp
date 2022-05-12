@@ -8,6 +8,10 @@
 #include "Weapons/GunHostActor.h"
 #include "Weapons/WeaponComponent.h"
 #include "Weapons/Interfaces/WeaponInterfaces.h"
+#include "Inventory/PlayerInventory.h"
+#include "Item/BaseItem.h"
+#include "Item/ItemActor.h"
+#include "Item/ItemInfo.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -43,6 +47,13 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 	FP_Gun->bCastDynamicShadow = false;		// Disallow mesh to cast dynamic shadows
 	FP_Gun->CastShadow = false;			// Disallow mesh to cast other shadows
 	FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
+
+	GunActorComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("GunActor"));
+	GunActorComponent->SetChildActorClass(AGunHostActor::StaticClass());
+	GunActorComponent->SetupAttachment(Mesh1P);
+
+	PlayerInventory = CreateDefaultSubobject<UPlayerInventory>(TEXT("PlayerInventory"));
+	AddOwnedComponent(PlayerInventory);
 
 	// Set weapon damage and range
 	WeaponRange = 5000.0f;
@@ -90,6 +101,14 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	PlayerInputComponent->BindAxis("TurnRate", this, &AFP_FirstPersonCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AFP_FirstPersonCharacter::LookUpAtRate);
+
+	PlayerInputComponent->BindAxis("ChangeWeapon", this, &AFP_FirstPersonCharacter::ChangeWeapon);
+}
+
+void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
+{
+	if (Val != 0.f)
+		PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
 }
 
 void AFP_FirstPersonCharacter::OnFire()
@@ -273,39 +292,47 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 
 void AFP_FirstPersonCharacter::RaycastForWeapon()
 {
-	if(_currentWeapon == nullptr)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("StartWepRaycast"));
-		// get the camera transform
-		FVector CameraLoc;
-		FRotator CameraRot;
-		APlayerController* PlayerController = Cast<APlayerController>(GetController());
-		PlayerController->GetPlayerViewPoint(CameraLoc, CameraRot);
+	//if(_currentWeapon == nullptr)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("StartWepRaycast"));
+	//	// get the camera transform
+	//	FVector CameraLoc;
+	//	FRotator CameraRot;
+	//	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	//	PlayerController->GetPlayerViewPoint(CameraLoc, CameraRot);
 
-		FVector Start = CameraLoc;
-		// you need to add a uproperty to the header file for a float PlayerInteractionDistance
-		FVector End = CameraLoc + (CameraRot.Vector() * 10000.0f);
+	//	FVector Start = CameraLoc;
+	//	// you need to add a uproperty to the header file for a float PlayerInteractionDistance
+	//	FVector End = CameraLoc + (CameraRot.Vector() * 10000.0f);
 
-		FHitResult hitResult;
+	//	FHitResult hitResult;
 
-		//  do the line trace
-		bool DidTrace = GetWorld()->LineTraceSingleByChannel(
-			hitResult,		//result
-			Start,		//start
-			End,		//end
-			ECC_Visibility	//collision channel
-			);
+	//	//  do the line trace
+	//	bool DidTrace = GetWorld()->LineTraceSingleByChannel(
+	//		hitResult,		//result
+	//		Start,		//start
+	//		End,		//end
+	//		ECC_Visibility	//collision channel
+	//		);
 
-		if(DidTrace)
-		{
-			AGunHostActor* test = Cast<AGunHostActor>(hitResult.GetActor());
-			if(test != nullptr)
-			{
-				_currentWeapon = test;
-				PickupWeapon();
-			}
-		}
-	}
+	//	if(DidTrace)
+	//	{
+	//		AGunHostActor* test = Cast<AGunHostActor>(hitResult.GetActor());
+	//		if(test != nullptr)
+	//		{
+	//			_currentWeapon = test;
+	//			PickupWeapon();
+	//		}
+	//	}
+	//}
+
+	const FVector CameraPos = GetFirstPersonCameraComponent()->GetComponentLocation(), CameraDir = GetFirstPersonCameraComponent()->GetForwardVector();
+	
+	FHitResult Result;
+	if (GetWorld()->LineTraceSingleByChannel(Result, CameraPos, CameraPos + (CameraDir * 250.f), ECollisionChannel::ECC_Visibility))
+		if (AItemActor* ItemActor = Cast<AItemActor>(Result.Actor))
+			if(PlayerInventory->TryPickUpItem(ItemActor->GetItem()))
+				ItemActor->Destroy();
 }
 
 
@@ -332,15 +359,17 @@ void AFP_FirstPersonCharacter::PickupWeapon()
 
 void AFP_FirstPersonCharacter::DropWeapon()
 {
-	if(_currentWeapon != nullptr)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Detach"));
-		_currentWeaponComponent->DropWeapon();
-		_currentWeaponComponent = nullptr;
-		FDetachmentTransformRules rules = FDetachmentTransformRules(EDetachmentRule::KeepWorld, EDetachmentRule::KeepWorld, EDetachmentRule::KeepWorld, false);
-		_currentWeapon->DetachFromActor(rules);
-		_currentWeapon = nullptr;
-	}
+	//if(_currentWeapon != nullptr)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Detach"));
+	//	_currentWeaponComponent->DropWeapon();
+	//	_currentWeaponComponent = nullptr;
+	//	FDetachmentTransformRules rules = FDetachmentTransformRules(EDetachmentRule::KeepWorld, EDetachmentRule::KeepWorld, EDetachmentRule::KeepWorld, false);
+	//	_currentWeapon->DetachFromActor(rules);
+	//	_currentWeapon = nullptr;
+	//}
+
+	PlayerInventory->DropWeapon();
 }
 
 void AFP_FirstPersonCharacter::ReloadWeapon()
@@ -356,12 +385,32 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 	}
 }
 
+void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
+{
+	if (WeaponItem != nullptr)
+		FP_Gun->SetSkeletalMesh(Cast<UWeaponInfo>(WeaponItem->GetItemInfo())->WeaponSkeletalMesh);
+	else
+		FP_Gun->SetSkeletalMesh(nullptr);
+	
+	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
+		_currentWeaponComponent->InitializeWeapon(Gun);
+}
+
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	_currentWeapon = nullptr;
-	_currentWeaponComponent = nullptr;
+
+	_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
+	_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
+
+	_currentWeaponComponent->PickupWeapon(this);
+	
+	//_currentWeapon = nullptr;
+	//_currentWeaponComponent = nullptr; 
 	_fireHeld = false;
+
+	PlayerInventory->OnWeaponChangedEvent.AddDynamic(this, &AFP_FirstPersonCharacter::OnWeaponChanged);
+	PlayerInventory->ComponentLoadComplete();
 }
 
 void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
