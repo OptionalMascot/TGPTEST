@@ -41,6 +41,33 @@ void AItemActor::Tick(float DeltaTime)
 
 }
 
+void AItemActor::LightColourSetup(const UWeaponInfo* info) const
+{
+	FColor color;
+	switch(info->ItemRarity)
+	{
+	case ERarity::Common:
+		color = FColor::White;
+		break;
+	case ERarity::Uncommon:
+		color = FColor::Green;
+		break;
+	case ERarity::Rare:
+		color = FColor::Blue;
+		break;
+	case ERarity::SuperRare:
+		color = FColor::Purple;
+		break;
+	case ERarity::Legendary:
+		color = FColor::Orange;
+		break;
+	default:
+		color = FColor::White;
+		break;
+	}
+	ItemPointLight->SetLightColor(color);
+}
+
 void AItemActor::Initialize(UBaseItem* Item)
 {
 	if (Item == nullptr)
@@ -51,9 +78,12 @@ void AItemActor::Initialize(UBaseItem* Item)
 
 	const UItemInfo* Info = Item->GetItemInfo();
 	const UWeaponInfo* WepInfo = Cast<UWeaponInfo>(Info);
-
+	
 	if (WepInfo != nullptr)
+	{
 		ItemSkeletalMesh->SetSkeletalMesh(WepInfo->WeaponSkeletalMesh);
+		LightColourSetup(WepInfo);
+	}
 	else
 		ItemMesh->SetStaticMesh(Info->ItemMesh);
 

@@ -8,6 +8,7 @@ class UItemInfo;
 class UBaseItem;
 class UBoxComponent;
 class UPointLightComponent;
+class UWeaponInfo;
 
 UCLASS()
 class TGP_API AItemActor : public AActor
@@ -27,6 +28,8 @@ public:
 	AItemActor();
 	virtual void Tick(float DeltaTime) override;
 
+	void LightColourSetup(const UWeaponInfo* info) const;
+	
 	UFUNCTION(BlueprintCallable) void Initialize(UBaseItem* Item);
 	UBaseItem* GetItem() const { return DefinedItem; }
 };
