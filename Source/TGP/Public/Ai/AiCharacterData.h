@@ -3,11 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BaseAiController.h"
 #include "Engine/DataAsset.h"
 #include "AiCharacterData.generated.h"
 
-class ABaseAiController;
 
 UCLASS()
 class TGP_API UAiCharacterData : public UDataAsset
@@ -24,5 +22,5 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals") TArray<USkeletalMesh*> SkeletalMeshes;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals") TSubclassOf<UAnimBlueprint> EnemyAnimBP;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ai") TSubclassOf<ABaseAiController> AiControllerClass = ABaseAiController::StaticClass();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ai") TSubclassOf<AController> AiControllerClass = AController::StaticClass();
 };

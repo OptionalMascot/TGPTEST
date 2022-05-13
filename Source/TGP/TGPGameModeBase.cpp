@@ -165,7 +165,7 @@ void ATGPGameModeBase::DEBUG_KILL_ENEMY()
 	{
 		if (EnemyPool[i]->IsAlive())
 		{
-			EnemyPool[i]->OnEnemyDied();
+			EnemyPool[i]->OnEnemyDied(nullptr);
 			OnEnemyKilled(EnemyPool[i]);
 			break;
 		}

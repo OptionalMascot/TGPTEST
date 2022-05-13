@@ -5,7 +5,13 @@
     <projectFile>Intermediate/ProjectFiles/UE4.vcxproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="" />
+    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiController.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiController.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +40,6 @@
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UE4Editor/Inc/TGP/ItemActor.gen.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -315,6 +320,7 @@
       <workItem from="1652431568958" duration="7242000" />
       <workItem from="1652439123988" duration="2232000" />
       <workItem from="1652442272104" duration="11683000" />
+      <workItem from="1652461042451" duration="310000" />
     </task>
     <servers />
   </component>
@@ -324,6 +330,17 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

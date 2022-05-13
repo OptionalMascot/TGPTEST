@@ -1,6 +1,5 @@
 #include "Ai/BaseAiCharacter.h"
 #include "Ai/AiCharacterData.h"
-#include "Ai/BaseAiController.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -10,7 +9,7 @@ ABaseAiCharacter::ABaseAiCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	AIControllerClass = ABaseAiController::StaticClass();
+	AIControllerClass = AController::StaticClass();
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	AddOwnedComponent(HealthComponent);
@@ -20,7 +19,7 @@ void ABaseAiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	HealthComponent->OnDeathDelegate.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
+	HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
 }
 
 void ABaseAiCharacter::Tick(float DeltaTime)
@@ -35,7 +34,7 @@ void ABaseAiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 }
 
-void ABaseAiCharacter::OnEnemyDied()
+void ABaseAiCharacter::OnEnemyDied(AController* Causer)
 {
 	SetHidden(true);
 
@@ -60,7 +59,7 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 		{
 			if (GetController()->StaticClass() != EnemyStats->AiControllerClass) // IF AI Controller is different replace with expected controller. (Used for swapping Ai to bosses/other enemy types)
 			{
-				ABaseAiController* NewController = NewObject<ABaseAiController>(EnemyStats->AiControllerClass);
+				AController* NewController = NewObject<AController>(EnemyStats->AiControllerClass);
 				NewController->Possess(this);
 			}
 		}

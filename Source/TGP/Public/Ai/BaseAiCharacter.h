@@ -28,7 +28,7 @@ public:
 	
 	bool IsAlive() const { return HealthComponent->health > 0.f; }
 
-	UFUNCTION() void OnEnemyDied();
+	UFUNCTION() void OnEnemyDied(AController* Causer);
 	void SpawnEnemy(const FVector& RespawnPos);
 
 	void SetHidden(bool bEnemyHidden);
