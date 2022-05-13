@@ -20,6 +20,7 @@ void UPlayerAnimInstance::UpdateAnimationVariables()
 		{
 			IsJumping = !Player->GetCharacterMovement()->IsMovingOnGround();
 			IsSprinting = Player->IsSprinting;
+			IsAiming = Player->IsAiming;
 		}
 	}
 }

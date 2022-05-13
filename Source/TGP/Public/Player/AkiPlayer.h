@@ -15,14 +15,23 @@ public:
 	// Sets default values for this character's properties
 	AAkiPlayer();
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Player")
+	class USkeletalMeshComponent* PlayerMesh;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
 	class USkeletalMeshComponent* WeaponMesh;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
+	class USceneComponent* AimLocation;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera")
 	class UCameraComponent* FirstPersonCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh Default Transform")
-	FTransform DefaultAimTransform;
+	FVector DefaultMeshLocation;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Player Movement")
+	bool IsAiming;
 
 	bool IsSprinting;
 
@@ -40,9 +49,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Player Movement", meta=(AllowPrivateAccess = true))
 	float M_DefaultSpeed = 600.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Player Movement", meta=(AllowPrivateAccess = true))
-	bool IsAiming;
-
+	float DefaultFieldOfView;
+	
 	bool M_MovingForward;
 	bool M_MovingRight;
 	
@@ -64,4 +72,12 @@ public:
 
 	void ADS();
 	void StopADS();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BeginAimTransisiton();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BeginUnAimTransisiton();
+
+	void AdjustFOV(float ZoomLevel);
 };

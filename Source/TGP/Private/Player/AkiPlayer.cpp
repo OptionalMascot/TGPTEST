@@ -12,11 +12,22 @@ AAkiPlayer::AAkiPlayer()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	FirstPersonCamera->SetupAttachment(GetRootComponent());
+
+	GetMesh()->SetupAttachment(FirstPersonCamera);
+	
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
 	WeaponMesh->SetupAttachment(GetMesh());
 
-	FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	FirstPersonCamera->SetupAttachment(GetRootComponent());
+	AimLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MeshAimLocation"));
+	AimLocation->SetupAttachment(FirstPersonCamera);
+
+	DefaultFieldOfView = 100.0f;
+	
+	
+
+	
 
 	M_CameraSensitivity = 0.6f;
 
@@ -35,7 +46,7 @@ void AAkiPlayer::BeginPlay()
 	
 	WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
 
-	DefaultAimTransform = GetMesh()->GetRelativeTransform();
+	DefaultMeshLocation = GetMesh()->GetRelativeLocation();
 	GetMesh()->HideBone(5, EPhysBodyOp::PBO_None);
 
 	IsSprinting = false;
@@ -114,7 +125,7 @@ void AAkiPlayer::LookUp(float inputValue)
 
 void AAkiPlayer::Sprint()
 {
-	if(GetVelocity().Size() > 0)
+	if(GetVelocity().Size() > 0 && !IsAiming)
 	{
 		IsSprinting = true;
 
@@ -136,13 +147,24 @@ void AAkiPlayer::StopSprinting()
 void AAkiPlayer::ADS()
 {
 	IsAiming = true;
-
-		
+	StopSprinting();
+	BeginAimTransisiton();
+	AdjustFOV(1.25f);
+	
 }
 
 void AAkiPlayer::StopADS()
 {
 	IsAiming = false;
-	
+	BeginUnAimTransisiton();
+	AdjustFOV(1.0f);
 }
+
+void AAkiPlayer::AdjustFOV(float ZoomLevel)
+{
+	float NewFieldOfView = DefaultFieldOfView - (DefaultFieldOfView * ZoomLevel - DefaultFieldOfView);
+
+	FirstPersonCamera->SetFieldOfView(NewFieldOfView);
+}
+
 

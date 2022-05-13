@@ -28,6 +28,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = true), Category="Locomotion Variables")
 	bool IsSprinting;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = true), Category="Locomotion Variables")
+	bool IsAiming;
+
 	class APawn* PlayerPawn;
 	class AAkiPlayer* Player;
 };

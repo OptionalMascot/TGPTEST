@@ -8,7 +8,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="" />
+    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Animations/Rifle/BP_RifleAnimations.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Animations/Rifle/BP_RifleAnimations.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Aki/BP_AkiPlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Aki/BP_AkiPlayer.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_01_C.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_01_C.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_01_D.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_01_D.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_01_F.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_01_F.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_02_D.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_02_D.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_B.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_B.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_C.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_C.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_D.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_D.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_E.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_E.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_F.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_03_F.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_04_B.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_04_B.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_04_C.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_04_C.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_04_E.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Alternates/Mat_PolygonScifi_04_E.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Mat_PolygonScifi_01_A_Triplanar.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Materials/Mat_PolygonScifi_01_A_Triplanar.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Characters/SK_Character_Android_Female_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Characters/SK_Character_Android_Female_01.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Characters/SK_Character_SciFiCity_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Characters/SK_Character_SciFiCity_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/Accessories/SM_Wep_Attachment_Redot_02.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/Accessories/SM_Wep_Attachment_Redot_02.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Base_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Base_01.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Base_01_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Base_01_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Player/AkiPlayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Player/AkiPlayer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/PlayerAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/PlayerAnimInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Player/AkiPlayer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Player/AkiPlayer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/PlayerAnimInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/PlayerAnimInstance.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -266,7 +293,9 @@
       <updated>1652201957882</updated>
       <workItem from="1652201964635" duration="309000" />
       <workItem from="1652205145513" duration="2339000" />
-      <workItem from="1652390703718" duration="14560000" />
+      <workItem from="1652390703718" duration="14731000" />
+      <workItem from="1652430229061" duration="8580000" />
+      <workItem from="1652442519766" duration="6637000" />
     </task>
     <servers />
   </component>
