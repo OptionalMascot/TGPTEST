@@ -28,7 +28,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void SetText(int num);
-	void SetSpawnedBy(AActor* spawned) { _spawnedBy = spawned; }
+	UFUNCTION(BlueprintCallable) void SetText(int num);
+	UFUNCTION(BlueprintCallable) void SetSpawnedBy(AActor* spawned) { _spawnedBy = spawned; }
 	UWidgetComponent* GetWidget() { return _widget; }
 };

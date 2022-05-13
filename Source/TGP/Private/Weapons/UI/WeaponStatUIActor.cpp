@@ -7,6 +7,11 @@
 #include "Components/SceneComponent.h"
 #include "Weapons/UI/WeaponStatUIWidget.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Item/BaseItem.h"
+#include "Item/ItemActor.h"
+#include "Item/ItemInfo.h"
+
 
 // Sets default values
 AWeaponStatUIActor::AWeaponStatUIActor()
@@ -25,14 +30,8 @@ AWeaponStatUIActor::AWeaponStatUIActor()
 void AWeaponStatUIActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UWidgetComponent* widget = GetWidget();
-	UUserWidget* userWid = widget->GetUserWidgetObject();
-	UWeaponStatUIWidget* castedWidget = Cast<UWeaponStatUIWidget>(userWid);
-	if(castedWidget)
-	{
-		castedWidget->SetText("test");
-	}
+
+	_playerController = nullptr;
 }
 
 // Called every frame
@@ -40,5 +39,28 @@ void AWeaponStatUIActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if(!_playerController)
+	{
+		_playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
+	}
+	else
+	{
+		FVector start = GetActorLocation();
+		FVector target = _playerController->GetPawn()->GetActorLocation();
+	
+		FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
+		SetActorRotation(rotator);	
+	}
+}
+
+void AWeaponStatUIActor::SetWeaponStats(UWeaponInfo* info)
+{
+	UWidgetComponent* widget = GetWidget();
+	UUserWidget* userWid = widget->GetUserWidgetObject();
+	UWeaponStatUIWidget* castedWidget = Cast<UWeaponStatUIWidget>(userWid);
+	if(castedWidget)
+	{
+		castedWidget->SetText("Test");
+	}
 }
 

@@ -7,6 +7,9 @@
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "HealthComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FComponentDeadSignature, AController*, causer);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FComponentTookDamageSignature, AController*, causer, float, damage);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TGP_API UHealthComponent : public UActorComponent
 {
@@ -24,11 +27,14 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentDeadSignature onComponentDead;
+	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentTookDamageSignature onComponentTakeDamage;
+	
 	UPROPERTY(EditAnywhere) int health;
 	bool dead;
 	
 	void SetHealth(float newHealth) { health = newHealth; dead = false; }
-	bool AdjustHealth(float damage);
+	bool AdjustHealth(AController* causer, float damage);
 	bool isDead() { return dead; }
 	virtual void KillObject();
 	

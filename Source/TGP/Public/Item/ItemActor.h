@@ -18,6 +18,9 @@ class TGP_API AItemActor : public AActor
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UStaticMeshComponent* ItemMesh;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) USkeletalMeshComponent* ItemSkeletalMesh;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UPointLightComponent* ItemPointLight;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) class UWidgetComponent* StatWidget;
+
+	UPROPERTY() APlayerController* _playerController;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Item", Meta = (AllowPrivateAccess = true)) UBaseItem* DefinedItem;
 
@@ -29,6 +32,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void LightColourSetup(const UWeaponInfo* info) const;
+
+		
 	
 	UFUNCTION(BlueprintCallable) void Initialize(UBaseItem* Item);
 	UBaseItem* GetItem() const { return DefinedItem; }

@@ -3,10 +3,13 @@
 #include "Item/ItemInfo.h"
 #include "Components/BoxComponent.h"
 #include "Components/PointLightComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AItemActor::AItemActor()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	
@@ -27,18 +30,33 @@ AItemActor::AItemActor()
 
 	ItemPointLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("ItemLight"));
 	ItemPointLight->SetupAttachment(ItemSkeletalMesh);
+
+	StatWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	StatWidget->SetupAttachment(RootComponent);
 }
 
 void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	_playerController = nullptr;
 }
 
 void AItemActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
+	if(!_playerController)
+	{
+		_playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
+	}
+	else
+	{
+		FVector start = GetActorLocation();
+		FVector target = _playerController->GetPawn()->GetActorLocation();
+	
+		FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
+		StatWidget->SetRelativeRotation(rotator);	
+	}
 }
 
 void AItemActor::LightColourSetup(const UWeaponInfo* info) const
