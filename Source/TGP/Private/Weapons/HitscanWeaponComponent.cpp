@@ -60,7 +60,11 @@ void UHitscanWeaponComponent::OnFire()
 				_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
 			}
 			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
+
+			
 			DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
+
+
 			if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility))
 			{
 				AActor* hit = result.GetActor();

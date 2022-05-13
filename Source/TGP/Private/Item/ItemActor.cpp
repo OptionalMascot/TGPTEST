@@ -2,6 +2,7 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemInfo.h"
 #include "Components/BoxComponent.h"
+#include "Components/PointLightComponent.h"
 
 AItemActor::AItemActor()
 {
@@ -23,6 +24,9 @@ AItemActor::AItemActor()
 	ItemSkeletalMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
 	ItemSkeletalMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 	ItemSkeletalMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+
+	ItemPointLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("ItemLight"));
+	ItemPointLight->SetupAttachment(RootComponent);
 }
 
 void AItemActor::BeginPlay()
