@@ -17,13 +17,14 @@ protected:
 	virtual void StartWaitTimer(AActor* actor, float time) override;
 	virtual void CancelReload(AActor* actor) override;
 
-
-	
-    UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
-
 	UFUNCTION() void RecoilTimelineProgressPitch(float Value);
 	UFUNCTION() void RecoilTimelineProgressYaw(float Value);
 	UFUNCTION() void SingleFireRecoilReset();
+
+	void ResetRecoilTimeline();
+	
+    UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
+
 	FTimeline recoilTimeline;
 	UPROPERTY() class UCurveFloat* _curve;
 	bool recoilTimelineForward;

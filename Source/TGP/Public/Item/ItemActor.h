@@ -27,6 +27,8 @@ class TGP_API AItemActor : public AActor
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void WidgetBillboard();
+	
 public:
 	AItemActor();
 	virtual void Tick(float DeltaTime) override;

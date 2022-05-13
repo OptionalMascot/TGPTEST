@@ -41,10 +41,8 @@ void AItemActor::BeginPlay()
 	_playerController = nullptr;
 }
 
-void AItemActor::Tick(float DeltaTime)
+void AItemActor::WidgetBillboard()
 {
-	Super::Tick(DeltaTime);
-	
 	if(!_playerController)
 	{
 		_playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
@@ -53,10 +51,17 @@ void AItemActor::Tick(float DeltaTime)
 	{
 		FVector start = GetActorLocation();
 		FVector target = _playerController->GetPawn()->GetActorLocation();
-	
+		
 		FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
 		StatWidget->SetRelativeRotation(rotator);	
 	}
+}
+
+void AItemActor::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	WidgetBillboard();
 }
 
 void AItemActor::LightColourSetup(const UWeaponInfo* info) const

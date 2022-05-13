@@ -28,10 +28,8 @@ void AMyDamageMarker::BeginPlay()
 	_aliveTime = 1.0f;
 }
 
-// Called every frame
-void AMyDamageMarker::Tick(float DeltaTime)
+void AMyDamageMarker::WidgetBillboardAndMove(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
 	if(_spawnedBy)
 	{
 		FVector start =_widget->GetComponentTransform().GetLocation();
@@ -45,6 +43,13 @@ void AMyDamageMarker::Tick(float DeltaTime)
 	{
 		Destroy();
 	}
+}
+
+// Called every frame
+void AMyDamageMarker::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	WidgetBillboardAndMove(DeltaTime);
 }
 
 void AMyDamageMarker::SetText(int num)

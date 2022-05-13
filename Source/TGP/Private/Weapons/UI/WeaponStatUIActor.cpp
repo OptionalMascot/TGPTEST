@@ -39,18 +39,7 @@ void AWeaponStatUIActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(!_playerController)
-	{
-		_playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
-	}
-	else
-	{
-		FVector start = GetActorLocation();
-		FVector target = _playerController->GetPawn()->GetActorLocation();
 	
-		FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
-		SetActorRotation(rotator);	
-	}
 }
 
 void AWeaponStatUIActor::SetWeaponStats(UWeaponInfo* info)
