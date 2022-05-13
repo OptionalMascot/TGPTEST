@@ -22,7 +22,6 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	// ...
-	SetHealth(healthBase);
 
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::ApplyDamage);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Linked OnTakeAnyDamage"));
@@ -35,6 +34,18 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+bool UHealthComponent::AdjustHealth(float damage)
+{
+	health -= damage;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Hit! Health: ") + FString::FromInt(health));
+	if(health <= 0)
+	{
+		dead = true;
+		KillObject();
+	}
+	return dead;
 }
 
 void UHealthComponent::KillObject()

@@ -8,7 +8,7 @@
 #include "HealthComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class TGP_API UHealthComponent : public UActorComponent, public IHealth
+class TGP_API UHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -24,9 +24,14 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(EditAnywhere) int healthBase;
-	virtual void KillObject() override;
-
+	UPROPERTY(EditAnywhere) int health;
+	bool dead;
+	
+	void SetHealth(float newHealth) { health = newHealth; dead = false; }
+	bool AdjustHealth(float damage);
+	bool isDead() { return dead; }
+	virtual void KillObject();
+	
 	UFUNCTION() void ApplyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser );
 	
 };

@@ -315,7 +315,7 @@
       <workItem from="1652364848799" duration="4127000" />
       <workItem from="1652369316559" duration="2212000" />
       <workItem from="1652390498575" duration="2136000" />
-      <workItem from="1652431568958" duration="4510000" />
+      <workItem from="1652431568958" duration="5155000" />
     </task>
     <servers />
   </component>
@@ -334,7 +334,7 @@
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp</url>
           <line>66</line>
-          <option name="timeStamp" value="5" />
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

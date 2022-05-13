@@ -64,7 +64,7 @@ void UHitscanWeaponComponent::OnFire()
 			if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility))
 			{
 				AActor* hit = result.GetActor();
-				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parent, UDamageType::StaticClass());
+				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass());
 				if(dealtDamage != 0.0f)
 				{
 					UWorld* const World = GetWorld();
