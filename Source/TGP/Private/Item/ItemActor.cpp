@@ -26,7 +26,7 @@ AItemActor::AItemActor()
 	ItemSkeletalMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
 	ItemPointLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("ItemLight"));
-	ItemPointLight->SetupAttachment(RootComponent);
+	ItemPointLight->SetupAttachment(ItemSkeletalMesh);
 }
 
 void AItemActor::BeginPlay()
