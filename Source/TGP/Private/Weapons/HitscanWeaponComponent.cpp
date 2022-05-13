@@ -14,6 +14,7 @@
 #include "Components/WidgetComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
 {
@@ -63,10 +64,9 @@ void UHitscanWeaponComponent::OnFire()
 			if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility))
 			{
 				AActor* hit = result.GetActor();
-				UHealthComponent* healthComponent = hit->FindComponentByClass<UHealthComponent>();
-				if(healthComponent != nullptr)
+				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parent, UDamageType::StaticClass());
+				if(dealtDamage != 0.0f)
 				{
-					healthComponent->AdjustHealth(_weaponInfo->Damage);
 					UWorld* const World = GetWorld();
 					FActorSpawnParameters ActorSpawnParams;
 					AMyDamageMarker* object = World->SpawnActor<AMyDamageMarker>(_damageMarker, result.Location, FRotator(0.0f, 0.0f, 0.0f), ActorSpawnParams);

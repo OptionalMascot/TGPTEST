@@ -26,4 +26,7 @@ public:
 
 	UPROPERTY(EditAnywhere) int healthBase;
 	virtual void KillObject() override;
+
+	UFUNCTION() void ApplyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser );
+	
 };
