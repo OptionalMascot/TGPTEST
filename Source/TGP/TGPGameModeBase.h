@@ -7,45 +7,57 @@
 #include "GameInstance/BaseGameInstance.h"
 #include "TGPGameModeBase.generated.h"
 
+class ABaseAiCharacter;
+class UAiCharacterData;
+
 UCLASS()
 class TGP_API ATGPGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY() TArray<AActor*> EnemyPool; // REPLACE WITH AI CLASS
+	UPROPERTY() TArray<ABaseAiCharacter*> EnemyPool;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawning", Meta = (AllowPrivateAccess = true)) FVector SpawnMinRange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawning", Meta = (AllowPrivateAccess = true)) FVector SpawnMaxRange;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawning", Meta = (AllowPrivateAccess = true)) float MinSpawnDistFromPlayer = 300.f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawning", Meta = (AllowPrivateAccess = true)) float SpawnExponential = 0.15f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawning", Meta = (AllowPrivateAccess = true)) float SpawnTimer = 5.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawning", Meta = (AllowPrivateAccess = true)) float SpawnIncreaseExponential = 0.15f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawning", Meta = (AllowPrivateAccess = true)) float SpawnTimer = 3.f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<AActor> RegularZombieClass;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<AActor> SpitterZombieClass;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<AActor> BossZombieClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "RoundSettings", Meta = (AllowPrivateAccess = true)) float CooldownBetweenRounds = 5.f;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<ABaseAiCharacter> AiActorClass;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) UAiCharacterData* RegularZombieClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) UAiCharacterData* SpitterZombieClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) UAiCharacterData* BossZombieClass;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) uint8 MaxEnemies = 24;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) uint8 MaxEnemiesPerSpawnWave = 4;
 
-	uint8 EnemiesAlive = 0;
+	FTimerHandle RoundCooldownHandler;
 	
-	uint32 EnemiesToSpawn = 0;
-	uint32 CurrentRound = 1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DEBUG_VISIBLE", Meta = (AllowPrivateAccess = true)) uint8 EnemiesAlive = 0;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DEBUG_VISIBLE", Meta = (AllowPrivateAccess = true)) int EnemiesToSpawn = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DEBUG_VISIBLE", Meta = (AllowPrivateAccess = true)) int CurrentRound = 1;
 
+	bool bPendingRoundRestart = true;
 	float SpawnerTimer = 0.f;
 
 	void BeginRound();
 	void EndRound();
 
-	UFUNCTION(CallInEditor) bool TrySpawnEnemy();
+	bool TrySpawnEnemy();
 
-	uint8 FindAvailableEnemy();
+	int FindAvailableEnemy();
 	void SpawnEnemy(uint8 EnemyIndex, const FVector& Position);
 
 	bool CheckLineOfSight(const FVector& PawnLoc, const FVector& SpawnPoint) const;
 	bool IsLookingAtDir(const FVector& PawnDir, const FVector& DirToPoint) const;
 
-	protected:
+	UFUNCTION(CallInEditor) void DEBUG_KILL_ENEMY();
+
+protected:
 	virtual void BeginPlay() override;
 
 public:
@@ -53,7 +65,7 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	void OnEnemyKilled(AActor* Enemy); // TODO: REPLACE WITH AI CLASS
+	void OnEnemyKilled(ABaseAiCharacter* Enemy); // TODO: REPLACE WITH AI CLASS
 	
 	template<class T>
 	T* CreateItemByShortName(const FString& ItemShortName, const int Amount = 1);

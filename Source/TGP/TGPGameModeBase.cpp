@@ -1,63 +1,73 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "TGPGameModeBase.h"
-
 #include "DrawDebugHelpers.h"
 #include "FP_FirstPerson/FP_FirstPersonCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "Ai/BaseAiCharacter.h"
+#include "Ai/AiCharacterData.h"
 
 ATGPGameModeBase::ATGPGameModeBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.TickInterval = 1.f;
 }
 
 void ATGPGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	EnemyPool.Reserve(MaxEnemies);
 
-	//EnemyPool.Reserve(MaxEnemies);
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.bNoFail = true;
 
-	//for (uint8 i = 0; i < MaxEnemies; i++)
-	//	EnemyPool.Add(GetWorld()->SpawnActor(RegularZombieClass));
+	for (uint8 i = 0; i < MaxEnemies; i++) // Init Pool
+		EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClass ? AiActorClass : ABaseAiCharacter::StaticClass(), FVector() + (FVector(100.f, 0.f, 0.f) * i), FRotator(), SpawnParams));
 
-	//BeginRound();
+	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
 }
-
 
 void ATGPGameModeBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (EnemiesAlive > 0 || EnemiesToSpawn > 0)
+	if (EnemiesToSpawn > 0)
 	{
 		SpawnerTimer += DeltaSeconds;
 
 		if (SpawnerTimer >= SpawnTimer)
 		{
-			for (uint8 i = 0; i < MaxEnemiesPerSpawnWave; i++)
+			const int WaveCount = EnemiesToSpawn < MaxEnemiesPerSpawnWave ? EnemiesToSpawn : MaxEnemiesPerSpawnWave;
+			
+			for (uint8 i = 0; i < WaveCount; i++)
 				if(!TrySpawnEnemy())
 					break;
 
 			SpawnerTimer = 0.f;
-		}
+		}	
+	}
+	else if (EnemiesAlive <= 0 && !bPendingRoundRestart)
+	{
+		bPendingRoundRestart = true;
+		SpawnerTimer = 0.f;
+		EndRound();
 	}
 }
 
 void ATGPGameModeBase::BeginRound()
 {
-	EnemiesToSpawn = (int)((SpawnExponential * CurrentRound) * 24);
+	EnemiesToSpawn = (int)((SpawnIncreaseExponential * CurrentRound) * 24);
 	SpawnerTimer = 0.f;
+	bPendingRoundRestart = false;
 }
 
 void ATGPGameModeBase::EndRound()
 {
 	CurrentRound++;
+	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false); // Begin Cooldown between rounds
 }
 
 bool ATGPGameModeBase::TrySpawnEnemy()
 {
-	const uint8 AvailableIndex = FindAvailableEnemy();
+	const int AvailableIndex = FindAvailableEnemy();
 
 	if (AvailableIndex == -1)
 		return false;
@@ -90,7 +100,7 @@ bool ATGPGameModeBase::TrySpawnEnemy()
 
 								DrawDebugLine(GetWorld(),PawnLoc, SpawnLoc, FColor::Blue, false, 1.f);
 								
-								if (IsLookingAtDir(Pawn->GetActorForwardVector(), SpawnDir) && CheckLineOfSight(PawnLoc, SpawnLoc))
+								if (CheckLineOfSight(PawnLoc, SpawnLoc) || IsLookingAtDir(Pawn->GetActorForwardVector(), SpawnDir))
 									bCanSpawn = true;
 							}
 							else
@@ -105,7 +115,6 @@ bool ATGPGameModeBase::TrySpawnEnemy()
 				if (bCanSpawn)
 				{
 					SpawnEnemy(AvailableIndex, Result.Location);
-					DrawDebugBox(GetWorld(), Result.Location, FVector(30.f), FColor::Green, false, 1.f, 0, 5);
 					return true;
 				}
 			}
@@ -115,28 +124,47 @@ bool ATGPGameModeBase::TrySpawnEnemy()
 	return false;
 }
 
-uint8 ATGPGameModeBase::FindAvailableEnemy()
+int ATGPGameModeBase::FindAvailableEnemy()
 {
-	// TODO: IMPL when Ai is added
+	for	(uint8 i = 0; i < EnemyPool.Num(); i++)
+		if (!EnemyPool[i]->IsAlive())
+			return i;
 
 	return -1;
 }
 
-void ATGPGameModeBase::OnEnemyKilled(AActor* Enemy)
+void ATGPGameModeBase::OnEnemyKilled(ABaseAiCharacter* Enemy)
 {
-	
+	EnemiesAlive--;
 }
 
 void ATGPGameModeBase::SpawnEnemy(uint8 EnemyIndex, const FVector& Position) // TODO: RESET OTHER PROPERTIES LIKE HEALTH
 {
-	AActor* Enemy = EnemyPool[EnemyIndex];
+	if (EnemyIndex < EnemyPool.Num())
+	{
+		EnemyPool[EnemyIndex]->SpawnEnemy(Position);
 	
-	Enemy->SetActorLocation(Position);
+		EnemiesAlive++;
+		EnemiesToSpawn--;
+	}
 }
 
 bool ATGPGameModeBase::IsLookingAtDir(const FVector& PawnDir, const FVector& DirToPoint) const
 {
 	return FVector::DotProduct(PawnDir, DirToPoint) > 0.f;
+}
+
+void ATGPGameModeBase::DEBUG_KILL_ENEMY()
+{
+	for (uint8 i = 0; i < EnemyPool.Num(); i++)
+	{
+		if (EnemyPool[i]->IsAlive())
+		{
+			EnemyPool[i]->OnEnemyDied();
+			OnEnemyKilled(EnemyPool[i]);
+			break;
+		}
+	}
 }
 
 bool ATGPGameModeBase::CheckLineOfSight(const FVector& PawnLoc, const FVector& SpawnPoint) const
