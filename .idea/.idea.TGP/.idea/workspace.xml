@@ -24,11 +24,16 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UE4Editor/Inc/TGP/ItemActor.gen.cpp" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -306,6 +311,7 @@
       <workItem from="1652369316559" duration="2212000" />
       <workItem from="1652390498575" duration="2136000" />
       <workItem from="1652431568958" duration="7242000" />
+      <workItem from="1652439123988" duration="2232000" />
     </task>
     <servers />
   </component>
