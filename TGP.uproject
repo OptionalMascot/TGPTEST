@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.26",
+	"EngineAssociation": "{0B02C789-4E6F-44B1-94BC-278BD8695FFE}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -11,7 +11,27 @@
 			"AdditionalDependencies": [
 				"Engine",
 				"CoreUObject",
-				"AIModule"
+				"UMG"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "OculusVR",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win32",
+				"Win64",
+				"Android"
+			]
+		},
+		{
+			"Name": "SteamVR",
+			"Enabled": false,
+			"SupportedTargetPlatforms": [
+				"Win32",
+				"Win64",
+				"Linux"
 			]
 		}
 	]

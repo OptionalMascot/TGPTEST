@@ -120,9 +120,14 @@ void UPlayerInventory::DropWeapon()
 
 		if (ItemToDrop != nullptr)
 		{
-			AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
+			AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemActorClass, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
 			ItemActor->Initialize(ItemToDrop);
-
+			APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
+			FVector pos;
+			FRotator rot;
+			_playerController->GetPlayerViewPoint(pos, rot);
+			ItemActor->AddInitialThrowForce(rot.Vector(), 1000000.0f);
+			
 			WeaponContainer->RemoveItem(SelectedWeapon);
 
 			for	(int i = 0; i < 2; i ++)

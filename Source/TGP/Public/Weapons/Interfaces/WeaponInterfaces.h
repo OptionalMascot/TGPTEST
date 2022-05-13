@@ -8,52 +8,10 @@
 #include "Components/TimelineComponent.h"
 #include "UObject/Interface.h"
 #include "Components/TimelineComponent.h"
+#include "Weapons/HealthComponent.h"
 #include "WeaponInterfaces.generated.h"
 
 class UGunItem;
-
-UINTERFACE(MinimalAPI)
-class UHealth : public UInterface
-{
-	GENERATED_BODY()
-};
-
-/**
-* 
-*/
-class TGP_API IHealth
-{
-	GENERATED_BODY()
-
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
-	public:
-	int health;
-	bool dead;
-	
-	void SetHealth(float newHealth) { health = newHealth; dead = false; }
-	bool AdjustHealth(float damage);
-	bool IsDead() { return dead; }
-	virtual void OnDeath() {}
-};
-
-// This class does not need to be modified.
-UINTERFACE(MinimalAPI)
-class UDealDamage : public UInterface
-{
-	GENERATED_BODY()
-};
-
-/*
- * 
- */
-class TGP_API IDealDamage
-{
-	GENERATED_BODY()
-
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
-	public:
-	void DealDamage(float amount, IHealth* target){};
-};
 
 UINTERFACE(MinimalAPI)
 class UCanHitScan : public UInterface

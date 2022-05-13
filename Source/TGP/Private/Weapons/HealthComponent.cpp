@@ -22,7 +22,6 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 	
 	// ...
-	SetHealth(healthBase);
 
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::ApplyDamage);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Linked OnTakeAnyDamage"));
@@ -37,8 +36,27 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
+bool UHealthComponent::AdjustHealth(AController* causer, float damage)
+{
+	health -= damage;
+	onComponentTakeDamage.Broadcast(causer, damage);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Hit! Health: ") + FString::FromInt(health));
+	if(health <= 0)
+	{
+		dead = true;
+		onComponentDead.Broadcast(causer);
+		KillObject();
+	}
+	return dead;
+}
+
+void UHealthComponent::KillObject()
+{
+	GetOwner()->Destroy();
+}
+
 void UHealthComponent::ApplyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser )
 {
-	AdjustHealth(Damage);
+	AdjustHealth(InstigatedBy, Damage);
 }
 

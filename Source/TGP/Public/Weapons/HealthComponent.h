@@ -7,10 +7,11 @@
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "HealthComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FComponentDeadSignature, AController*, causer);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FComponentTookDamageSignature, AController*, causer, float, damage);
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class TGP_API UHealthComponent : public UActorComponent, public IHealth
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class TGP_API UHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -22,16 +23,21 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:
-
-	UPROPERTY() FOnDeath OnDeathDelegate;
-	
+public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(EditAnywhere) int healthBase;
-	virtual void OnDeath() override { OnDeathDelegate.Broadcast(); }
-
+	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentDeadSignature onComponentDead;
+	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentTookDamageSignature onComponentTakeDamage;
+	
+	UPROPERTY(EditAnywhere) int health;
+	bool dead;
+	
+	void SetHealth(float newHealth) { health = newHealth; dead = false; }
+	bool AdjustHealth(AController* causer, float damage);
+	bool isDead() { return dead; }
+	virtual void KillObject();
+	
 	UFUNCTION() void ApplyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser );
 	
 };

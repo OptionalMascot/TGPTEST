@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Item/ItemActor.h"
 #include "PlayerInventory.generated.h"
 
 class UItemContainer;
@@ -26,7 +27,7 @@ class TGP_API UPlayerInventory : public UActorComponent
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InventorySettings", Meta = (AllowPrivateAccess = true)) uint8 MaxUtilityAmount = 4;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InventorySettings", Meta = (AllowPrivateAccess = true)) uint8 MaxConsumableAmount = 4;
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InventorySettings", Meta = (AllowPrivateAccess = true)) TSubclassOf<AItemActor> ItemActorClass;
 	UPROPERTY() UItemContainer* UtilityContainer;
 	UPROPERTY() UItemContainer* ConsumableContainer;
 	UPROPERTY() UItemContainer* WeaponContainer;

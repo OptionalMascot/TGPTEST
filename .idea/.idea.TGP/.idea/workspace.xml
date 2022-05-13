@@ -5,24 +5,7 @@
     <projectFile>Intermediate/ProjectFiles/UE4.vcxproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/GameModes/BP_BaseGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/GameModes/BP_BaseGameMode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/GameInstance/BaseGameInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/GameInstance/BaseGameInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Item/ItemInfo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Item/ItemInfo.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/HealthComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/HealthComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/Interfaces/WeaponInterfaces.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/Interfaces/WeaponInterfaces.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TGP.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/TGP.uproject" afterDir="false" />
-    </list>
+    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,12 +23,19 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIWidget.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UE4Editor/Inc/TGP/ItemActor.gen.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -322,8 +312,9 @@
       <workItem from="1652364848799" duration="4127000" />
       <workItem from="1652369316559" duration="2212000" />
       <workItem from="1652390498575" duration="2136000" />
-      <workItem from="1652431568958" duration="4510000" />
-      <workItem from="1652456764521" duration="2388000" />
+      <workItem from="1652431568958" duration="7242000" />
+      <workItem from="1652439123988" duration="2232000" />
+      <workItem from="1652442272104" duration="11683000" />
     </task>
     <servers />
   </component>
@@ -335,16 +326,5 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp</url>
-          <line>66</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

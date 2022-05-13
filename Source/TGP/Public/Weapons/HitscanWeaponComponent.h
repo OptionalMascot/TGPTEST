@@ -9,7 +9,7 @@
 #include "HitscanWeaponComponent.generated.h"
 
 UCLASS()
-class TGP_API UHitscanWeaponComponent : public UWeaponComponent, public IWaitTimer, public IDealDamage, public IHasAmmo, public ICanHitScan, public IUseRecoil
+class TGP_API UHitscanWeaponComponent : public UWeaponComponent, public IWaitTimer, public IHasAmmo, public ICanHitScan, public IUseRecoil
 {
 	GENERATED_BODY()
 protected:
@@ -17,13 +17,14 @@ protected:
 	virtual void StartWaitTimer(AActor* actor, float time) override;
 	virtual void CancelReload(AActor* actor) override;
 
-
-	
-    UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
-
 	UFUNCTION() void RecoilTimelineProgressPitch(float Value);
 	UFUNCTION() void RecoilTimelineProgressYaw(float Value);
 	UFUNCTION() void SingleFireRecoilReset();
+
+	void ResetRecoilTimeline();
+	
+    UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
+
 	FTimeline recoilTimeline;
 	UPROPERTY() class UCurveFloat* _curve;
 	bool recoilTimelineForward;

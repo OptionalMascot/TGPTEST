@@ -40,7 +40,8 @@ void UHitscanWeaponComponent::OnFire()
 	
 	if(_canUse)
 	{
-		if(TryUseAmmo(_parent, 0.0f))
+		int infiniteCheck = _weaponInfo->UnlimitedAmmo ? 0.0f : 1.0f;
+		if(TryUseAmmo(_parent, infiniteCheck))
 		{
 			recoilTimeline.Play();
 			recoilTimeline.SetPlayRate(1.0f);
@@ -60,22 +61,15 @@ void UHitscanWeaponComponent::OnFire()
 				_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
 			}
 			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
+
+			
 			DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
+
+
 			if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility))
 			{
 				AActor* hit = result.GetActor();
-				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parent, UDamageType::StaticClass());
-				if(dealtDamage != 0.0f)
-				{
-					UWorld* const World = GetWorld();
-					FActorSpawnParameters ActorSpawnParams;
-					AMyDamageMarker* object = World->SpawnActor<AMyDamageMarker>(_damageMarker, result.Location, FRotator(0.0f, 0.0f, 0.0f), ActorSpawnParams);
-					if(object != nullptr)
-					{
-						object->SetSpawnedBy(_parent);
-						object->SetText(_weaponInfo->Damage);
-					}
-				}
+				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass());
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 		}
@@ -103,22 +97,19 @@ void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
 	if(!reloading)
 	{
 		reloading = true;
-		UWorld* world = actor->GetWorld();
-		world->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
+		GetWorld()->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
 	}
 }
 
 void UHitscanWeaponComponent::StartWaitTimer(AActor* actor, float time)
 {
 	StartUse();
-	UWorld* world = GetWorld();
-	world->GetTimerManager().SetTimer(waitTimeHandler, this, &UHitscanWeaponComponent::EndUse, time, false);
+	GetWorld()->GetTimerManager().SetTimer(waitTimeHandler, this, &UHitscanWeaponComponent::EndUse, time, false);
 }
 
 void UHitscanWeaponComponent::CancelReload(AActor* actor)
 {
-	UWorld* world = actor->GetWorld();
-	world->GetTimerManager().ClearTimer(reloadTimerHandler);
+	GetWorld()->GetTimerManager().ClearTimer(reloadTimerHandler);
 }
 
 void UHitscanWeaponComponent::RecoilTimelineProgressPitch(float Value)
@@ -148,6 +139,23 @@ void UHitscanWeaponComponent::SingleFireRecoilReset()
 	}
 }
 
+void UHitscanWeaponComponent::ResetRecoilTimeline()
+{
+	recoilTimeline = FTimeline();
+	if(_weaponInfo->RecoilCurvePitch && _weaponInfo->RecoilCurveYaw)
+	{
+		FOnTimelineFloat TimelineProgressPitch;
+		TimelineProgressPitch.BindUFunction(this, FName("RecoilTimelineProgressPitch"));
+		FOnTimelineFloat TimelineProgressYaw;
+		TimelineProgressYaw.BindUFunction(this, FName("RecoilTimelineProgressYaw"));
+		recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurvePitch, TimelineProgressPitch);
+		recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurveYaw, TimelineProgressYaw);
+		FOnTimelineEvent TimelineProgressSingleFire;
+		TimelineProgressSingleFire.BindUFunction(this, FName("SingleFireRecoilReset"));
+		recoilTimeline.SetTimelineFinishedFunc(TimelineProgressSingleFire);
+	}
+}
+
 
 void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                             FActorComponentTickFunction* ThisTickFunction)
@@ -165,19 +173,7 @@ void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 	currentReserves = gunItem->GetAmmoCount();
 	maxAmmo = _weaponInfo->ClipSize;
 	
-	recoilTimeline = FTimeline();
-	if(_weaponInfo->RecoilCurvePitch && _weaponInfo->RecoilCurveYaw)
-	{
-		FOnTimelineFloat TimelineProgressPitch;
-		TimelineProgressPitch.BindUFunction(this, FName("RecoilTimelineProgressPitch"));
-		FOnTimelineFloat TimelineProgressYaw;
-		TimelineProgressYaw.BindUFunction(this, FName("RecoilTimelineProgressYaw"));
-	    recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurvePitch, TimelineProgressPitch);
-		recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurveYaw, TimelineProgressYaw);
-		FOnTimelineEvent TimelineProgressSingleFire;
-		TimelineProgressSingleFire.BindUFunction(this, FName("SingleFireRecoilReset"));
-		recoilTimeline.SetTimelineFinishedFunc(TimelineProgressSingleFire);
-	}
+	ResetRecoilTimeline();
 }
 
 void UHitscanWeaponComponent::DropWeapon()
