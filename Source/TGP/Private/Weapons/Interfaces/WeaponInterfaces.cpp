@@ -2,9 +2,6 @@
 
 
 #include "Weapons/Interfaces/WeaponInterfaces.h"
-
-#include <Actor.h>
-
 #include "Item/BaseItem.h"
 
 

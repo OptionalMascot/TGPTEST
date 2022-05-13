@@ -8,7 +8,6 @@
 #include "Components/TimelineComponent.h"
 #include "UObject/Interface.h"
 #include "Components/TimelineComponent.h"
-#include "Weapons/HealthComponent.h"
 #include "WeaponInterfaces.generated.h"
 
 class UGunItem;
