@@ -8,7 +8,7 @@
 #include "Weapons/HealthComponent.h"
 #include "TGP/TGPGameModeBase.h"
 #include "Item/ItemActor.h"
-#include "Weapons/WeaponGenerators/WeaponSpawnComponent.h"
+#include "Weapons/WeaponGenerators/WeaponSpawnerComponent.h"
 
 // Sets default values
 AWeaponSpawnerChest::AWeaponSpawnerChest()
@@ -25,7 +25,7 @@ AWeaponSpawnerChest::AWeaponSpawnerChest()
 	_health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 	AddOwnedComponent(_health);
 
-	_weaponSpawn = CreateDefaultSubobject<UWeaponSpawnComponent>(TEXT("Weapon Spawn Component"));
+	_weaponSpawn = CreateDefaultSubobject<UWeaponSpawnerComponent>(TEXT("Weapon Spawn Component"));
 	AddOwnedComponent(_weaponSpawn);
 }
 

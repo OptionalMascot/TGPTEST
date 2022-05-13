@@ -9,7 +9,7 @@
 class UStaticMeshComponent;
 class USceneComponent;
 class UHealthComponent;
-class UWeaponSpawnComponent;
+class UWeaponSpawnerComponent;
 class AItemActor;
 
 UCLASS()
@@ -28,7 +28,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UStaticMeshComponent* _staticMesh;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) USceneComponent* _sceneRoot;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UHealthComponent* _health;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UWeaponSpawnComponent* _weaponSpawn;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UWeaponSpawnerComponent* _weaponSpawn;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InventorySettings", Meta = (AllowPrivateAccess = true)) TSubclassOf<AItemActor> _itemActorClass;
 	
 

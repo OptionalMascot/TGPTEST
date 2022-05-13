@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "WeaponSpawnComponent.generated.h"
+#include "WeaponSpawnerComponent.generated.h"
 
 class AItemActor;
 class UGunInfo;
@@ -19,18 +19,15 @@ enum EItemSpawn
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class TGP_API UWeaponSpawnComponent : public UActorComponent
+class TGP_API UWeaponSpawnerComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UWeaponSpawnComponent();
+	UWeaponSpawnerComponent();
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item Actor", Meta = (AllowPrivateAccess = true)) TSubclassOf<AItemActor> _itemActorClass;
-	
-	
-	
-	
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -40,8 +37,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) UGunInfo* _gunInfo;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) TEnumAsByte<EItemSpawn> _itemSpawnMode;
-	
-public:	
 
+public:	
 	void SpawnWeapon();
+		
 };
