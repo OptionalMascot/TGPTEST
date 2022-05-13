@@ -45,7 +45,7 @@ bool UHealthComponent::AdjustHealth(AController* causer, float damage)
 	{
 		dead = true;
 		onComponentDead.Broadcast(causer);
-		KillObject();
+		//KillObject();
 	}
 	return dead;
 }

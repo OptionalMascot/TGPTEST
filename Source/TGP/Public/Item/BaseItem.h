@@ -7,7 +7,7 @@
 class UItemInfo;
 class UItemContainer;
 
-UCLASS(Abstract, BlueprintType)
+UCLASS(BlueprintType)
 class TGP_API UBaseItem : public UObject
 {
 	GENERATED_BODY()

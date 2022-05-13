@@ -32,7 +32,7 @@ enum EFireType
 	Auto		UMETA(DisplayName = "Auto")
 };
 
-UCLASS(Abstract, BlueprintType)
+UCLASS(BlueprintType)
 class TGP_API UItemInfo : public UPrimaryDataAsset
 {
 	GENERATED_BODY()

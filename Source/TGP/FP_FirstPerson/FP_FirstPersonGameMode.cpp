@@ -7,8 +7,5 @@
 
 AFP_FirstPersonGameMode::AFP_FirstPersonGameMode()
 {
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/FirstPersonCPP/Blueprints/FirstPersonCharacter"));
-	DefaultPawnClass = PlayerPawnClassFinder.Class;
-
 	HUDClass = AFP_FirstPersonHUD::StaticClass();
 }
