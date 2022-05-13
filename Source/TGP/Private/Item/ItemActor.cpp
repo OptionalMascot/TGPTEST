@@ -6,6 +6,7 @@
 #include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Weapons/UI/WeaponStatUIWidget.h"
 
 AItemActor::AItemActor()
 {
@@ -33,6 +34,7 @@ AItemActor::AItemActor()
 
 	StatWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	StatWidget->SetupAttachment(RootComponent);
+	StatWidget->SetWidgetClass(UWeaponStatUIWidget::StaticClass());
 }
 
 void AItemActor::BeginPlay()

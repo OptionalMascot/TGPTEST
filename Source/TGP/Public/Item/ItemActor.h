@@ -9,6 +9,7 @@ class UBaseItem;
 class UBoxComponent;
 class UPointLightComponent;
 class UWeaponInfo;
+class UWeaponStatUIWidget;
 
 UCLASS()
 class TGP_API AItemActor : public AActor
@@ -28,6 +29,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void WidgetBillboard();
+
+	
 	
 public:
 	AItemActor();

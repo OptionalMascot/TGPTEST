@@ -120,7 +120,7 @@ void UPlayerInventory::DropWeapon()
 
 		if (ItemToDrop != nullptr)
 		{
-			AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
+			AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemActorClass, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
 			ItemActor->Initialize(ItemToDrop);
 
 			WeaponContainer->RemoveItem(SelectedWeapon);
