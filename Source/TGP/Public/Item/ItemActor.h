@@ -30,6 +30,8 @@ protected:
 
 	virtual void WidgetBillboard();
 
+	void InitialiseWidgetText(const UWeaponInfo* info);
+
 	
 	
 public:

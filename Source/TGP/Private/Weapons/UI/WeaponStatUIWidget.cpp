@@ -8,5 +8,6 @@ void UWeaponStatUIWidget::SetText(const FString text)
 {
 	FText textLabel = FText::FromString(text);
 
-	StatLabel->SetText(textLabel);
+	if(StatLabel != nullptr)
+		StatLabel->SetText(textLabel);
 }
