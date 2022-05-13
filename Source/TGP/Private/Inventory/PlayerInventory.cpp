@@ -123,6 +123,17 @@ void UPlayerInventory::DropWeapon()
 			AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemActorClass, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
 			ItemActor->Initialize(ItemToDrop);
 
+			USkeletalMeshComponent* mesh = ItemActor->GetSkeletalMesh();
+			APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
+			FVector pos;
+			FRotator rot;
+			_playerController->GetPlayerViewPoint(pos, rot);
+			FVector force = rot.Vector() * 1000000.0f;
+			mesh->AddForce(force);
+			FVector randSpin = FVector(FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f));
+			mesh->AddTorque(randSpin * 1000000.0f);
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::SanitizeFloat(randSpin.X) + "/" + FString::SanitizeFloat(randSpin.Y) + "/" + FString::SanitizeFloat(randSpin.Z));
+			
 			WeaponContainer->RemoveItem(SelectedWeapon);
 
 			for	(int i = 0; i < 2; i ++)

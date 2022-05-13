@@ -51,11 +51,11 @@ void AItemActor::WidgetBillboard()
 	}
 	else
 	{
-		FVector start = GetActorLocation();
+		FVector start = StatWidget->GetRelativeLocation() + GetActorLocation();
 		FVector target = _playerController->GetPawn()->GetActorLocation();
 		
 		FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
-		StatWidget->SetRelativeRotation(rotator);	
+		StatWidget->SetWorldRotation(rotator);	
 	}
 }
 
@@ -91,6 +91,8 @@ void AItemActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	WidgetBillboard();
+
+	StatWidget->SetRelativeLocation(ItemSkeletalMesh->GetRelativeLocation() + FVector(0.0f, 0.0f, 100.0f));
 }
 
 void AItemActor::LightColourSetup(const UWeaponInfo* info) const

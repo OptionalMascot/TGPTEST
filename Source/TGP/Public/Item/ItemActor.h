@@ -40,7 +40,7 @@ public:
 
 	void LightColourSetup(const UWeaponInfo* info) const;
 
-		
+	USkeletalMeshComponent* GetSkeletalMesh() { return ItemSkeletalMesh; }
 	
 	UFUNCTION(BlueprintCallable) void Initialize(UBaseItem* Item);
 	UBaseItem* GetItem() const { return DefinedItem; }
