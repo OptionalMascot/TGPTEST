@@ -9,6 +9,7 @@ enum EItemCategory
 {
 	Default			UMETA(DisplayName = "Default"),
 	Weapon			UMETA(DisplayName = "Weapon"),
+	Gun				UMETA(DisplayName = "Gun"),
 	Consumable		UMETA(DisplayName = "Consumable"),
 	Attachment		UMETA(DisplayName = "Attachment")
 };

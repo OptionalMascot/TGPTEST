@@ -29,10 +29,11 @@ class TGP_API IHealth
 	public:
 	int health;
 	bool dead;
+	
 	void SetHealth(float newHealth) { health = newHealth; dead = false; }
 	bool AdjustHealth(float damage);
-	bool isDead() { return dead; }
-	virtual void KillObject() {}
+	bool IsDead() { return dead; }
+	virtual void OnDeath() {}
 };
 
 // This class does not need to be modified.

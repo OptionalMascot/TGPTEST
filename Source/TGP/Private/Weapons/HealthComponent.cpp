@@ -37,11 +37,6 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
-void UHealthComponent::KillObject()
-{
-	GetOwner()->Destroy();
-}
-
 void UHealthComponent::ApplyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser )
 {
 	AdjustHealth(Damage);

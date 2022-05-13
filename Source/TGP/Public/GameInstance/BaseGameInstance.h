@@ -24,4 +24,6 @@ public:
 
 	UItemInfo* FindInfoShortName(const FString& ItemShortName) const;
 	UItemInfo* FindInfoUniqueId(int UniqueId) const;
+
+	int32 GetRandomItemIdOfCategory(enum EItemCategory ItemCategory);
 };

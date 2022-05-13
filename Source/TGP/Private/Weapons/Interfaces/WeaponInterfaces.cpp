@@ -18,7 +18,7 @@ bool IHealth::AdjustHealth(float damage)
 	if(health <= 0)
 	{
 		dead = true;
-		KillObject();
+		OnDeath();
 	}
 	return dead;
 }

@@ -86,3 +86,17 @@ UItemInfo* UBaseGameInstance::FindInfoUniqueId(int UniqueId) const
 
 	return nullptr;
 }
+
+int32 UBaseGameInstance::GetRandomItemIdOfCategory(EItemCategory ItemCategory)
+{
+	TArray<int> FoundIndexes;
+
+	for (int i = 0; i < ItemInfos.Num(); i++)
+		if (ItemInfos[i]->ItemCategory == ItemCategory)
+			FoundIndexes.Add(i);
+
+	if (FoundIndexes.Num() > 0)
+		return ItemInfos[FoundIndexes[FMath::RandRange(0, FoundIndexes.Num() - 1)]]->UniqueId;
+	
+	return -1;
+}

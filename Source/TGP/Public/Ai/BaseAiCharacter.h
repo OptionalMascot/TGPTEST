@@ -2,21 +2,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Weapons/Interfaces/WeaponInterfaces.h"
+#include "Weapons/HealthComponent.h"
 #include "BaseAiCharacter.generated.h"
 
 class UAiCharacterData;
-class UHealthComponent;
 
 UCLASS()
-class TGP_API ABaseAiCharacter : public ACharacter, public IHealth
+class TGP_API ABaseAiCharacter : public ACharacter
 {
 	GENERATED_BODY()
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings", Meta = (AllowPrivateAccess = true)) UAiCharacterData* EnemyStats;
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings", Meta = (AllowPrivateAccess = true)) UHealthComponent* HealthComponent;
-
-	float Health;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings", Meta = (AllowPrivateAccess = true)) UHealthComponent* HealthComponent;
+	
 	float Damage;
 
 protected:
@@ -28,8 +26,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	bool IsAlive() const { return !dead; }
+	bool IsAlive() const { return HealthComponent->health > 0.f; }
 
-	void OnEnemyDied();
+	UFUNCTION() void OnEnemyDied();
 	void SpawnEnemy(const FVector& RespawnPos);
+
+	void SetHidden(bool bEnemyHidden);
 };

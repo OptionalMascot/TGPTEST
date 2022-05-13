@@ -34,7 +34,7 @@ FPrimaryAssetId UGunInfo::GetPrimaryAssetId() const
 UGunInfo::UGunInfo()
 {
 	ItemClass = UGunItem::StaticClass();
-	ItemCategory = EItemCategory::Weapon;
+	ItemCategory = EItemCategory::Gun;
 }
 
 void UGunInfo::GenerateStats()

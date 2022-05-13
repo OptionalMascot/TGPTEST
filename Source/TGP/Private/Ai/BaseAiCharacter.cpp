@@ -3,19 +3,24 @@
 #include "Ai/BaseAiController.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "TGP/TGPGameModeBase.h"
 
 ABaseAiCharacter::ABaseAiCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	AIControllerClass = ABaseAiController::StaticClass();
+	
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
+	AddOwnedComponent(HealthComponent);
 }
 
 void ABaseAiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OnEnemyDied();
+	HealthComponent->OnDeathDelegate.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
 }
 
 void ABaseAiCharacter::Tick(float DeltaTime)
@@ -32,11 +37,10 @@ void ABaseAiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void ABaseAiCharacter::OnEnemyDied()
 {
-	GetMesh()->SetVisibility(false);
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
-	GetCharacterMovement()->DisableMovement();
+	SetHidden(true);
 
-	dead = true;
+	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+		GM->OnEnemyKilled(this);
 }
 
 void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
@@ -49,8 +53,8 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 		GetMesh()->SetAnimInstanceClass(EnemyStats->EnemyAnimBP);
 
-		Health = EnemyStats->DefaultHealth * FMath::RandRange(0.f, EnemyStats->MaxDeviation);
-		Damage = EnemyStats->DefaultDamage * FMath::RandRange(0.f, EnemyStats->MaxDeviation);
+		HealthComponent->health = EnemyStats->DefaultHealth + (EnemyStats->DefaultHealth * FMath::RandRange(-EnemyStats->MaxDeviation, EnemyStats->MaxDeviation));
+		Damage = EnemyStats->DefaultDamage + (EnemyStats->DefaultDamage * FMath::RandRange(0.f, EnemyStats->MaxDeviation));
 
 		if (EnemyStats->AiControllerClass)
 		{
@@ -62,9 +66,15 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 		}
 	}
 
-	GetMesh()->SetVisibility(true);
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	SetHidden(false);
+}
 
-	dead = false;
+void ABaseAiCharacter::SetHidden(bool bEnemyHidden)
+{
+	GetMesh()->SetVisibility(!bEnemyHidden);
+	GetCapsuleComponent()->SetCollisionEnabled(bEnemyHidden ? ECollisionEnabled::Type::NoCollision : ECollisionEnabled::Type::QueryAndPhysics);
+	GetCharacterMovement()->SetMovementMode(bEnemyHidden ? EMovementMode::MOVE_None : EMovementMode::MOVE_Walking);
+
+	if (bEnemyHidden)
+		GetCharacterMovement()->DisableMovement();
 }

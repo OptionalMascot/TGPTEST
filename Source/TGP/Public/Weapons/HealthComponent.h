@@ -7,7 +7,9 @@
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "HealthComponent.generated.h"
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class TGP_API UHealthComponent : public UActorComponent, public IHealth
 {
 	GENERATED_BODY()
@@ -20,12 +22,15 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
+
+	UPROPERTY() FOnDeath OnDeathDelegate;
+	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditAnywhere) int healthBase;
-	virtual void KillObject() override;
+	virtual void OnDeath() override { OnDeathDelegate.Broadcast(); }
 
 	UFUNCTION() void ApplyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser );
 	
