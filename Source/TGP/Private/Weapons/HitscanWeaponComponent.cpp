@@ -40,7 +40,8 @@ void UHitscanWeaponComponent::OnFire()
 	
 	if(_canUse)
 	{
-		if(TryUseAmmo(_parent, 0.0f))
+		int infiniteCheck = _weaponInfo->UnlimitedAmmo ? 0.0f : 1.0f;
+		if(TryUseAmmo(_parent, infiniteCheck))
 		{
 			recoilTimeline.Play();
 			recoilTimeline.SetPlayRate(1.0f);

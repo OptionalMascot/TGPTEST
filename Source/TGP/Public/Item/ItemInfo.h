@@ -87,7 +87,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") UCurveFloat* RecoilCurveYaw;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float RecoilRecoveryModifier = 1.f;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "DEBUG") bool UnlimitedAmmo = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") bool UnlimitedAmmo = false;
 
 	virtual void GenerateStats() override;
 	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
