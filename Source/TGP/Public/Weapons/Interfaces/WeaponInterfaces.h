@@ -42,7 +42,7 @@ class UDealDamage : public UInterface
 	GENERATED_BODY()
 };
 
-/**
+/*
  * 
  */
 class TGP_API IDealDamage

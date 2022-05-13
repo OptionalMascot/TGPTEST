@@ -3,6 +3,8 @@
 
 #include "Weapons/HealthComponent.h"
 
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
@@ -21,6 +23,9 @@ void UHealthComponent::BeginPlay()
 	
 	// ...
 	SetHealth(healthBase);
+
+	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::ApplyDamage);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Linked OnTakeAnyDamage"));
 }
 
 
@@ -35,5 +40,10 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 void UHealthComponent::KillObject()
 {
 	GetOwner()->Destroy();
+}
+
+void UHealthComponent::ApplyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser )
+{
+	AdjustHealth(Damage);
 }
 
