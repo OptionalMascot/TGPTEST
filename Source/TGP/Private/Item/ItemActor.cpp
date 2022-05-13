@@ -122,6 +122,15 @@ void AItemActor::LightColourSetup(const UWeaponInfo* info) const
 	ItemPointLight->SetLightColor(color);
 }
 
+void AItemActor::AddInitialThrowForce(FVector dir, float force)
+{
+	USkeletalMeshComponent* mesh = ItemSkeletalMesh;
+	FVector forceVec = dir * force;
+	mesh->AddForce(forceVec);
+	FVector randSpin = FVector(FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f));
+	mesh->AddTorque(randSpin * force);
+}
+
 void AItemActor::Initialize(UBaseItem* Item)
 {
 	DefinedItem = Item;

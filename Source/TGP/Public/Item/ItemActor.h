@@ -41,6 +41,8 @@ public:
 	void LightColourSetup(const UWeaponInfo* info) const;
 
 	USkeletalMeshComponent* GetSkeletalMesh() { return ItemSkeletalMesh; }
+
+	void AddInitialThrowForce(FVector dir, float force);
 	
 	UFUNCTION(BlueprintCallable) void Initialize(UBaseItem* Item);
 	UBaseItem* GetItem() const { return DefinedItem; }
