@@ -7,6 +7,7 @@
 #include "TGP/TGPGameModeBase.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
+#include "GameInstance/BaseGameInstance.h"
 
 // Sets default values for this component's properties
 UWeaponSpawnerComponent::UWeaponSpawnerComponent()
@@ -17,24 +18,29 @@ UWeaponSpawnerComponent::UWeaponSpawnerComponent()
 
 	// ...
 	_itemSpawnMode = EItemSpawn::Random;
+	_spawnAmount = 1;
 }
 
 
 void UWeaponSpawnerComponent::SpawnWeapon()
 {
-	switch(_itemSpawnMode)
+	for(int i = 0; i < _spawnAmount; i++)
 	{
-	case EItemSpawn::Random:
-		SpawnRandomWeapon();
-		break;
-	case EItemSpawn::Set:
-		SpawnSetWeapon();
-		break;
-	case EItemSpawn::RandomRarity:
-		break;
-	default:
-		SpawnRandomWeapon();
-		break;
+		switch(_itemSpawnMode)
+    	{
+    	case EItemSpawn::Random:
+    		SpawnRandomWeapon();
+    		break;
+    	case EItemSpawn::Set:
+    		SpawnSetWeapon();
+    		break;
+    	case EItemSpawn::RandomRarity:
+    		SpawnRandomRarityWeapon();
+    		break;
+    	default:
+    		SpawnRandomWeapon();
+    		break;
+    	}	
 	}
 }
 
@@ -44,8 +50,9 @@ void UWeaponSpawnerComponent::BeginPlay()
 
 void UWeaponSpawnerComponent::SpawnRandomWeapon()
 {
+	UBaseGameInstance* instance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	ATGPGameModeBase* GameMode = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
-	UGunItem* newGun = GameMode->CreateItemByUniqueId<UGunItem>(72953608, 1);
+	UGunItem* newGun = GameMode->CreateItemByUniqueId<UGunItem>(instance->GetRandomItemIdOfCategory(EItemCategory::Gun), 1);
 	AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(_itemActorClass, GetOwner()->GetActorLocation(), FRotator());
 	ItemActor->Initialize(newGun);
 	ItemActor->AddInitialThrowForce(FVector(0.0f, 0.0f, 1.0f), 400000.0f);
@@ -53,7 +60,12 @@ void UWeaponSpawnerComponent::SpawnRandomWeapon()
 
 void UWeaponSpawnerComponent::SpawnRandomRarityWeapon()
 {
-	
+	UBaseGameInstance* instance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	ATGPGameModeBase* GameMode = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	UGunItem* newGun = GameMode->CreateItemByUniqueId<UGunItem>(instance->GetRandomItemIdOfCategory(EItemCategory::Gun, _itemRarity), 1);
+	AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(_itemActorClass, GetOwner()->GetActorLocation(), FRotator());
+	ItemActor->Initialize(newGun);
+	ItemActor->AddInitialThrowForce(FVector(0.0f, 0.0f, 1.0f), 400000.0f);
 }
 
 void UWeaponSpawnerComponent::SpawnSetWeapon()

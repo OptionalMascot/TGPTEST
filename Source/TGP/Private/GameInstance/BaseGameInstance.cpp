@@ -100,3 +100,17 @@ int32 UBaseGameInstance::GetRandomItemIdOfCategory(EItemCategory ItemCategory)
 	
 	return -1;
 }
+
+int32 UBaseGameInstance::GetRandomItemIdOfCategory(EItemCategory ItemCategory, ERarity ItemRarity)
+{
+	TArray<int> FoundIndexes;
+    
+        for (int i = 0; i < ItemInfos.Num(); i++)
+            if (ItemInfos[i]->ItemCategory == ItemCategory && ItemInfos[i]->ItemRarity == ItemRarity)
+                FoundIndexes.Add(i);
+    
+        if (FoundIndexes.Num() > 0)
+            return ItemInfos[FoundIndexes[FMath::RandRange(0, FoundIndexes.Num() - 1)]]->UniqueId;
+        
+        return -1;
+}

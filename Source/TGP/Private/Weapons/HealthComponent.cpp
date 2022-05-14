@@ -24,7 +24,7 @@ void UHealthComponent::BeginPlay()
 	// ...
 
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::ApplyDamage);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Linked OnTakeAnyDamage"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Linked OnTakeAnyDamage"));
 }
 
 

@@ -38,6 +38,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) UGunInfo* _gunInfo;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) TEnumAsByte<EItemSpawn> _itemSpawnMode;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) TEnumAsByte<enum ERarity> _itemRarity;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) int _spawnAmount;
 	
 public:	
 	void SpawnWeapon();
