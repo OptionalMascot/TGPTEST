@@ -30,7 +30,7 @@ void UHitscanWeaponComponent::BeginPlay()
 	currentAmmoClip = 30;
 	currentReserves = 90;
 	maxAmmo = 30;
-	_singleFireRecoilStarted = false;
+	singleFireRecoilStarted = false;
 }
 
 void UHitscanWeaponComponent::OnFire()
@@ -43,16 +43,6 @@ void UHitscanWeaponComponent::OnFire()
 		int infiniteCheck = _weaponInfo->UnlimitedAmmo ? 0.0f : 1.0f;
 		if(TryUseAmmo(_parent, infiniteCheck))
 		{
-			recoilTimeline.Play();
-			recoilTimeline.SetPlayRate(1.0f);
-			recoilTimelineForward = true;
-			if(_weaponInfo->FireType == EFireType::Single)
-			{
-				_singleFireRecoilStarted = true;
-				recoilTimeline.SetNewTime(0);
-			}
-			
-			StartWaitTimer(_parent, _weaponInfo->AttackRate);
 			FHitResult result;
 			FVector CameraLoc;
 			FRotator CameraRot;
@@ -62,6 +52,20 @@ void UHitscanWeaponComponent::OnFire()
 			}
 			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
 
+
+			// Recoil Funcs
+			if(!HasStartedRecoil())
+			{
+				StartRecoil(CameraRot);
+			}
+			
+			StartTimeline();
+			if(_weaponInfo->FireType == EFireType::Single)
+			{
+				ApplySingleFire();
+			}
+			
+			StartWaitTimer(_parent, _weaponInfo->AttackRate);
 			
 			DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
 
@@ -85,9 +89,7 @@ void UHitscanWeaponComponent::OnFireEnd()
 {
 	if(_weaponInfo->FireType != EFireType::Single)
 	{
-		recoilTimeline.Reverse();
-		recoilTimelineForward = false;
-		recoilTimeline.SetPlayRate(_weaponInfo->RecoilRecoveryModifier);
+		ReverseTimeline(_weaponInfo->RecoilRecoveryModifier);
 	}
 	_singleFireCheck = false;
 }
@@ -130,12 +132,10 @@ void UHitscanWeaponComponent::RecoilTimelineProgressYaw(float Value)
 
 void UHitscanWeaponComponent::SingleFireRecoilReset()
 {
-	if(_weaponInfo->FireType == EFireType::Single && !recoilTimeline.IsReversing() && _singleFireRecoilStarted)
+	if(_weaponInfo->FireType == EFireType::Single && !recoilTimeline.IsReversing() && singleFireRecoilStarted)
 	{
-		recoilTimeline.Reverse();
-		recoilTimelineForward = false;
-		recoilTimeline.SetPlayRate(_weaponInfo->RecoilRecoveryModifier);
-		_singleFireRecoilStarted = false;
+		ReverseTimeline(_weaponInfo->RecoilRecoveryModifier);
+		singleFireRecoilStarted = false;
 	}
 }
 

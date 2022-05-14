@@ -104,6 +104,16 @@ class TGP_API IUseRecoil
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
+	FRotator originRotation;
+	bool startedRecoil;
+	FTimeline recoilTimeline;
+	bool recoilTimelineForward;
+	bool singleFireRecoilStarted;
+	void ApplySingleFire();
+	void StartTimeline();
+	void ReverseTimeline(float recoilModifier);
+	bool HasStartedRecoil() { return startedRecoil; }
+	void StartRecoil(FRotator startRot);
 	void ApplyRecoilPitch(APlayerController* controller, float value);
 	void ApplyRecoilYaw(APlayerController* controller, float value);
 };

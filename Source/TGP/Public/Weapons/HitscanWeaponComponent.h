@@ -25,10 +25,7 @@ protected:
 	
     UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
 
-	FTimeline recoilTimeline;
 	UPROPERTY() class UCurveFloat* _curve;
-	bool recoilTimelineForward;
-	bool _singleFireRecoilStarted;
 public:
 	UHitscanWeaponComponent();
 	virtual void BeginPlay() override;
