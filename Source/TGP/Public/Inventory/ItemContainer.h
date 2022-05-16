@@ -12,7 +12,7 @@ class TGP_API UItemContainer : public UObject
 	GENERATED_BODY()
 
 	UPROPERTY() TArray<UBaseItem*> Items;
-
+	
 public:
 	UItemContainer();
 

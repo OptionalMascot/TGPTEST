@@ -4,6 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Ai/BaseAiCharacter.h"
 #include "Ai/AiCharacterData.h"
+#include "Inventory/PlayerInventory.h"
 
 ATGPGameModeBase::ATGPGameModeBase()
 {
@@ -33,8 +34,6 @@ void ATGPGameModeBase::BeginPlay()
 void ATGPGameModeBase::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, NewPlayer->GetPawn()->GetName());
 }
 
 void ATGPGameModeBase::Tick(float DeltaSeconds)
