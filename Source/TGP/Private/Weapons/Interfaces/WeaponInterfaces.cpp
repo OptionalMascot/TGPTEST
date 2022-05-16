@@ -113,13 +113,15 @@ void IUseRecoil::EndRecoil()
 	recoilTimelineDirection = ERecoilDirection::Forwards;
 	originRotation = FRotator();
 	postRecoilRotation = FRotator();
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("End Recoil"));
+	notPlayedFullyValue = 1.0f;
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("End Recoil"));
 }
 
 void IUseRecoil::ApplySingleFire()
 {
 	singleFireRecoilStarted = true;
 	recoilTimeline.SetNewTime(0);
+	StartTimeline();
 }
 
 void IUseRecoil::StartTimeline()
@@ -142,14 +144,34 @@ void IUseRecoil::StartRecoil(FRotator startRot)
 	originRotation = startRot;
 }
 
-void IUseRecoil::ApplyRecoilPitch(APlayerController* controller, float value)
+void IUseRecoil::ApplyRecoilPitch(APlayerController* controller, float Value, bool isSingleFire)
 {
+	if(GetTimelineDirection() == ERecoilDirection::Forwards)
+	{
+		Value *= -1;
+	}
+	else if(GetTimelineDirection() == ERecoilDirection::Backwards && !isSingleFire)
+	{
+		Value *= AdjustRecoilForCompensate();
+	}
+
+	Value = Value * recoilTimeline.GetPlayRate() * notPlayedFullyValue;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pitch Increase: ") + FString::SanitizeFloat(Value));
 	if(controller)
-		controller->AddPitchInput(value);
+		controller->AddPitchInput(Value * controller->GetWorld()->GetDeltaSeconds());
 }
 
-void IUseRecoil::ApplyRecoilYaw(APlayerController* controller, float value)
+void IUseRecoil::ApplyRecoilYaw(APlayerController* controller, float Value, bool isSingleFire)
 {
+	if(GetTimelineDirection() == ERecoilDirection::Forwards)
+	{
+		Value *= -1;
+	}
+	else if(GetTimelineDirection() == ERecoilDirection::Backwards && !isSingleFire)
+	{
+		Value *= AdjustRecoilForCompensate();
+	}
+	Value = Value * recoilTimeline.GetPlayRate() * notPlayedFullyValue;
 	if(controller)
-		controller->AddYawInput(value);
+		controller->AddYawInput(Value * controller->GetWorld()->GetDeltaSeconds());
 }

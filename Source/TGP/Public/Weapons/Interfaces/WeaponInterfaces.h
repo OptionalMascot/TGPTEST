@@ -110,21 +110,22 @@ class TGP_API IUseRecoil
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
-	FRotator originRotation;
-	FRotator postRecoilRotation;
-	bool startedRecoil;
-	FTimeline recoilTimeline;
-	ERecoilDirection recoilTimelineDirection;
-	bool singleFireRecoilStarted;
-	float recoilMaxThreshhold;
+	FRotator originRotation; // Stores origin rotation when firing
+	FRotator postRecoilRotation; // Stores rotation when finished firing
+	bool startedRecoil; // Bool to show if recoil has begun
+	FTimeline recoilTimeline; // Timeline to show recoil
+	ERecoilDirection recoilTimelineDirection; // Enum to show which dir the recoil is moving
+	bool singleFireRecoilStarted; // Single fire check for recoil
+	float recoilMaxThreshhold; // Pre-calculated value of how high each curve can reach
+	float notPlayedFullyValue; // Value that fixes an issue that results in inconsistent resets
 	ERecoilDirection GetTimelineDirection() { return recoilTimelineDirection; }
-	float AdjustRecoilForCompensate();
-	void EndRecoil();
-	void ApplySingleFire();
-	void StartTimeline();
-	void ReverseTimeline(float recoilModifier);
+	float AdjustRecoilForCompensate(); // Calculates how far the gun should move back down after recoil applied
+	void EndRecoil(); // Ends recoil
+	void ApplySingleFire(); // Starts Single Fire Checks
+	void StartTimeline(); // Starts timeline
+	void ReverseTimeline(float recoilModifier); // Starts timeline backwards
 	bool HasStartedRecoil() { return startedRecoil; }
-	void StartRecoil(FRotator startRot);
-	void ApplyRecoilPitch(APlayerController* controller, float value);
-	void ApplyRecoilYaw(APlayerController* controller, float value);
+	void StartRecoil(FRotator startRot); // Starts Recoil and stores origin
+	void ApplyRecoilPitch(APlayerController* controller, float Value, bool isSingleFire);
+	void ApplyRecoilYaw(APlayerController* controller, float Value, bool isSingleFire);
 };

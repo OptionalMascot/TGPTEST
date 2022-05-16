@@ -33,6 +33,7 @@ void UHitscanWeaponComponent::BeginPlay()
 	maxAmmo = 30;
 	singleFireRecoilStarted = false;
 	recoilMaxThreshhold = 1.0f;
+	notPlayedFullyValue = 1.0f;
 }
 
 void UHitscanWeaponComponent::OnFire()
@@ -54,15 +55,14 @@ void UHitscanWeaponComponent::OnFire()
 				_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
 			}
 			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
-
-
+			
 			// Recoil Funcs
 			if(!HasStartedRecoil()) // If recoil hasn't already been started
 			{
 				StartRecoil(CameraRot); // Start recoil storing the current rotation
 				StartTimeline(); // Begin the recoil timeline
 			}
-			
+
 			if(_weaponInfo->FireType == EFireType::Single) // If single fire is turned on
 			{
 				ApplySingleFire(); // Reset the timeline so recoil begins from the start, and enable the check
@@ -93,6 +93,7 @@ void UHitscanWeaponComponent::OnFireEnd() // Called by parent on releasing left 
 	if(_weaponInfo->FireType != EFireType::Single)
 	{
 		// recoilTimeline.SetNewTime(recoilTimeline.GetTimelineLength()); Make a new modifier to scale the value by how much of the timeline has played
+		notPlayedFullyValue = recoilTimeline.GetTimelineLength() / recoilTimeline.GetPlaybackPosition();
 		ReverseTimeline(_weaponInfo->RecoilRecoveryModifier); // Reverse the timeline
 		FVector CameraLoc;
 		FRotator CameraRot;
@@ -133,36 +134,22 @@ void UHitscanWeaponComponent::CancelReload(AActor* actor)
 // If backwards and full auto, AdjustRecoilForCompensate judges how far the gun should move back down, and cancels any movement lower than origin
 void UHitscanWeaponComponent::RecoilTimelineProgressPitch(float Value)
 {
-	if(GetTimelineDirection() == ERecoilDirection::Forwards)
-	{
-		Value *= -1;
-	}
-	else if(GetTimelineDirection() == ERecoilDirection::Backwards && _weaponInfo->FireType != EFireType::Single)
-	{
-		Value *= AdjustRecoilForCompensate();
-	}
-
-	ApplyRecoilPitch(_parentController, Value * recoilTimeline.GetPlayRate());
+	ApplyRecoilPitch(_parentController, Value * 100.0f, _weaponInfo->FireType == EFireType::Single);
 }
 
 void UHitscanWeaponComponent::RecoilTimelineProgressYaw(float Value)
 {
-	if(GetTimelineDirection() == ERecoilDirection::Forwards)
-		Value *= -1;
-	else if(GetTimelineDirection() == ERecoilDirection::Backwards && _weaponInfo->FireType != EFireType::Single)
-	{
-		Value *= AdjustRecoilForCompensate();
-	}
-
-	ApplyRecoilYaw(_parentController, Value * recoilTimeline.GetPlayRate());
+	ApplyRecoilYaw(_parentController, Value * 100.0f, _weaponInfo->FireType == EFireType::Single);
 }
 
 void UHitscanWeaponComponent::RecoilTimelineFinished()
 {
-	if(GetTimelineDirection() == ERecoilDirection::Backwards)
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Timeline Ended"));
+	if(GetTimelineDirection() == ERecoilDirection::Backwards && !singleFireRecoilStarted)
 	{
 		EndRecoil();
 	}
+	
 	if(_weaponInfo->FireType == EFireType::Single)
 		SingleFireRecoilReset();
 }
@@ -211,6 +198,11 @@ void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 	maxAmmo = _weaponInfo->ClipSize;
 	
 	ResetRecoilTimeline();
+	notPlayedFullyValue = 1.0f;
+	EndRecoil();
+	startedRecoil = false;
+	singleFireRecoilStarted = false;
+	recoilTimelineDirection = ERecoilDirection::Forwards;
 }
 
 void UHitscanWeaponComponent::DropWeapon()

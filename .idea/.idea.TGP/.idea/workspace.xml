@@ -7,7 +7,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/RecoilTimelines/DefaultRecoilPatternPitch.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/RecoilTimelines/DefaultRecoilPatternPitch.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/Interfaces/WeaponInterfaces.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/Interfaces/WeaponInterfaces.h" afterDir="false" />
@@ -335,7 +336,7 @@
       <workItem from="1652484316190" duration="1054000" />
       <workItem from="1652510291345" duration="393000" />
       <workItem from="1652531176905" duration="3389000" />
-      <workItem from="1652707882638" duration="6810000" />
+      <workItem from="1652707882638" duration="9084000" />
     </task>
     <servers />
   </component>
