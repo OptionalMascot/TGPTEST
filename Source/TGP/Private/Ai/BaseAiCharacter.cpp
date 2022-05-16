@@ -20,6 +20,8 @@ void ABaseAiCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
+	baseAiController = Cast<ABaseAIController>(GetController());
+	baseAiController->RunBT();
 }
 
 void ABaseAiCharacter::Tick(float DeltaTime)
@@ -55,14 +57,14 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 		HealthComponent->health = EnemyStats->DefaultHealth + (EnemyStats->DefaultHealth * FMath::RandRange(-EnemyStats->MaxDeviation, EnemyStats->MaxDeviation));
 		Damage = EnemyStats->DefaultDamage + (EnemyStats->DefaultDamage * FMath::RandRange(0.f, EnemyStats->MaxDeviation));
 
-		if (EnemyStats->AiControllerClass)
+		/*if (EnemyStats->AiControllerClass)
 		{
 			if (GetController()->StaticClass() != EnemyStats->AiControllerClass) // IF AI Controller is different replace with expected controller. (Used for swapping Ai to bosses/other enemy types)
 			{
 				AController* NewController = NewObject<AController>(EnemyStats->AiControllerClass);
 				NewController->Possess(this);
 			}
-		}
+		}*/	
 	}
 
 	SetHidden(false);
@@ -76,4 +78,7 @@ void ABaseAiCharacter::SetHidden(bool bEnemyHidden)
 
 	if (bEnemyHidden)
 		GetCharacterMovement()->DisableMovement();
+
+	baseAiController->ChangeAIControllerStatus(!bEnemyHidden);
+	
 }

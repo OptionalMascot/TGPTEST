@@ -22,5 +22,5 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals") TArray<USkeletalMesh*> SkeletalMeshes;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals") TSubclassOf<UAnimBlueprint> EnemyAnimBP;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ai") TSubclassOf<AController> AiControllerClass = AController::StaticClass();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ai") TSubclassOf<AController> AiControllerClass;
 };
