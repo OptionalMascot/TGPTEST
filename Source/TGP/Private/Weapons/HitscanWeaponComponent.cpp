@@ -57,6 +57,7 @@ void UHitscanWeaponComponent::OnFire()
 			if(!HasStartedRecoil())
 			{
 				StartRecoil(CameraRot);
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OriginRotator: ") + CameraRot.ToString());
 			}
 			
 			StartTimeline();
@@ -75,11 +76,11 @@ void UHitscanWeaponComponent::OnFire()
 				AActor* hit = result.GetActor();
 				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass());
 			}
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
 			TryReload(_parent);
 		}
 	}
@@ -92,6 +93,17 @@ void UHitscanWeaponComponent::OnFireEnd()
 		ReverseTimeline(_weaponInfo->RecoilRecoveryModifier);
 	}
 	_singleFireCheck = false;
+	
+	FVector CameraLoc;
+	FRotator CameraRot;
+	if(_parentController == nullptr)
+	{
+		_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
+	}
+	_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
+	postRecoilRotation = CameraRot;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("PostRecoilRotation: ") + postRecoilRotation.ToString());
 }
 
 void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
@@ -116,7 +128,7 @@ void UHitscanWeaponComponent::CancelReload(AActor* actor)
 
 void UHitscanWeaponComponent::RecoilTimelineProgressPitch(float Value)
 {
-	if(recoilTimelineForward)
+	if(GetTimelineDirection() == ERecoilDirection::Forwards)
 		Value *= -1;
 
 	ApplyRecoilPitch(_parentController, Value * recoilTimeline.GetPlayRate());
@@ -124,15 +136,27 @@ void UHitscanWeaponComponent::RecoilTimelineProgressPitch(float Value)
 
 void UHitscanWeaponComponent::RecoilTimelineProgressYaw(float Value)
 {
-	if(recoilTimelineForward)
+	if(GetTimelineDirection() == ERecoilDirection::Forwards)
 		Value *= -1;
 
 	ApplyRecoilYaw(_parentController, Value * recoilTimeline.GetPlayRate());
 }
 
+void UHitscanWeaponComponent::RecoilTimelineFinished()
+{
+	if(_weaponInfo->FireType == EFireType::Single)
+		SingleFireRecoilReset();
+
+	if(GetTimelineDirection() == ERecoilDirection::Backwards)
+	{
+		EndRecoil();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("BACKWARDS FINISHED"));
+	}
+}
+
 void UHitscanWeaponComponent::SingleFireRecoilReset()
 {
-	if(_weaponInfo->FireType == EFireType::Single && !recoilTimeline.IsReversing() && singleFireRecoilStarted)
+	if(!recoilTimeline.IsReversing() && singleFireRecoilStarted)
 	{
 		ReverseTimeline(_weaponInfo->RecoilRecoveryModifier);
 		singleFireRecoilStarted = false;
@@ -151,7 +175,7 @@ void UHitscanWeaponComponent::ResetRecoilTimeline()
 		recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurvePitch, TimelineProgressPitch);
 		recoilTimeline.AddInterpFloat(_weaponInfo->RecoilCurveYaw, TimelineProgressYaw);
 		FOnTimelineEvent TimelineProgressSingleFire;
-		TimelineProgressSingleFire.BindUFunction(this, FName("SingleFireRecoilReset"));
+		TimelineProgressSingleFire.BindUFunction(this, FName("RecoilTimelineFinished"));
 		recoilTimeline.SetTimelineFinishedFunc(TimelineProgressSingleFire);
 	}
 }
@@ -162,6 +186,9 @@ void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	recoilTimeline.TickTimeline(DeltaTime);
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OriginRotator: ") + originRotation.ToString());
+	//
 }
 
 void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)

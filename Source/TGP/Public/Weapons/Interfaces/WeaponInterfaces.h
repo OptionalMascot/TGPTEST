@@ -87,6 +87,12 @@ class TGP_API IWaitTimer
 	virtual void StartWaitTimer(AActor* actor, float time) {};
 };
 
+UENUM()
+enum ERecoilDirection
+{
+	Forwards,
+	Backwards
+};
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
@@ -105,10 +111,13 @@ class TGP_API IUseRecoil
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	public:
 	FRotator originRotation;
+	FRotator postRecoilRotation;
 	bool startedRecoil;
 	FTimeline recoilTimeline;
-	bool recoilTimelineForward;
+	ERecoilDirection recoilTimelineDirection;
 	bool singleFireRecoilStarted;
+	ERecoilDirection GetTimelineDirection() { return recoilTimelineDirection; }
+	void EndRecoil();
 	void ApplySingleFire();
 	void StartTimeline();
 	void ReverseTimeline(float recoilModifier);

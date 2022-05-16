@@ -92,6 +92,14 @@ void IHasAmmo::CancelReload(AActor* actor)
 	
 }
 
+void IUseRecoil::EndRecoil()
+{
+	startedRecoil = false;
+	recoilTimelineDirection = ERecoilDirection::Forwards;
+	originRotation = FRotator();
+	postRecoilRotation = FRotator();
+}
+
 void IUseRecoil::ApplySingleFire()
 {
 	singleFireRecoilStarted = true;
@@ -102,13 +110,13 @@ void IUseRecoil::StartTimeline()
 {
 	recoilTimeline.Play();
 	recoilTimeline.SetPlayRate(1.0f);
-	recoilTimelineForward = true;
+	recoilTimelineDirection = ERecoilDirection::Forwards;
 }
 
 void IUseRecoil::ReverseTimeline(float recoilModifier)
 {
 	recoilTimeline.Reverse();
-	recoilTimelineForward = false;
+	recoilTimelineDirection = ERecoilDirection::Backwards;
 	recoilTimeline.SetPlayRate(recoilModifier);
 }
 

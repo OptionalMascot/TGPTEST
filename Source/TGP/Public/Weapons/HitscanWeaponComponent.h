@@ -19,6 +19,7 @@ protected:
 
 	UFUNCTION() void RecoilTimelineProgressPitch(float Value);
 	UFUNCTION() void RecoilTimelineProgressYaw(float Value);
+	UFUNCTION() void RecoilTimelineFinished();
 	UFUNCTION() void SingleFireRecoilReset();
 
 	void ResetRecoilTimeline();
