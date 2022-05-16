@@ -15,7 +15,7 @@ void ABaseAIController::ChangeAIControllerStatus(bool status)
 	blackboardComponenet->SetValueAsBool("isSpawned", status);
 	if (status)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Green, FString::Printf(TEXT("Enabled")));
+		GEngine->AddOnScreenDebugMessage(-1, 4, FColor::Green, FString::Printf(TEXT("Enemy Spawned")));
 	}
 }
 

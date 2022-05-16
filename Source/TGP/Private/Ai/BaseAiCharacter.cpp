@@ -64,7 +64,7 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 				AController* NewController = NewObject<AController>(EnemyStats->AiControllerClass);
 				NewController->Possess(this);
 			}
-		}*/
+		}*/	
 	}
 
 	SetHidden(false);
