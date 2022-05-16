@@ -292,40 +292,6 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 
 void AFP_FirstPersonCharacter::RaycastForWeapon()
 {
-	//if(_currentWeapon == nullptr)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("StartWepRaycast"));
-	//	// get the camera transform
-	//	FVector CameraLoc;
-	//	FRotator CameraRot;
-	//	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	//	PlayerController->GetPlayerViewPoint(CameraLoc, CameraRot);
-
-	//	FVector Start = CameraLoc;
-	//	// you need to add a uproperty to the header file for a float PlayerInteractionDistance
-	//	FVector End = CameraLoc + (CameraRot.Vector() * 10000.0f);
-
-	//	FHitResult hitResult;
-
-	//	//  do the line trace
-	//	bool DidTrace = GetWorld()->LineTraceSingleByChannel(
-	//		hitResult,		//result
-	//		Start,		//start
-	//		End,		//end
-	//		ECC_Visibility	//collision channel
-	//		);
-
-	//	if(DidTrace)
-	//	{
-	//		AGunHostActor* test = Cast<AGunHostActor>(hitResult.GetActor());
-	//		if(test != nullptr)
-	//		{
-	//			_currentWeapon = test;
-	//			PickupWeapon();
-	//		}
-	//	}
-	//}
-
 	const FVector CameraPos = GetFirstPersonCameraComponent()->GetComponentLocation(), CameraDir = GetFirstPersonCameraComponent()->GetForwardVector();
 	
 	FHitResult Result;
