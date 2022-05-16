@@ -20,6 +20,8 @@ void ABaseAiCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
+	baseAiController = Cast<ABaseAIController>(GetController());
+	baseAiController->RunBT();
 }
 
 void ABaseAiCharacter::Tick(float DeltaTime)
@@ -76,4 +78,7 @@ void ABaseAiCharacter::SetHidden(bool bEnemyHidden)
 
 	if (bEnemyHidden)
 		GetCharacterMovement()->DisableMovement();
+
+	baseAiController->ChangeAIControllerStatus(!bEnemyHidden);
+	
 }
