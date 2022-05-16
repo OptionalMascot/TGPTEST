@@ -7,7 +7,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -334,7 +335,7 @@
       <workItem from="1652484316190" duration="1054000" />
       <workItem from="1652510291345" duration="393000" />
       <workItem from="1652531176905" duration="3389000" />
-      <workItem from="1652707882638" duration="10057000" />
+      <workItem from="1652707882638" duration="11758000" />
     </task>
     <servers />
   </component>

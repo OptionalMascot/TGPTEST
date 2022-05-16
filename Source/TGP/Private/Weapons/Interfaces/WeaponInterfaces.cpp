@@ -156,7 +156,7 @@ void IUseRecoil::ApplyRecoilPitch(APlayerController* controller, float Value, bo
 	}
 
 	Value = Value * recoilTimeline.GetPlayRate() * notPlayedFullyValue;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pitch Increase: ") + FString::SanitizeFloat(Value));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pitch Increase: ") + FString::SanitizeFloat(Value));
 	if(controller)
 		controller->AddPitchInput(Value * controller->GetWorld()->GetDeltaSeconds());
 }
