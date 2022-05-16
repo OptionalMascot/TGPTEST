@@ -332,7 +332,7 @@ void AFP_FirstPersonCharacter::RaycastForWeapon()
 	if (GetWorld()->LineTraceSingleByChannel(Result, CameraPos, CameraPos + (CameraDir * 250.f), ECollisionChannel::ECC_Visibility))
 		if (AItemActor* ItemActor = Cast<AItemActor>(Result.Actor))
 			if(PlayerInventory->TryPickUpItem(ItemActor->GetItem()))
-				ItemActor->Destroy();
+				ItemActor->OnPickUp();
 }
 
 
@@ -424,8 +424,6 @@ void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	if(_fireHeld && _currentWeapon != nullptr)
-	{
 		_currentWeaponComponent->OnFire();
-	}
 }
 

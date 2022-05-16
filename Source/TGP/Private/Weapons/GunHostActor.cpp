@@ -30,6 +30,8 @@ void AGunHostActor::BeginPlay()
 {
 	Super::BeginPlay();
 	//_weapon->SetParentMesh(_mesh);
+	
+	GetGameInstance();
 }
 
 // Called every frame

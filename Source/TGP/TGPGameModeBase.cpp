@@ -19,15 +19,22 @@ void ATGPGameModeBase::BeginPlay()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.bNoFail = true;
 
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "THUWHUDHAWd ");
-	
-	for (uint8 i = 0; i < MaxEnemies; i++) // Init Pool
-	{
-		EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClass ? AiActorClass : ABaseAiCharacter::StaticClass(), FVector() + (FVector(100.f, 0.f, 0.f) * i), FRotator(), SpawnParams));
-		EnemyPool[i]->SetHidden(true);
-	}
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "THUWHUDHAWd ");
+	//
+	//for (uint8 i = 0; i < MaxEnemies; i++) // Init Pool
+	//{
+	//	EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClass ? AiActorClass : ABaseAiCharacter::StaticClass(), FVector() + (FVector(100.f, 0.f, 0.f) * i), FRotator(), SpawnParams));
+	//	EnemyPool[i]->SetHidden(true);
+	//}
 
-	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
+	//GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
+}
+
+void ATGPGameModeBase::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Emerald, NewPlayer->GetPawn()->GetName());
 }
 
 void ATGPGameModeBase::Tick(float DeltaSeconds)

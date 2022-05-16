@@ -154,3 +154,8 @@ void AItemActor::Initialize(UBaseItem* Item)
 		ItemMesh->SetStaticMesh(Info->ItemMesh);
 }
 
+void AItemActor::OnPickUp_Implementation()
+{
+	Destroy(true);
+}
+
