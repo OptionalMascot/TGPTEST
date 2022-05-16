@@ -3,6 +3,7 @@
 
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "Item/BaseItem.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 // Add default functionality here for any IWeaponInterfaces functions that are not pure virtual.
@@ -92,12 +93,27 @@ void IHasAmmo::CancelReload(AActor* actor)
 	
 }
 
+float IUseRecoil::AdjustRecoilForCompensate()
+{
+	FRotator rotator = UKismetMathLibrary::NormalizedDeltaRotator(originRotation, postRecoilRotation);
+	// Uncomment this to find max recoil threshhold
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pitch: ") + FString::SanitizeFloat(rotator.Pitch));
+	if(rotator.Pitch > 0)
+	{
+		return 0.0f;
+	}
+	float yAbs = FMath::Abs(rotator.Pitch);
+	float afterMapped = FMath::GetMappedRangeValueClamped(FVector2D(0.0f, 32.245f), FVector2D(0.0f, 1.0f), yAbs);
+	return afterMapped;
+}
+
 void IUseRecoil::EndRecoil()
 {
 	startedRecoil = false;
 	recoilTimelineDirection = ERecoilDirection::Forwards;
 	originRotation = FRotator();
 	postRecoilRotation = FRotator();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("End Recoil"));
 }
 
 void IUseRecoil::ApplySingleFire()

@@ -116,7 +116,9 @@ class TGP_API IUseRecoil
 	FTimeline recoilTimeline;
 	ERecoilDirection recoilTimelineDirection;
 	bool singleFireRecoilStarted;
+	float recoilMaxThreshhold;
 	ERecoilDirection GetTimelineDirection() { return recoilTimelineDirection; }
+	float AdjustRecoilForCompensate();
 	void EndRecoil();
 	void ApplySingleFire();
 	void StartTimeline();
