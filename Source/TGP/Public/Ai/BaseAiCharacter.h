@@ -22,7 +22,7 @@ class TGP_API ABaseAiCharacter : public ACharacter
 protected:
 	virtual void BeginPlay() override;
 
-	ABaseAIController* baseAiController;
+	UPROPERTY() ABaseAIController* baseAiController;
 
 public:
 	ABaseAiCharacter();

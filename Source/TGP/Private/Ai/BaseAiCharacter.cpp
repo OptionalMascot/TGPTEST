@@ -9,7 +9,7 @@ ABaseAiCharacter::ABaseAiCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	AIControllerClass = AController::StaticClass();
+	AIControllerClass = ABaseAIController::StaticClass();
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	AddOwnedComponent(HealthComponent);
@@ -78,7 +78,6 @@ void ABaseAiCharacter::SetHidden(bool bEnemyHidden)
 
 	if (bEnemyHidden)
 		GetCharacterMovement()->DisableMovement();
-
-	baseAiController->ChangeAIControllerStatus(!bEnemyHidden);
 	
+	baseAiController->ChangeAIControllerStatus(!bEnemyHidden);
 }
