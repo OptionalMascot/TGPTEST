@@ -3,6 +3,8 @@
 
 #include "Aki/AkiCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 // Sets default values
 AAkiCharacter::AAkiCharacter()
@@ -20,13 +22,24 @@ AAkiCharacter::AAkiCharacter()
 
 	AimLocation = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Location"));
 	AimLocation->SetupAttachment(Camera);
+
+	M_CameraSensitivity = 0.6f; //Try keep between 0-1 otherwise sensitivity gets out of hand
+
+	IsSprinting = false;
+	M_DefaultSpeed = 600.0f;
+	M_SprintSpeed = 1350.0f;
+
+	IsAiming = false;
+	
 }
 
 // Called when the game starts or when spawned
 void AAkiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	WeaponDefaultLocation = GetMesh()->GetRelativeLocation();
+	WeaponLocationOffset = WeaponDefaultLocation + (AimLocation->GetComponentLocation() - WeaponMesh->GetSocketLocation(FName("AimSocket")));
 }
 
 // Called every frame
@@ -41,5 +54,69 @@ void AAkiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	//Camera Controls
+	PlayerInputComponent->BindAxis("LookUp", this, &AAkiCharacter::LookUp);
+	PlayerInputComponent->BindAxis("Turn", this, &AAkiCharacter::Turn);
+
+	//PlayerMovement
+	PlayerInputComponent->BindAxis("MoveForward", this, &AAkiCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AAkiCharacter::MoveRight);
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AAkiCharacter::Sprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AAkiCharacter::StopSprint);
+
+	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AAkiCharacter::BeginAim);
+	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AAkiCharacter::EndAim);
+
 }
+
+void AAkiCharacter::LookUp(float inputValue)
+{
+	FRotator CameraRotation = Camera->GetComponentRotation();
+	CameraRotation.Pitch = FMath::Clamp(CameraRotation.Pitch - (inputValue * M_CameraSensitivity), -60.0f, 60.0f);
+
+	Camera->SetWorldRotation(CameraRotation);
+}
+
+void AAkiCharacter::Turn(float inputValue)
+{
+	AddControllerYawInput(inputValue * M_CameraSensitivity);
+}
+
+void AAkiCharacter::MoveForward(float inputValue)
+{
+	GetMovementComponent()->AddInputVector(GetActorForwardVector() * inputValue);
+}
+
+void AAkiCharacter::MoveRight(float inputValue)
+{
+	GetMovementComponent()->AddInputVector(GetActorRightVector() * inputValue);
+}
+
+void AAkiCharacter::Sprint()
+{
+	IsSprinting = true;
+	GetCharacterMovement()->MaxWalkSpeed = M_SprintSpeed;
+}
+
+void AAkiCharacter::StopSprint()
+{
+	IsSprinting = false;
+	GetCharacterMovement()->MaxWalkSpeed = M_DefaultSpeed;
+}
+
+void AAkiCharacter::BeginAim()
+{
+	IsAiming = true;
+	Aim();
+}
+
+void AAkiCharacter::EndAim()
+{
+	IsAiming = false;
+	StopAim();
+}
+
 
