@@ -1,9 +1,11 @@
 #include "Ai/BaseAiCharacter.h"
 #include "Ai/AiCharacterData.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TGP/TGPGameModeBase.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 ABaseAiCharacter::ABaseAiCharacter()
 {
@@ -13,6 +15,19 @@ ABaseAiCharacter::ABaseAiCharacter()
 	
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	AddOwnedComponent(HealthComponent);
+
+	RightHandCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Right Hand Collider"));
+	RightHandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RightArmCollider"));
+	RightHandCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	RightHandCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+	RightHandCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	
+	LeftArmCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Left Arm Collider"));
+	LeftArmCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("LeftArmCollider"));
+	LeftArmCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	LeftArmCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+	LeftArmCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	
 }
 
 void ABaseAiCharacter::BeginPlay()
@@ -22,6 +37,9 @@ void ABaseAiCharacter::BeginPlay()
 	HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
 	baseAiController = Cast<ABaseAIController>(GetController());
 	baseAiController->RunBT();
+
+	RightHandCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::HitPlayer);
+	LeftArmCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::HitPlayer);
 }
 
 void ABaseAiCharacter::Tick(float DeltaTime)
@@ -159,3 +177,36 @@ void ABaseAiCharacter::Die()
 	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
 		GM->OnEnemyKilled(this);
 }
+
+void ABaseAiCharacter::HitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Damage Player"));
+		RightColliderOff();
+		LeftColliderOff();
+	}
+}
+
+void ABaseAiCharacter::LeftColliderOn()
+{
+	LeftArmCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+}
+
+void ABaseAiCharacter::LeftColliderOff()
+{
+	LeftArmCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+}
+
+void ABaseAiCharacter::RightColliderOn()
+{
+	RightHandCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+}
+
+void ABaseAiCharacter::RightColliderOff()
+{
+	RightHandCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+}
+
+

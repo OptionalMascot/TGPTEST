@@ -37,9 +37,20 @@ public:
 
 	void SetHidden(bool bEnemyHidden);
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class USphereComponent* RightHandCollider;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class UCapsuleComponent* LeftArmCollider;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* AttackMontage;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* DeathMontage;
 
 	UFUNCTION(BlueprintCallable) void Attack();
 	UFUNCTION(BlueprintCallable) void Die();
+
+	UFUNCTION() void HitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+
+	UFUNCTION(BlueprintCallable) void LeftColliderOn();
+	UFUNCTION(BlueprintCallable) void LeftColliderOff();
+	
+	UFUNCTION(BlueprintCallable) void RightColliderOn();
+	UFUNCTION(BlueprintCallable) void RightColliderOff();
 };
