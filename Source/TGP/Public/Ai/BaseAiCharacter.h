@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Weapons/HealthComponent.h"
+#include "TGP/Public/AI/BaseAIController.h"
+
 #include "BaseAiCharacter.generated.h"
 
 class UAiCharacterData;
@@ -19,6 +21,8 @@ class TGP_API ABaseAiCharacter : public ACharacter
 
 protected:
 	virtual void BeginPlay() override;
+
+	ABaseAIController* baseAiController;
 
 public:
 	ABaseAiCharacter();

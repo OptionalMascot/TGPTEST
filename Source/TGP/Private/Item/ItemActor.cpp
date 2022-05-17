@@ -41,6 +41,7 @@ void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
 	_playerController = nullptr;
+	StatWidget->SetHiddenInGame(true);
 }
 
 void AItemActor::WidgetBillboard()
@@ -129,6 +130,20 @@ void AItemActor::AddInitialThrowForce(FVector dir, float force)
 	mesh->AddForce(forceVec);
 	FVector randSpin = FVector(FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f));
 	mesh->AddTorque(randSpin * force);
+}
+
+void AItemActor::StartHover()
+{
+	IIInteractable::StartHover();
+	ItemSkeletalMesh->SetRenderCustomDepth(true);
+	StatWidget->SetHiddenInGame(false);
+}
+
+void AItemActor::EndHover()
+{
+	IIInteractable::EndHover();
+	ItemSkeletalMesh->SetRenderCustomDepth(false);
+	StatWidget->SetHiddenInGame(true);
 }
 
 void AItemActor::Initialize(UBaseItem* Item)

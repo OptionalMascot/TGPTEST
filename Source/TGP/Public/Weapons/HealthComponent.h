@@ -22,6 +22,7 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	
 
 public:	
 	// Called every frame
@@ -31,6 +32,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentTookDamageSignature onComponentTakeDamage;
 	
 	UPROPERTY(EditAnywhere) int health;
+	UPROPERTY(EditAnywhere) bool destroyOnDeath;
 	bool dead;
 	
 	void SetHealth(float newHealth) { health = newHealth; dead = false; }

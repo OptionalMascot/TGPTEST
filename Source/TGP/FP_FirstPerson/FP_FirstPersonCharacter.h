@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interactables/IInteractable.h"
 #include "FP_FirstPersonCharacter.generated.h"
 
 class UInputComponent;
@@ -13,6 +14,7 @@ class USoundBase;
 class UAnimMontage;
 class UWeaponItem;
 class UPlayerInventory;
+class AGrenadeWeapon;
 
 UCLASS(config=Game)
 class AFP_FirstPersonCharacter : public ACharacter
@@ -170,15 +172,24 @@ protected:
 	UPROPERTY() class UWeaponComponent* _currentWeaponComponent;
 	bool _fireHeld;
 	
-	void RaycastForWeapon();
 	void PickupWeapon();
 	void DropWeapon();
 	void ReloadWeapon();
+	void ThrowUtility();
 	
 	bool _weaponQueued;
-
+	
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
 
+	UPROPERTY() AActor* _lastLooked;
+	IIInteractable* _lastLookedInterface;
+	void InteractWithObject();
+	void CastForInteractable(float DeltaTime);
+
+
+
+	//	DEBUG
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) TSubclassOf<AGrenadeWeapon> _grenadeToSpawn;
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
