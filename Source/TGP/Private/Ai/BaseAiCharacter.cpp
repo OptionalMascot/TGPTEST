@@ -38,10 +38,32 @@ void ABaseAiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void ABaseAiCharacter::OnEnemyDied(AController* Causer)
 {
-	SetHidden(true);
+	// SetHidden(true);
+	//
+	// if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+	// 	GM->OnEnemyKilled(this);
 
-	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
-		GM->OnEnemyKilled(this);
+	UE_LOG(LogTemp, Warning, TEXT("Zombie Died"));
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	GetCharacterMovement()->MaxWalkSpeed = 0.0f;
+
+	if(AnimInstance)
+	{
+		if(!GetMesh()->GetAnimInstance()->Montage_IsPlaying(DeathMontage))
+		{
+			int DeathAnim = FMath::RandRange(0, DeathMontage->CompositeSections.Num() - 1);
+			FName SectionName = DeathMontage->GetSectionName(DeathAnim);
+	
+			AnimInstance->Montage_Play(DeathMontage, 1.0f);
+			AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Animation"));
+	}
+	
 }
 
 void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
@@ -126,4 +148,14 @@ void ABaseAiCharacter::Attack()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No Animation"));
 	}
+}
+
+void ABaseAiCharacter::Die()
+{
+	SetHidden(true);
+
+	GetCharacterMovement()->MaxWalkSpeed = 100.0f;
+
+	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+		GM->OnEnemyKilled(this);
 }

@@ -38,6 +38,7 @@ public:
 	void SetHidden(bool bEnemyHidden);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* AttackMontage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* DeathMontage;
 
 	UFUNCTION(BlueprintCallable) void Attack();
 	UFUNCTION(BlueprintCallable) void Die();
