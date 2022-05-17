@@ -3,7 +3,14 @@
 
 #include "Weapons/Throwables/GrenadeWeapon.h"
 
+#include <d3d10.h>
+
+#include "NiagaraFunctionLibrary.h"
 #include "Item/ItemInfo.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AGrenadeWeapon::AGrenadeWeapon()
@@ -15,6 +22,9 @@ AGrenadeWeapon::AGrenadeWeapon()
 	ItemSkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ItemSkeletalMesh"));
 	ItemSkeletalMesh->SetupAttachment(RootComponent);
 	ItemSkeletalMesh->SetSimulatePhysics(true);
+
+	_particleSystem = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Particles"));
+	_particleSystem->SetupAttachment(ItemSkeletalMesh);
 }
 
 // Called when the game starts or when spawned
@@ -23,6 +33,10 @@ void AGrenadeWeapon::BeginPlay()
 	Super::BeginPlay();
 	_startFuse = false;
 	Initialize(_throwableInfo);
+	if(_particleSystem)
+	{
+		_particleSystem->Deactivate();
+	}
 }
 
 void AGrenadeWeapon::StartWaitTimer(AActor* actor, float time)
@@ -34,6 +48,52 @@ void AGrenadeWeapon::StartWaitTimer(AActor* actor, float time)
 void AGrenadeWeapon::ExplodeGrenade()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("BOOM"));
+	_particleSystem->Activate();
+	ItemSkeletalMesh->SetHiddenInGame(true);
+
+	SphereCastForTargets();
+
+	FTimerHandle explosionTimeHandler;
+	GetWorld()->GetTimerManager().SetTimer(explosionTimeHandler, this, &AGrenadeWeapon::DestroyObj, 1.0f, false);
+}
+
+void AGrenadeWeapon::SphereCastForTargets()
+{
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
+	TArray<FHitResult> OutHits;
+	TArray<AActor*> toIgnore { this };
+	TArray<AActor*> appliedPhysics;
+	if(UKismetSystemLibrary::SphereTraceMulti(GetWorld(), ItemSkeletalMesh->GetComponentLocation(), ItemSkeletalMesh->GetComponentLocation(), _throwableInfo->ExplosionRadius, ETraceTypeQuery::TraceTypeQuery1, false, toIgnore, EDrawDebugTrace::None, OutHits, true))
+	{
+		for(int i = 0; i < OutHits.Num(); i++)
+		{
+			UGameplayStatics::ApplyDamage(OutHits[i].GetActor(), _throwableInfo->Damage, _controller, _controller->GetPawn(), UDamageType::StaticClass());
+			if(OutHits[i].GetActor() != nullptr)
+			{
+				if(!appliedPhysics.Contains(OutHits[i].GetActor()))
+				{
+					appliedPhysics.Add(OutHits[i].GetActor());
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, OutHits[i].GetActor()->GetName());
+					UStaticMeshComponent* mesh = OutHits[i].GetActor()->FindComponentByClass<UStaticMeshComponent>();
+					USkeletalMeshComponent* skeleMesh = OutHits[i].GetActor()->FindComponentByClass<USkeletalMeshComponent>();
+					if(skeleMesh)
+					{
+						skeleMesh->AddRadialForce(ItemSkeletalMesh->GetComponentLocation(), _throwableInfo->ExplosionRadius, _throwableInfo->KnockbackForce, ERadialImpulseFalloff::RIF_Linear, false);
+						continue;
+					}
+					if(mesh)
+					{
+						mesh->AddRadialForce(ItemSkeletalMesh->GetComponentLocation(), _throwableInfo->ExplosionRadius, _throwableInfo->KnockbackForce, ERadialImpulseFalloff::RIF_Linear, false);
+						continue;
+					}
+				}
+			}
+		}
+	}
+}
+
+void AGrenadeWeapon::DestroyObj()
+{
 	Destroy();
 }
 
@@ -56,5 +116,10 @@ void AGrenadeWeapon::Initialize(UThrowableInfo* throwableInfo)
 	_throwableInfo = throwableInfo;
 	ItemSkeletalMesh->SetSkeletalMesh(_throwableInfo->WeaponSkeletalMesh);
 	StartWaitTimer(this, _throwableInfo->FuseTime);	
+}
+
+void AGrenadeWeapon::SetPlayerController(APlayerController* controller)
+{
+	_controller = controller;
 }
 

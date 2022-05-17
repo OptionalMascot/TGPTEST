@@ -348,8 +348,13 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 
 void AFP_FirstPersonCharacter::ThrowUtility()
 {
-	AGrenadeWeapon* GrenadeActor = GetWorld()->SpawnActor<AGrenadeWeapon>(_grenadeToSpawn, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f), FRotator());
-	GrenadeActor->SetInitialThrowForce((GetFirstPersonCameraComponent()->GetForwardVector() + (GetFirstPersonCameraComponent()->GetUpVector() / 2.0f)) * 100000.0f);
+	APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
+	FVector pos;
+	FRotator rot;
+	_playerController->GetPlayerViewPoint(pos, rot);
+	AGrenadeWeapon* GrenadeActor = GetWorld()->SpawnActor<AGrenadeWeapon>(_grenadeToSpawn, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
+	GrenadeActor->SetInitialThrowForce(rot.Vector() * 100000.0f);
+	GrenadeActor->SetPlayerController(_playerController);
 }
 
 void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
