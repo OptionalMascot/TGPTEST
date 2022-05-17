@@ -3,3 +3,12 @@
 
 #include "EnemiesAnimInstance.h"
 
+#include "Ai/BaseAiCharacter.h"
+
+void UEnemiesAnimInstance::UpdateAnimationVariables()
+{
+	if(!Zombie)
+	{
+		Zombie = Cast<ABaseAiCharacter>(TryGetPawnOwner());
+	}
+}

@@ -13,5 +13,12 @@ UCLASS()
 class TGP_API UEnemiesAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+
+public:	
+	UFUNCTION(BlueprintCallable)
+	void UpdateAnimationVariables();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Enemy")
+	class ABaseAiCharacter* Zombie;
 	
 };
