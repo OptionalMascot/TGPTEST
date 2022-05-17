@@ -83,7 +83,7 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_FirstPersonCharacter::OnFireWeapon);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AFP_FirstPersonCharacter::OnFireWeaponRelease);
-	PlayerInputComponent->BindAction("Pickup", IE_Pressed, this, &AFP_FirstPersonCharacter::RaycastForWeapon);
+	PlayerInputComponent->BindAction("Pickup", IE_Pressed, this, &AFP_FirstPersonCharacter::InteractWithObject);
 	PlayerInputComponent->BindAction("Drop", IE_Pressed, this, &AFP_FirstPersonCharacter::DropWeapon);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AFP_FirstPersonCharacter::ReloadWeapon);
 	
@@ -290,17 +290,6 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AFP_FirstPersonCharacter::TouchUpdate);	
 }
 
-void AFP_FirstPersonCharacter::RaycastForWeapon()
-{
-	const FVector CameraPos = GetFirstPersonCameraComponent()->GetComponentLocation(), CameraDir = GetFirstPersonCameraComponent()->GetForwardVector();
-	
-	FHitResult Result;
-	if (GetWorld()->LineTraceSingleByChannel(Result, CameraPos, CameraPos + (CameraDir * 250.f), ECollisionChannel::ECC_Visibility))
-		if (AItemActor* ItemActor = Cast<AItemActor>(Result.Actor))
-			if(PlayerInventory->TryPickUpItem(ItemActor->GetItem()))
-				ItemActor->Destroy();
-}
-
 
 void AFP_FirstPersonCharacter::OnFireWeapon()
 {
@@ -368,6 +357,53 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	}
 }
 
+void AFP_FirstPersonCharacter::InteractWithObject()
+{
+	if(_lastLooked != nullptr)
+	{
+		if(_lastLooked->ActorHasTag(TEXT("Weapon")))
+		{
+			if (AItemActor* ItemActor = Cast<AItemActor>(_lastLooked))
+				if(PlayerInventory->TryPickUpItem(ItemActor->GetItem()))
+					ItemActor->Destroy();
+		}
+		else if(_lastLookedInterface)
+		{
+			_lastLookedInterface->Interact(this);
+		}
+	}
+}
+
+void AFP_FirstPersonCharacter::CastForInteractable(float DeltaTime)
+{
+	const FVector CameraPos = GetFirstPersonCameraComponent()->GetComponentLocation(), CameraDir = GetFirstPersonCameraComponent()->GetForwardVector();
+	
+	FHitResult Result;
+	if (GetWorld()->LineTraceSingleByChannel(Result, CameraPos, CameraPos + (CameraDir * 250.f), ECollisionChannel::ECC_Visibility))
+	{
+		if(_lastLooked != Result.GetActor())
+		{
+			if(_lastLookedInterface != nullptr)
+				_lastLookedInterface->EndHover();
+			_lastLooked = Result.GetActor();
+			if (IIInteractable* InteractActor = Cast<AItemActor>(Result.Actor))
+			{
+				_lastLookedInterface = InteractActor;
+				InteractActor->StartHover();
+			}
+		}
+	}
+	else
+	{
+		_lastLooked = nullptr;
+		if(_lastLookedInterface != nullptr)
+			_lastLookedInterface->EndHover();
+		_lastLookedInterface = nullptr;
+	}
+}
+
+
+
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -383,12 +419,16 @@ void AFP_FirstPersonCharacter::BeginPlay()
 
 	PlayerInventory->OnWeaponChangedEvent.AddDynamic(this, &AFP_FirstPersonCharacter::OnWeaponChanged);
 	PlayerInventory->ComponentLoadComplete();
+
+	_lastLooked = nullptr;
 }
 
 void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	CastForInteractable(DeltaSeconds);
+	
 	if(_fireHeld && _currentWeapon != nullptr)
 	{
 		_currentWeaponComponent->OnFire();
