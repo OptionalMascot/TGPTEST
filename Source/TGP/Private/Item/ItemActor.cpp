@@ -131,6 +131,18 @@ void AItemActor::AddInitialThrowForce(FVector dir, float force)
 	mesh->AddTorque(randSpin * force);
 }
 
+void AItemActor::StartHover()
+{
+	IIInteractable::StartHover();
+	ItemSkeletalMesh->SetRenderCustomDepth(true);
+}
+
+void AItemActor::EndHover()
+{
+	IIInteractable::EndHover();
+	ItemSkeletalMesh->SetRenderCustomDepth(false);
+}
+
 void AItemActor::Initialize(UBaseItem* Item)
 {
 	DefinedItem = Item;

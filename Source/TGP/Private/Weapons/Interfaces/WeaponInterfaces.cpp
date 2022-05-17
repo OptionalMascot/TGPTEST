@@ -3,6 +3,7 @@
 
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "Item/BaseItem.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 // Add default functionality here for any IWeaponInterfaces functions that are not pure virtual.
@@ -92,14 +93,85 @@ void IHasAmmo::CancelReload(AActor* actor)
 	
 }
 
-void IUseRecoil::ApplyRecoilPitch(APlayerController* controller, float value)
+float IUseRecoil::AdjustRecoilForCompensate()
 {
-	if(controller)
-		controller->AddPitchInput(value);
+	FRotator rotator = UKismetMathLibrary::NormalizedDeltaRotator(originRotation, postRecoilRotation);
+	// Uncomment this to find max recoil threshhold
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pitch: ") + FString::SanitizeFloat(rotator.Pitch));
+	if(rotator.Pitch > 0)
+	{
+		return 0.0f;
+	}
+	float yAbs = FMath::Abs(rotator.Pitch);
+	float afterMapped = FMath::GetMappedRangeValueClamped(FVector2D(0.0f, 32.245f), FVector2D(0.0f, 1.0f), yAbs);
+	return afterMapped;
 }
 
-void IUseRecoil::ApplyRecoilYaw(APlayerController* controller, float value)
+void IUseRecoil::EndRecoil()
 {
+	startedRecoil = false;
+	recoilTimelineDirection = ERecoilDirection::Forwards;
+	originRotation = FRotator();
+	postRecoilRotation = FRotator();
+	notPlayedFullyValue = 1.0f;
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("End Recoil"));
+}
+
+void IUseRecoil::ApplySingleFire()
+{
+	singleFireRecoilStarted = true;
+	recoilTimeline.SetNewTime(0);
+	StartTimeline();
+}
+
+void IUseRecoil::StartTimeline()
+{
+	recoilTimeline.Play();
+	recoilTimeline.SetPlayRate(1.0f);
+	recoilTimelineDirection = ERecoilDirection::Forwards;
+}
+
+void IUseRecoil::ReverseTimeline(float recoilModifier)
+{
+	recoilTimeline.Reverse();
+	recoilTimelineDirection = ERecoilDirection::Backwards;
+	recoilTimeline.SetPlayRate(recoilModifier);
+}
+
+void IUseRecoil::StartRecoil(FRotator startRot)
+{
+	startedRecoil = true;
+	originRotation = startRot;
+}
+
+void IUseRecoil::ApplyRecoilPitch(APlayerController* controller, float Value, bool isSingleFire)
+{
+	if(GetTimelineDirection() == ERecoilDirection::Forwards)
+	{
+		Value *= -1;
+	}
+	else if(GetTimelineDirection() == ERecoilDirection::Backwards && !isSingleFire)
+	{
+		Value *= AdjustRecoilForCompensate();
+	}
+
+	Value = Value * recoilTimeline.GetPlayRate() * notPlayedFullyValue;
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pitch Increase: ") + FString::SanitizeFloat(Value));
 	if(controller)
-		controller->AddYawInput(value);
+		controller->AddPitchInput(Value * controller->GetWorld()->GetDeltaSeconds());
+}
+
+void IUseRecoil::ApplyRecoilYaw(APlayerController* controller, float Value, bool isSingleFire)
+{
+	if(GetTimelineDirection() == ERecoilDirection::Forwards)
+	{
+		Value *= -1;
+	}
+	else if(GetTimelineDirection() == ERecoilDirection::Backwards && !isSingleFire)
+	{
+		Value *= AdjustRecoilForCompensate();
+	}
+	Value = Value * recoilTimeline.GetPlayRate() * notPlayedFullyValue;
+	if(controller)
+		controller->AddYawInput(Value * controller->GetWorld()->GetDeltaSeconds());
 }

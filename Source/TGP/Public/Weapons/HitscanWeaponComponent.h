@@ -19,16 +19,14 @@ protected:
 
 	UFUNCTION() void RecoilTimelineProgressPitch(float Value);
 	UFUNCTION() void RecoilTimelineProgressYaw(float Value);
+	UFUNCTION() void RecoilTimelineFinished();
 	UFUNCTION() void SingleFireRecoilReset();
 
 	void ResetRecoilTimeline();
 	
     UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
 
-	FTimeline recoilTimeline;
 	UPROPERTY() class UCurveFloat* _curve;
-	bool recoilTimelineForward;
-	bool _singleFireRecoilStarted;
 public:
 	UHitscanWeaponComponent();
 	virtual void BeginPlay() override;

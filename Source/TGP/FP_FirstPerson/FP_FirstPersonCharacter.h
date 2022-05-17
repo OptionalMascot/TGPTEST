@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interactables/IInteractable.h"
 #include "FP_FirstPersonCharacter.generated.h"
 
 class UInputComponent;
@@ -168,14 +169,18 @@ protected:
 	UPROPERTY() class UWeaponComponent* _currentWeaponComponent;
 	bool _fireHeld;
 	
-	void RaycastForWeapon();
 	void PickupWeapon();
 	void DropWeapon();
 	void ReloadWeapon();
 	
 	bool _weaponQueued;
-
+	
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
+
+	UPROPERTY() AActor* _lastLooked;
+	IIInteractable* _lastLookedInterface;
+	void InteractWithObject();
+	void CastForInteractable(float DeltaTime);
 
 public:
 	/** Returns Mesh1P subobject **/

@@ -2,6 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Item/ItemInfo.h"
+
 #include "BaseGameInstance.generated.h"
 
 class UItemInfo;
@@ -26,4 +28,5 @@ public:
 	UItemInfo* FindInfoUniqueId(int UniqueId) const;
 
 	int32 GetRandomItemIdOfCategory(enum EItemCategory ItemCategory);
+	int32 GetRandomItemIdOfCategory(enum EItemCategory ItemCategory, ERarity ItemRarity);
 };
