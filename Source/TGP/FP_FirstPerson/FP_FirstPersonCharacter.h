@@ -14,6 +14,7 @@ class USoundBase;
 class UAnimMontage;
 class UWeaponItem;
 class UPlayerInventory;
+class AGrenadeWeapon;
 
 UCLASS(config=Game)
 class AFP_FirstPersonCharacter : public ACharacter
@@ -172,6 +173,7 @@ protected:
 	void PickupWeapon();
 	void DropWeapon();
 	void ReloadWeapon();
+	void ThrowUtility();
 	
 	bool _weaponQueued;
 	
@@ -182,6 +184,10 @@ protected:
 	void InteractWithObject();
 	void CastForInteractable(float DeltaTime);
 
+
+
+	//	DEBUG
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) TSubclassOf<AGrenadeWeapon> _grenadeToSpawn;
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }

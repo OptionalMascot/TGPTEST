@@ -12,6 +12,7 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
+#include "Weapons/Throwables/GrenadeWeapon.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -86,6 +87,7 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	PlayerInputComponent->BindAction("Pickup", IE_Pressed, this, &AFP_FirstPersonCharacter::InteractWithObject);
 	PlayerInputComponent->BindAction("Drop", IE_Pressed, this, &AFP_FirstPersonCharacter::DropWeapon);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AFP_FirstPersonCharacter::ReloadWeapon);
+	PlayerInputComponent->BindAction("ThrowGrenade", IE_Pressed, this, &AFP_FirstPersonCharacter::ThrowUtility);
 	
 	// Attempt to enable touch screen movement
 	TryEnableTouchscreenMovement(PlayerInputComponent);
@@ -109,6 +111,10 @@ void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 {
 	if (Val != 0.f)
 		PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
+}
+
+void AFP_FirstPersonCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
+{
 }
 
 void AFP_FirstPersonCharacter::OnFire()
@@ -338,6 +344,12 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 		}
 	}
+}
+
+void AFP_FirstPersonCharacter::ThrowUtility()
+{
+	AGrenadeWeapon* GrenadeActor = GetWorld()->SpawnActor<AGrenadeWeapon>(_grenadeToSpawn, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f), FRotator());
+	GrenadeActor->SetInitialThrowForce((GetFirstPersonCameraComponent()->GetForwardVector() + (GetFirstPersonCameraComponent()->GetUpVector() / 2.0f)) * 100000.0f);
 }
 
 void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
