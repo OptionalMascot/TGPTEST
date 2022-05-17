@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera")
 	class UCameraComponent* FirstPersonCamera;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="WeaponStats")
+	class UAnimMontage* CombatMontage;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mesh Default Transform")
 	FVector DefaultMeshLocation;
 

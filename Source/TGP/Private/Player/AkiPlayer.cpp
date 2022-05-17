@@ -24,6 +24,8 @@ AAkiPlayer::AAkiPlayer()
 	AimLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MeshAimLocation"));
 	AimLocation->SetupAttachment(FirstPersonCamera);
 
+	CombatMontage = CreateDefaultSubobject<UAnimMontage>(TEXT("Combat Animations"));
+
 	DefaultFieldOfView = 100.0f;
 
 	M_CameraSensitivity = 0.6f;
