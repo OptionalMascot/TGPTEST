@@ -46,7 +46,8 @@ public:
 	UFUNCTION(BlueprintCallable) void Attack();
 	UFUNCTION(BlueprintCallable) void Die();
 
-	UFUNCTION() void HitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	UFUNCTION() void LHHitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	UFUNCTION() void RHHitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
 
 	UFUNCTION(BlueprintCallable) void LeftColliderOn();
 	UFUNCTION(BlueprintCallable) void LeftColliderOff();

@@ -38,8 +38,8 @@ void ABaseAiCharacter::BeginPlay()
 	baseAiController = Cast<ABaseAIController>(GetController());
 	baseAiController->RunBT();
 
-	RightHandCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::HitPlayer);
-	LeftArmCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::HitPlayer);
+	RightHandCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::RHHitPlayer);
+	LeftArmCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::LHHitPlayer);
 }
 
 void ABaseAiCharacter::Tick(float DeltaTime)
@@ -178,14 +178,23 @@ void ABaseAiCharacter::Die()
 		GM->OnEnemyKilled(this);
 }
 
-void ABaseAiCharacter::HitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ABaseAiCharacter::LHHitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Damage Player"));
+		LeftColliderOff();
+	}
+}
+
+void ABaseAiCharacter::RHHitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if(OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Damage Player"));
 		RightColliderOff();
-		LeftColliderOff();
 	}
 }
 
