@@ -81,3 +81,49 @@ void ABaseAiCharacter::SetHidden(bool bEnemyHidden)
 	
 	baseAiController->ChangeAIControllerStatus(!bEnemyHidden);
 }
+
+void ABaseAiCharacter::Attack()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if(AnimInstance)
+	{
+		if(!GetMesh()->GetAnimInstance()->Montage_IsPlaying(AttackMontage))
+		{
+			int AttackAnim = FMath::RandRange(0, AttackMontage->CompositeSections.Num() - 1);
+			FName SectionName = AttackMontage->GetSectionName(AttackAnim);
+
+			switch (AttackAnim)
+			{
+				case 0:
+				{
+					AnimInstance->Montage_Play(AttackMontage, 1.35f);
+					AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+					break;
+				}
+				case 2:
+				{
+					AnimInstance->Montage_Play(AttackMontage, 1.15f);
+					AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+					break;
+				}
+				case 3:
+				{
+					AnimInstance->Montage_Play(AttackMontage, 0.75f);
+					AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+					break;
+				}
+				default:
+				{
+						AnimInstance->Montage_Play(AttackMontage, 1.0f);
+						AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Animation"));
+	}
+}

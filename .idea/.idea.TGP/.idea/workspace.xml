@@ -26,6 +26,9 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/PlayerAnimInstance.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
@@ -71,6 +74,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="Toolset" />
   </component>
   <component name="ProjectId" id="28yw60NbVg9sPVOETvIqTKhjiT8" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -347,6 +353,9 @@
       <workItem from="1652814185678" duration="440000" />
       <workItem from="1652814693555" duration="1929000" />
       <workItem from="1652816852760" duration="607000" />
+      <workItem from="1652817951777" duration="64000" />
+      <workItem from="1652818032479" duration="49000" />
+      <workItem from="1652818135684" duration="2091000" />
     </task>
     <servers />
   </component>

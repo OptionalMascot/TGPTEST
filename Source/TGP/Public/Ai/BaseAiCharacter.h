@@ -36,4 +36,8 @@ public:
 	void SpawnEnemy(const FVector& RespawnPos);
 
 	void SetHidden(bool bEnemyHidden);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* AttackMontage;
+
+	UFUNCTION(BlueprintCallable) void Attack();
 };
