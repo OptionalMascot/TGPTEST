@@ -31,7 +31,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UNiagaraComponent* _particleSystem;
 	
 	bool _startFuse;
-	APlayerController* _controller;
+	UPROPERTY() APlayerController* _controller;
 	virtual void StartWaitTimer(AActor* actor, float time) override;
 	void ExplodeGrenade();
 	void SphereCastForTargets();

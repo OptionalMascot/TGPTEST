@@ -185,11 +185,9 @@ protected:
 	IIInteractable* _lastLookedInterface;
 	void InteractWithObject();
 	void CastForInteractable(float DeltaTime);
-
-
-
-	//	DEBUG
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) TSubclassOf<AGrenadeWeapon> _grenadeToSpawn;
+
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }

@@ -26,6 +26,9 @@ void UPlayerInventory::InitDefaultGuns_Implementation()
 		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(214248416), 1);
 		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(137833872), 2);
 
+		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(92876440, 3));
+		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(111947304, 3));
+
 		return;
 	}
 
@@ -112,6 +115,19 @@ void UPlayerInventory::SelectUtility(uint8 Slot)
 {
 	if (Cast<UThrowableItem>(UtilityContainer->GetItemAt(Slot)) != nullptr)
 		SelectedUtilitySlot = Slot;
+}
+
+UThrowableItem* UPlayerInventory::GetSelectedUtility()
+{
+	UThrowableItem* Item = Cast<UThrowableItem>(UtilityContainer->GetItemAt(SelectedUtilitySlot));
+
+	if (Item == nullptr)
+	{
+		SelectedUtilitySlot = UtilityContainer->FindFirstValidItem();
+		Item = Cast<UThrowableItem>(UtilityContainer->GetItemAt(SelectedUtilitySlot));
+	}
+	
+	return Item;
 }
 
 void UPlayerInventory::ComponentLoadComplete()
@@ -228,4 +244,9 @@ bool UPlayerInventory::TryPickUpItem(UBaseItem* Item)
 UWeaponItem* UPlayerInventory::GetSelectedWeapon()
 {
 	return Cast<UWeaponItem>(WeaponContainer->GetItemAt(SelectedWeapon));
+}
+
+void UPlayerInventory::OnUseUtility()
+{
+	UtilityContainer->RemoveItem(SelectedUtilitySlot, 1);
 }

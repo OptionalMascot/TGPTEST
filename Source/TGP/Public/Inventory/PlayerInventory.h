@@ -54,6 +54,7 @@ public:
 	
 	bool AddUtility(UThrowableItem* ThrowableItem) const;
 	void SelectUtility(uint8 Slot);
+	UThrowableItem* GetSelectedUtility();
 
 	void ComponentLoadComplete();
 
@@ -71,4 +72,6 @@ public:
 	UFUNCTION(BlueprintCallable) void ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate = false);
 	UFUNCTION(BlueprintCallable) bool TryPickUpItem(UBaseItem* Item);
 	UFUNCTION(BlueprintCallable, BlueprintPure) class UWeaponItem* GetSelectedWeapon();
+
+	void OnUseUtility();
 };
