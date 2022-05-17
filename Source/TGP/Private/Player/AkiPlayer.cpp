@@ -3,6 +3,7 @@
 
 #include "Player/AkiPlayer.h"
 
+#include "StaticMeshAttributes.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -24,10 +25,6 @@ AAkiPlayer::AAkiPlayer()
 	AimLocation->SetupAttachment(FirstPersonCamera);
 
 	DefaultFieldOfView = 100.0f;
-	
-	
-
-	
 
 	M_CameraSensitivity = 0.6f;
 
@@ -71,6 +68,7 @@ void AAkiPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 	//Player Camera Control Inputs
 	PlayerInputComponent->BindAxis("Turn", this, &AAkiPlayer::LookAround);
+	PlayerInputComponent->BindAxis("LookUp", this, &AAkiPlayer::LookUp);
 
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AAkiPlayer::Sprint);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AAkiPlayer::StopSprinting);
@@ -121,6 +119,13 @@ void AAkiPlayer::LookAround(float inputValue)
 
 void AAkiPlayer::LookUp(float inputValue)
 {
+	if(inputValue != 0)
+	{
+		FRotator CameraRotation = FirstPersonCamera->GetComponentRotation();
+		CameraRotation.Pitch = FMath::Clamp(CameraRotation.Pitch - (inputValue * M_CameraSensitivity), -60.0f, 60.0f);
+
+		FirstPersonCamera->SetWorldRotation(CameraRotation);
+	}
 }
 
 void AAkiPlayer::Sprint()
@@ -150,7 +155,6 @@ void AAkiPlayer::ADS()
 	StopSprinting();
 	BeginAimTransisiton();
 	AdjustFOV(1.25f);
-	
 }
 
 void AAkiPlayer::StopADS()
