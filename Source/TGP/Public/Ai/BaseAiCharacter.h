@@ -40,4 +40,5 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* AttackMontage;
 
 	UFUNCTION(BlueprintCallable) void Attack();
+	UFUNCTION(BlueprintCallable) void Die();
 };
