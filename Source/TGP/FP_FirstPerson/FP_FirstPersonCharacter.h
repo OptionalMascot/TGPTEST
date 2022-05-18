@@ -14,7 +14,6 @@ class USoundBase;
 class UAnimMontage;
 class UWeaponItem;
 class UPlayerInventory;
-class AGrenadeWeapon;
 
 UCLASS(config=Game)
 class AFP_FirstPersonCharacter : public ACharacter
@@ -42,8 +41,6 @@ class AFP_FirstPersonCharacter : public ACharacter
 public:
 	AFP_FirstPersonCharacter();
 
-	UPlayerInventory* GetInventory() const { return PlayerInventory; }
-	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -175,7 +172,6 @@ protected:
 	void PickupWeapon();
 	void DropWeapon();
 	void ReloadWeapon();
-	void ThrowUtility();
 	
 	bool _weaponQueued;
 	
@@ -185,8 +181,6 @@ protected:
 	IIInteractable* _lastLookedInterface;
 	void InteractWithObject();
 	void CastForInteractable(float DeltaTime);
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) TSubclassOf<AGrenadeWeapon> _grenadeToSpawn;
 
 public:
 	/** Returns Mesh1P subobject **/

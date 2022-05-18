@@ -33,7 +33,6 @@ AWeaponSpawnerChest::AWeaponSpawnerChest()
 void AWeaponSpawnerChest::BeginPlay()
 {
 	Super::BeginPlay();
-	
 	_health->onComponentDead.AddDynamic(this, &AWeaponSpawnerChest::OpenChest);
 }
 

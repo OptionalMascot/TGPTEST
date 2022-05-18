@@ -99,7 +99,9 @@ bool UItemContainer::RemoveItem(int Index, int Amount)
 
 	if (Items[Index]->GetAmount() <= 0)
 	{
+		Items[Index]->BeginDestroy();
 		Items[Index] = nullptr;
+
 		return true;
 	}
 	

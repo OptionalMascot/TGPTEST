@@ -59,7 +59,7 @@ void AMyDamageMarker::SetText(int num)
 	UUserWidgetTest* castedWidget = Cast<UUserWidgetTest>(userWid);
 	if(castedWidget)
 	{
-		castedWidget->SetText(num);
+		castedWidget->SetText(10.0f);
 	}
 }
 

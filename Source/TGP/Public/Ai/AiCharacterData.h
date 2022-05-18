@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "AiCharacterData.generated.h"
 
+
 UCLASS()
 class TGP_API UAiCharacterData : public UDataAsset
 {

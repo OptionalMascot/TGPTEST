@@ -32,6 +32,8 @@ protected:
 	virtual void WidgetBillboard();
 
 	void InitialiseWidgetText(const UWeaponInfo* info);
+
+	
 	
 public:
 	AItemActor();
@@ -48,7 +50,4 @@ public:
 	
 	UFUNCTION(BlueprintCallable) void Initialize(UBaseItem* Item);
 	UBaseItem* GetItem() const { return DefinedItem; }
-
-	UFUNCTION(NetMulticast, Reliable) virtual void OnPickUp();
-	void OnPickUp_Implementation();
 };

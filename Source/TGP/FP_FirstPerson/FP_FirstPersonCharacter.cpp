@@ -12,7 +12,6 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
-#include "Weapons/Throwables/ThrowableWeapon.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -87,7 +86,6 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	PlayerInputComponent->BindAction("Pickup", IE_Pressed, this, &AFP_FirstPersonCharacter::InteractWithObject);
 	PlayerInputComponent->BindAction("Drop", IE_Pressed, this, &AFP_FirstPersonCharacter::DropWeapon);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AFP_FirstPersonCharacter::ReloadWeapon);
-	PlayerInputComponent->BindAction("ThrowGrenade", IE_Pressed, this, &AFP_FirstPersonCharacter::ThrowUtility);
 	
 	// Attempt to enable touch screen movement
 	TryEnableTouchscreenMovement(PlayerInputComponent);
@@ -111,10 +109,6 @@ void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 {
 	if (Val != 0.f)
 		PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
-}
-
-void AFP_FirstPersonCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
 }
 
 void AFP_FirstPersonCharacter::OnFire()
@@ -343,26 +337,6 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 			AmmoRef->TryReload(_currentWeapon);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 		}
-	}
-}
-
-void AFP_FirstPersonCharacter::ThrowUtility()
-{
-	UThrowableItem* Throwable = PlayerInventory->GetSelectedUtility();
-
-	if (Throwable)
-	{
-		APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
-		FVector pos;
-		FRotator rot;
-		_playerController->GetPlayerViewPoint(pos, rot);
-	
-		AThrowableWeapon* ThrowableActor = GetWorld()->SpawnActor<AThrowableWeapon>(Cast<UThrowableInfo>(Throwable->GetItemInfo())->ThrowableBlueprint, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
-		ThrowableActor->Initialize(Cast<UThrowableInfo>(Throwable->GetItemInfo()));
-		ThrowableActor->SetInitialThrowForce(rot.Vector() * 100000.0f);
-		ThrowableActor->SetPlayerController(_playerController);
-
-		PlayerInventory->OnUseUtility();
 	}
 }
 
