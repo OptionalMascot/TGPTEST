@@ -30,6 +30,9 @@ AAkiCharacter::AAkiCharacter()
 	M_SprintSpeed = 1350.0f;
 
 	IsAiming = false;
+	IsReloading = false;
+
+	M_GunReloadSpeed = 2.5f;
 	
 }
 
@@ -70,6 +73,8 @@ void AAkiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AAkiCharacter::BeginAim);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AAkiCharacter::EndAim);
 
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AAkiCharacter::Reload);
+
 }
 
 void AAkiCharacter::LookUp(float inputValue)
@@ -97,8 +102,11 @@ void AAkiCharacter::MoveRight(float inputValue)
 
 void AAkiCharacter::Sprint()
 {
-	IsSprinting = true;
-	GetCharacterMovement()->MaxWalkSpeed = M_SprintSpeed;
+	if(!IsReloading)
+	{
+		IsSprinting = true;
+		GetCharacterMovement()->MaxWalkSpeed = M_SprintSpeed;
+	}
 }
 
 void AAkiCharacter::StopSprint()
@@ -117,6 +125,24 @@ void AAkiCharacter::EndAim()
 {
 	IsAiming = false;
 	StopAim();
+}
+
+void AAkiCharacter::Reload()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if(AnimInstance)
+	{
+		IsReloading = true;
+		StopSprint();
+		AnimInstance->Montage_Play(CombatMontage, M_GunReloadSpeed);
+		AnimInstance->Montage_JumpToSection(FName("RifleReload"), CombatMontage);
+	}
+}
+
+void AAkiCharacter::ReloadFinished()
+{
+	IsReloading = false;
 }
 
 

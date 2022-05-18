@@ -24,8 +24,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon Location")
 	class USceneComponent* AimLocation;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
-	bool IsSprinting;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Combat")
+	class UAnimMontage* CombatMontage;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
 	FVector WeaponLocationOffset;
@@ -33,8 +33,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
 	FVector WeaponDefaultLocation;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
+	bool IsSprinting;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
 	bool IsAiming;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat")
+	bool IsReloading;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -49,6 +55,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement", meta=(AllowPrivateAccess = true))
 	float M_SprintSpeed;
+
+	float M_GunReloadSpeed;
 	
 
 public:	
@@ -75,6 +83,11 @@ public:
 
 	void BeginAim();
 	void EndAim();
+
+	void Reload();
+
+	UFUNCTION(BlueprintCallable)
+	void ReloadFinished();
 };
 
 

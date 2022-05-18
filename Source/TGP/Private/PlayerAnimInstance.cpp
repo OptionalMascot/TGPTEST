@@ -8,16 +8,16 @@
 
 void UPlayerAnimInstance::UpdateAnimationVariables()
 {
-	if(!PlayerPawn)
+	if(!Player)
 	{
-		PlayerPawn = TryGetPawnOwner();
-		Player = Cast<AAkiCharacter>(PlayerPawn);
+		Player = Cast<AAkiCharacter>(TryGetPawnOwner());
 	}
 	else
 	{
-		MoveSpeed = FVector(PlayerPawn->GetVelocity().X, PlayerPawn->GetVelocity().Y, 0.0f).Size();
+		
 		if(Player)
 		{
+			MoveSpeed = FVector(Player->GetVelocity().X, Player->GetVelocity().Y, 0.0f).Size();
 			IsSprinitng = Player->IsSprinting;
 			IsJumping = !Player->GetCharacterMovement()->IsMovingOnGround();
 			IsAiming = Player->IsAiming;
