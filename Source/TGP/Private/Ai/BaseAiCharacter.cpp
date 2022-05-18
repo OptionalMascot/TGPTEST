@@ -93,8 +93,30 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 		GetMesh()->SetSkeletalMesh(EnemyStats->SkeletalMeshes[FMath::RandRange(0, EnemyStats->SkeletalMeshes.Num() - 1)]);
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 		GetMesh()->SetAnimInstanceClass(EnemyStats->EnemyAnimBP);
+
+		float SpeedGenerator[3] = {0.5f, 1.0f, 2.5f};
+		int SpeedIndex = FMath::RandRange(0, 2);
 		
-		GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed;
+		switch (SpeedIndex)
+		{
+			case 0:
+				{
+					MovementType = EZombieMoveType::MoveState_SlowWalking;
+					break;
+				}
+			case 2:
+				{
+					MovementType = EZombieMoveType::MoveState_Running;
+					break;
+				}
+			default:
+				{
+					MovementType = EZombieMoveType::MoveState_NormalWalking;
+					break;
+				}			
+		}
+		
+		GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed * SpeedGenerator[SpeedIndex];
 
 		HealthComponent->health = EnemyStats->DefaultHealth + (EnemyStats->DefaultHealth * FMath::RandRange(-EnemyStats->MaxDeviation, EnemyStats->MaxDeviation));
 		Damage = EnemyStats->DefaultDamage + (EnemyStats->DefaultDamage * FMath::RandRange(0.f, EnemyStats->MaxDeviation));
@@ -130,7 +152,7 @@ void ABaseAiCharacter::Attack()
 
 	if(AnimInstance)
 	{
-		if(!GetMesh()->GetAnimInstance()->Montage_IsPlaying(AttackMontage))
+		if(!GetMesh()->GetAnimInstance()->Montage_IsPlaying(AttackMontage) && !GetMesh()->GetAnimInstance()->Montage_IsPlaying(DeathMontage))
 		{
 			int AttackAnim = FMath::RandRange(0, AttackMontage->CompositeSections.Num() - 1);
 			FName SectionName = AttackMontage->GetSectionName(AttackAnim);

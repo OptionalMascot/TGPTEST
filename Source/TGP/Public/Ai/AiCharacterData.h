@@ -19,7 +19,7 @@ public:
 	// Used for randomizing the spawn stats the enemy will spawn with. Example: 0.2f deviation = enemies can spawn with health ranging from 80 - 120. Same for other stats like Damage
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Stats", meta=(ClampMax = "1.0", ClampMin = "0.0")) float MaxDeviation = 0.2f;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement") float DefaultWalkSpeed = 600.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement") float DefaultWalkSpeed = 100.f;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals") TArray<USkeletalMesh*> SkeletalMeshes;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Visuals") TSubclassOf<UAnimInstance> EnemyAnimBP;

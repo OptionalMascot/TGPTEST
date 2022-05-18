@@ -9,6 +9,14 @@
 /**
  * 
  */
+UENUM()
+enum class MovingState
+{
+	EMS_SlowWalk	UMETA(DisplayName = "SlowWalk"),
+	EMS_Walk		UMETA(DisplayName = "Walk"),
+	EMS_Run			UMETA(DisplayName = "Run")
+};
+
 UCLASS()
 class TGP_API UEnemiesAnimInstance : public UAnimInstance
 {
@@ -18,6 +26,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateAnimationVariables();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
+	float MoveSpeed; 
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
+	MovingState MoveState;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Enemy")
 	class ABaseAiCharacter* Zombie;
 	

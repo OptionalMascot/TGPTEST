@@ -7,6 +7,14 @@
 
 #include "BaseAiCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class EZombieMoveType : uint8
+{
+	MoveState_SlowWalking		UMETA(DisplayName = "Slow Walking"),
+	MoveState_NormalWalking	UMETA(DisplayName = "Normal Walking"),
+	MoveState_Running			UMETA(DisplayName = "Running")
+};
+
 class UAiCharacterData;
 
 UCLASS()
@@ -40,6 +48,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class USphereComponent* RightHandCollider;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class UCapsuleComponent* LeftArmCollider;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") EZombieMoveType MovementType;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* AttackMontage;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* DeathMontage;
 
