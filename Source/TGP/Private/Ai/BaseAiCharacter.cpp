@@ -93,6 +93,8 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 		GetMesh()->SetSkeletalMesh(EnemyStats->SkeletalMeshes[FMath::RandRange(0, EnemyStats->SkeletalMeshes.Num() - 1)]);
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 		GetMesh()->SetAnimInstanceClass(EnemyStats->EnemyAnimBP);
+		
+		GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed;
 
 		HealthComponent->health = EnemyStats->DefaultHealth + (EnemyStats->DefaultHealth * FMath::RandRange(-EnemyStats->MaxDeviation, EnemyStats->MaxDeviation));
 		Damage = EnemyStats->DefaultDamage + (EnemyStats->DefaultDamage * FMath::RandRange(0.f, EnemyStats->MaxDeviation));
