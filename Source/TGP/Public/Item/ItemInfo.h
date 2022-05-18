@@ -106,6 +106,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") float KnockbackForce = 1000.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") float FuseTime = 5.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") float ThrowForce = 100.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") TSubclassOf<AActor> ThrowableBlueprint;
 
 	virtual void GenerateStats() override;
 	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
