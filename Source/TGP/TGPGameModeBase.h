@@ -60,6 +60,8 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
 public:
 	ATGPGameModeBase();
 
