@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{EB3A0660-4FF2-E07B-94FE-758A0AE98281}",
+	"EngineAssociation": "{62DCD2E7-4876-924D-054A-7CBD9E9459AF}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -34,6 +34,10 @@
 				"Win64",
 				"Linux"
 			]
+		},
+		{
+			"Name": "OnlineSubsystemSteam",
+			"Enabled": true
 		}
 	]
 }
