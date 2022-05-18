@@ -1,9 +1,11 @@
 #include "TGPGameModeBase.h"
+
 #include "DrawDebugHelpers.h"
 #include "FP_FirstPerson/FP_FirstPersonCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Ai/BaseAiCharacter.h"
 #include "Ai/AiCharacterData.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ATGPGameModeBase::ATGPGameModeBase()
 {
@@ -59,9 +61,13 @@ void ATGPGameModeBase::Tick(float DeltaSeconds)
 
 void ATGPGameModeBase::BeginRound()
 {
+	if(regions.Num()>0)
+		currentRegion = regions[UKismetMathLibrary::RandomInteger(regions.Num())];
+	
 	EnemiesToSpawn = (int)((SpawnIncreaseExponential * CurrentRound) * 24);
 	SpawnerTimer = 0.f;
 	bPendingRoundRestart = false;
+	
 }
 
 void ATGPGameModeBase::EndRound()
@@ -79,7 +85,16 @@ bool ATGPGameModeBase::TrySpawnEnemy()
 	
 	for (int i = 0; i < 100; i++)
 	{
-		const FVector AttemptedSpawnPoint = FVector(FMath::RandRange(SpawnMinRange.X, SpawnMaxRange.X), FMath::RandRange(SpawnMinRange.Y, SpawnMaxRange.Y), 3000.f);
+		FVector AttemptedSpawnPoint;
+		if(currentRegion!=nullptr)
+		{
+			AttemptedSpawnPoint = currentRegion->GetRandomPointInRegion();
+		}
+		else
+		{
+			AttemptedSpawnPoint = FVector(FMath::RandRange(SpawnMinRange.X, SpawnMaxRange.X), FMath::RandRange(SpawnMinRange.Y, SpawnMaxRange.Y), 3000.f);
+		}
+		 
 
 		DrawDebugLine(GetWorld(),AttemptedSpawnPoint, AttemptedSpawnPoint + (FVector::DownVector * 6000.f), FColor::Red, false, 1.f);
 		
