@@ -95,7 +95,8 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 		GetMesh()->SetAnimInstanceClass(EnemyStats->EnemyAnimBP);
 
 		float SpeedGenerator[3] = {0.5f, 1.0f, 2.5f};
-		int SpeedIndex = FMath::RandRange(0, 2);
+		//int SpeedIndex = FMath::RandRange(0, 2);
+		int SpeedIndex = 1;
 		
 		switch (SpeedIndex)
 		{
