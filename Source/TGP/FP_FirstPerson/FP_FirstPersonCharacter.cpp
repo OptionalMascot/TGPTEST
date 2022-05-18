@@ -12,7 +12,7 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
-#include "Weapons/Throwables/GrenadeWeapon.h"
+#include "Weapons/Throwables/ThrowableWeapon.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -357,10 +357,10 @@ void AFP_FirstPersonCharacter::ThrowUtility()
 		FRotator rot;
 		_playerController->GetPlayerViewPoint(pos, rot);
 	
-		AGrenadeWeapon* GrenadeActor = GetWorld()->SpawnActor<AGrenadeWeapon>(_grenadeToSpawn, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
-		GrenadeActor->Initialize(Cast<UThrowableInfo>(Throwable->GetItemInfo()));
-		GrenadeActor->SetInitialThrowForce(rot.Vector() * 100000.0f);
-		GrenadeActor->SetPlayerController(_playerController);
+		AThrowableWeapon* ThrowableActor = GetWorld()->SpawnActor<AThrowableWeapon>(Cast<UThrowableInfo>(Throwable->GetItemInfo())->ThrowableBlueprint, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
+		ThrowableActor->Initialize(Cast<UThrowableInfo>(Throwable->GetItemInfo()));
+		ThrowableActor->SetInitialThrowForce(rot.Vector() * 100000.0f);
+		ThrowableActor->SetPlayerController(_playerController);
 
 		PlayerInventory->OnUseUtility();
 	}

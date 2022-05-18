@@ -6,13 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "NiagaraComponent.h"
+#include "Weapons/Throwables/ThrowableWeapon.h"
 #include "GrenadeWeapon.generated.h"
 
 class UThrowableInfo;
 class APlayerController;
 
 UCLASS()
-class TGP_API AGrenadeWeapon : public AActor, public IWaitTimer
+class TGP_API AGrenadeWeapon : public AThrowableWeapon, public IWaitTimer
 {
 	GENERATED_BODY()
 	
@@ -25,21 +26,17 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) USkeletalMeshComponent* ItemSkeletalMesh;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UThrowableInfo* _throwableInfo;
 
 	// Particle System
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UNiagaraComponent* _particleSystem;
 	
 	bool _startFuse;
-	UPROPERTY() APlayerController* _controller;
 	virtual void StartWaitTimer(AActor* actor, float time) override;
-	void ExplodeGrenade();
+	virtual void ExplodeGrenade();
 	void SphereCastForTargets();
 public:	
 	// Called every frame
 	void DestroyObj();
 	virtual void Tick(float DeltaTime) override;
-	void SetInitialThrowForce(FVector forceDir);
-	void Initialize(UThrowableInfo* throwableInfo);
-	void SetPlayerController(APlayerController* controller);
+	void Initialize(UThrowableInfo* throwableInfo) override;
 };

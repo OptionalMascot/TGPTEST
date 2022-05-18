@@ -32,6 +32,7 @@ void AGrenadeWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	_startFuse = false;
+	SetPhysicsMesh(ItemSkeletalMesh);
 	Initialize(_throwableInfo);
 	if(_particleSystem)
 	{
@@ -47,7 +48,7 @@ void AGrenadeWeapon::StartWaitTimer(AActor* actor, float time)
 
 void AGrenadeWeapon::ExplodeGrenade()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("BOOM"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("BOOM"));
 	_particleSystem->Activate();
 	ItemSkeletalMesh->SetHiddenInGame(true);
 
@@ -73,7 +74,7 @@ void AGrenadeWeapon::SphereCastForTargets()
 				if(!appliedPhysics.Contains(OutHits[i].GetActor()))
 				{
 					appliedPhysics.Add(OutHits[i].GetActor());
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, OutHits[i].GetActor()->GetName());
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, OutHits[i].GetActor()->GetName());
 					UStaticMeshComponent* mesh = OutHits[i].GetActor()->FindComponentByClass<UStaticMeshComponent>();
 					USkeletalMeshComponent* skeleMesh = OutHits[i].GetActor()->FindComponentByClass<USkeletalMeshComponent>();
 					if(skeleMesh)
@@ -104,22 +105,10 @@ void AGrenadeWeapon::Tick(float DeltaTime)
 	
 }
 
-void AGrenadeWeapon::SetInitialThrowForce(FVector forceDir)
-{
-	ItemSkeletalMesh->AddForce(forceDir);
-	FVector randSpin = FVector(FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f));
-	ItemSkeletalMesh->AddTorque(randSpin * 50000.0f);
-}
-
 void AGrenadeWeapon::Initialize(UThrowableInfo* throwableInfo)
 {
 	_throwableInfo = throwableInfo;
 	ItemSkeletalMesh->SetSkeletalMesh(_throwableInfo->WeaponSkeletalMesh);
 	StartWaitTimer(this, _throwableInfo->FuseTime);	
-}
-
-void AGrenadeWeapon::SetPlayerController(APlayerController* controller)
-{
-	_controller = controller;
 }
 
