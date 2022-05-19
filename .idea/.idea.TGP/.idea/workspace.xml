@@ -4,11 +4,12 @@
     <projectFile>Intermediate/ProjectFiles/TGP.vcxproj</projectFile>
     <projectFile>Intermediate/ProjectFiles/UE4.vcxproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonGameMode.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonGameMode.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,17 +47,26 @@
       <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponHoldComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HealthComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/MyDamageMarker.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnComponent.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerComponent.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/GameInstance/BaseGameInstance.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HitscanWeaponComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/Interfaces/WeaponInterfaces.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HitscanWeaponComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Interactables/InteractableComponent.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Interactables/InteractableComponent.cpp" />
     </changedPaths>
   </component>
   <component name="MarkdownSettingsMigration">
@@ -74,6 +84,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="C++ Project.TGP">
@@ -321,6 +335,17 @@
       <workItem from="1652461042451" duration="310000" />
       <workItem from="1652461980236" duration="282000" />
       <workItem from="1652462875922" duration="688000" />
+      <workItem from="1652483238601" duration="224000" />
+      <workItem from="1652483522274" duration="144000" />
+      <workItem from="1652484316190" duration="1054000" />
+      <workItem from="1652510291345" duration="393000" />
+      <workItem from="1652531176905" duration="3389000" />
+      <workItem from="1652707882638" duration="11758000" />
+      <workItem from="1652779299219" duration="1622000" />
+      <workItem from="1652788830563" duration="1176000" />
+      <workItem from="1652790973823" duration="8829000" />
+      <workItem from="1652898898736" duration="1819000" />
+      <workItem from="1652955305841" duration="356000" />
     </task>
     <servers />
   </component>

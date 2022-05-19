@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interactables/IInteractable.h"
 #include "ItemActor.generated.h"
 
 class UItemInfo;
@@ -12,7 +13,7 @@ class UWeaponInfo;
 class UWeaponStatUIWidget;
 
 UCLASS()
-class TGP_API AItemActor : public AActor
+class TGP_API AItemActor : public AActor, public IIInteractable
 {
 	GENERATED_BODY()
 
@@ -31,8 +32,6 @@ protected:
 	virtual void WidgetBillboard();
 
 	void InitialiseWidgetText(const UWeaponInfo* info);
-
-	
 	
 public:
 	AItemActor();
@@ -43,7 +42,13 @@ public:
 	USkeletalMeshComponent* GetSkeletalMesh() { return ItemSkeletalMesh; }
 
 	void AddInitialThrowForce(FVector dir, float force);
+
+	virtual void StartHover() override;
+	virtual void EndHover() override;
 	
 	UFUNCTION(BlueprintCallable) void Initialize(UBaseItem* Item);
 	UBaseItem* GetItem() const { return DefinedItem; }
+
+	UFUNCTION(NetMulticast, Reliable) virtual void OnPickUp();
+	void OnPickUp_Implementation();
 };
