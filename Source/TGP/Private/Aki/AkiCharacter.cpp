@@ -73,6 +73,8 @@ void AAkiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AAkiCharacter::Reload);
 
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AAkiCharacter::Attack);
+
 }
 
 void AAkiCharacter::LookUp(float inputValue)
@@ -206,6 +208,22 @@ void AAkiCharacter::SetWeaponTransformDefaults()
 	WeaponYawDiff = Camera->GetComponentRotation().Yaw - WeaponDefaultRotation.Yaw;
 	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Black, FString::SanitizeFloat(WeaponYawDiff));
 	WeaponAimYaw = GetMesh()->GetRelativeRotation().Yaw + WeaponYawDiff;
+}
+
+void AAkiCharacter::Attack()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if(!AnimInstance)
+	{
+		return;
+	}
+	
+	if(WeaponMesh->SkeletalMesh->GetName().Contains("Sword") && !AnimInstance->Montage_IsPlaying(CombatMontage))
+	{
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection(FName("Melee2"), CombatMontage);
+	}
 }
 
 

@@ -108,6 +108,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetWeaponTransformDefaults();
+
+	void Attack();
 };
 
 
