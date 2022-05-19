@@ -2,9 +2,6 @@
 
 
 #include "Weapons/Throwables/GrenadeWeapon.h"
-
-#include <d3d10.h>
-
 #include "NiagaraFunctionLibrary.h"
 #include "Item/ItemInfo.h"
 #include "Kismet/KismetSystemLibrary.h"
