@@ -7,6 +7,14 @@
 
 #include "BaseAiCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class EZombieMoveType : uint8
+{
+	MoveState_SlowWalking		UMETA(DisplayName = "Slow Walking"),
+	MoveState_NormalWalking	UMETA(DisplayName = "Normal Walking"),
+	MoveState_Running			UMETA(DisplayName = "Running")
+};
+
 class UAiCharacterData;
 
 UCLASS()
@@ -36,4 +44,23 @@ public:
 	void SpawnEnemy(const FVector& RespawnPos);
 
 	void SetHidden(bool bEnemyHidden);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class USphereComponent* RightHandCollider;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class UCapsuleComponent* LeftArmCollider;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") EZombieMoveType MovementType;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* AttackMontage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* DeathMontage;
+
+	UFUNCTION(BlueprintCallable) void Attack();
+	UFUNCTION(BlueprintCallable) void Die();
+
+	UFUNCTION() void LHHitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	UFUNCTION() void RHHitPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+
+	UFUNCTION(BlueprintCallable) void LeftColliderOn();
+	UFUNCTION(BlueprintCallable) void LeftColliderOff();
+	
+	UFUNCTION(BlueprintCallable) void RightColliderOn();
+	UFUNCTION(BlueprintCallable) void RightColliderOff();
 };
