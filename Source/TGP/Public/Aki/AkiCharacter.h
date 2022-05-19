@@ -33,6 +33,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
 	FRotator WeaponDefaultRotation;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	FRotator MeshDefaultRotation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	float WeaponYawDiff;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	float WeaponAimYaw;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
 	bool IsSprinting;
 	

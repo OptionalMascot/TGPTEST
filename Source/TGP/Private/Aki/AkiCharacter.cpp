@@ -118,7 +118,14 @@ void AAkiCharacter::BeginAim()
 	if(WeaponType != 2)
 	{
 		IsAiming = true;
-		Camera->SetFieldOfView(85.0f);
+		if(WeaponMesh->SkeletalMesh->GetName().Contains("Sniper"))
+		{
+			Camera->SetFieldOfView(60.0f);
+		}
+		else
+		{
+			Camera->SetFieldOfView(85.0f);
+		}		
 		Aim();
 	}
 }
@@ -153,9 +160,16 @@ void AAkiCharacter::ReloadFinished()
 
 void AAkiCharacter::AttachWeapon()
 {
-	if(WeaponMesh->SkeletalMesh->GetName().Contains("Rifle") || WeaponMesh->SkeletalMesh->GetName().Contains("Shotgun") || WeaponMesh->SkeletalMesh->GetName().Contains("Sniper"))
+	if(WeaponMesh->SkeletalMesh->GetName().Contains("Rifle") || WeaponMesh->SkeletalMesh->GetName().Contains("SMG") || WeaponMesh->SkeletalMesh->GetName().Contains("Shotgun") || WeaponMesh->SkeletalMesh->GetName().Contains("Sniper"))
 	{
-		WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+		if(WeaponMesh->SkeletalMesh->GetName().Contains("SMG"))
+		{
+			WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("SubMachineSocket"));
+		}
+		else
+		{
+			WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+		}
 		WeaponType = 0;
 		SetAnimation();
 	}
@@ -183,7 +197,15 @@ void AAkiCharacter::SetWeaponTransformDefaults()
 
 	WeaponLocationOffset = WeaponDefaultLocation + WeaponLocationOffset;
 	WeaponLocationOffset.Y += 7.5f;
-	
+
+	MeshDefaultRotation = GetMesh()->GetRelativeRotation();
+
+	WeaponDefaultRotation = WeaponMesh->GetComponentRotation();
+	WeaponDefaultRotation.Yaw += 90.0;
+
+	WeaponYawDiff = Camera->GetComponentRotation().Yaw - WeaponDefaultRotation.Yaw;
+	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Black, FString::SanitizeFloat(WeaponYawDiff));
+	WeaponAimYaw = GetMesh()->GetRelativeRotation().Yaw + WeaponYawDiff;
 }
 
 
