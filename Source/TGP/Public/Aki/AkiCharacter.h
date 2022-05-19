@@ -41,6 +41,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat")
 	bool IsReloading;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Animation")
+	int WeaponType;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -88,6 +91,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ReloadFinished();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetAnimation();
+
+	void AttachWeapon();
 };
 
 

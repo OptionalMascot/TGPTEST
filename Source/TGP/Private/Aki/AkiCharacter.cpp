@@ -41,6 +41,8 @@ void AAkiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AttachWeapon();
+	
 	WeaponDefaultLocation = GetMesh()->GetRelativeLocation();
 	WeaponLocationOffset = WeaponDefaultLocation + (AimLocation->GetComponentLocation() - WeaponMesh->GetSocketLocation(FName("AimSocket")));
 }
@@ -143,6 +145,22 @@ void AAkiCharacter::Reload()
 void AAkiCharacter::ReloadFinished()
 {
 	IsReloading = false;
+}
+
+void AAkiCharacter::AttachWeapon()
+{
+	if(WeaponMesh->SkeletalMesh->GetName().Contains("Rifle") || WeaponMesh->SkeletalMesh->GetName().Contains("Shotgun") || WeaponMesh->SkeletalMesh->GetName().Contains("Sniper"))
+	{
+		WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+		WeaponType = 0;
+		SetAnimation();
+	}
+	else if(WeaponMesh->SkeletalMesh->GetName().Contains("Pistol") || WeaponMesh->SkeletalMesh->GetName().Contains("Revolver"))
+	{
+		WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("PistolSocket"));
+		WeaponType = 1;
+		SetAnimation();
+	}
 }
 
 
