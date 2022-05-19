@@ -6,14 +6,16 @@
 #include "GameFramework/Actor.h"
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "NiagaraComponent.h"
+#include "Weapons/Projectiles/IProjectile.h"
 #include "Weapons/Throwables/ThrowableWeapon.h"
+#include "Weapons/Projectiles/IProjectile.h"
 #include "GrenadeWeapon.generated.h"
 
 class UThrowableInfo;
 class APlayerController;
 
 UCLASS()
-class TGP_API AGrenadeWeapon : public AThrowableWeapon, public IWaitTimer
+class TGP_API AGrenadeWeapon : public AThrowableWeapon, public IIProjectile, public IWaitTimer
 {
 	GENERATED_BODY()
 	
