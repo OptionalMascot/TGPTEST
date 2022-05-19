@@ -20,9 +20,6 @@ AAkiCharacter::AAkiCharacter()
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon Mesh"));
 	WeaponMesh->SetupAttachment(GetMesh());
 
-	AimLocation = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Location"));
-	AimLocation->SetupAttachment(Camera);
-
 	M_CameraSensitivity = 0.6f; //Try keep between 0-1 otherwise sensitivity gets out of hand
 
 	IsSprinting = false;
@@ -43,8 +40,7 @@ void AAkiCharacter::BeginPlay()
 
 	AttachWeapon();
 	
-	WeaponDefaultLocation = GetMesh()->GetRelativeLocation();
-	WeaponLocationOffset = WeaponDefaultLocation + (AimLocation->GetComponentLocation() - WeaponMesh->GetSocketLocation(FName("AimSocket")));
+	
 }
 
 // Called every frame
@@ -119,14 +115,22 @@ void AAkiCharacter::StopSprint()
 
 void AAkiCharacter::BeginAim()
 {
-	IsAiming = true;
-	Aim();
+	if(WeaponType != 2)
+	{
+		IsAiming = true;
+		Camera->SetFieldOfView(85.0f);
+		Aim();
+	}
 }
 
 void AAkiCharacter::EndAim()
 {
-	IsAiming = false;
-	StopAim();
+	if(WeaponType != 2)
+	{
+		IsAiming = false;
+		Camera->SetFieldOfView(100.0f);
+		StopAim();
+	}
 }
 
 void AAkiCharacter::Reload()
@@ -167,6 +171,19 @@ void AAkiCharacter::AttachWeapon()
 		WeaponType = 2;
 		SetAnimation();
 	}
+}
+
+void AAkiCharacter::SetWeaponTransformDefaults()
+{
+	WeaponDefaultLocation = GetMesh()->GetRelativeLocation();
+	WeaponLocationOffset = Camera->GetComponentLocation() - WeaponMesh->GetSocketLocation(FName("AimSocket"));
+	const float TempY = WeaponLocationOffset.Y;
+	WeaponLocationOffset.Y = WeaponLocationOffset.X;
+	WeaponLocationOffset.X = TempY;
+
+	WeaponLocationOffset = WeaponDefaultLocation + WeaponLocationOffset;
+	WeaponLocationOffset.Y += 7.5f;
+	
 }
 
 

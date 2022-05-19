@@ -21,9 +21,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Mesh")
 	class USkeletalMeshComponent* WeaponMesh;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon Location")
-	class USceneComponent* AimLocation;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Combat")
 	class UAnimMontage* CombatMontage;
 
@@ -32,6 +29,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
 	FVector WeaponDefaultLocation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	FRotator WeaponDefaultRotation;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
 	bool IsSprinting;
@@ -96,6 +96,9 @@ public:
 	void SetAnimation();
 
 	void AttachWeapon();
+
+	UFUNCTION(BlueprintCallable)
+	void SetWeaponTransformDefaults();
 };
 
 
