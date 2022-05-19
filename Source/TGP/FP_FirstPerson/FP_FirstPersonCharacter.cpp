@@ -377,6 +377,8 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
 
 	UWeaponComponent* newComponent = NewObject<UWeaponComponent>(_currentWeapon, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, TEXT("Weapon Component"));
+
+	newComponent->RegisterComponentWithWorld(GetWorld());
 	
 	_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
 
