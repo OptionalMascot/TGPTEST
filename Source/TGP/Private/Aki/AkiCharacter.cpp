@@ -161,6 +161,12 @@ void AAkiCharacter::AttachWeapon()
 		WeaponType = 1;
 		SetAnimation();
 	}
+	else if(WeaponMesh->SkeletalMesh->GetName().Contains("Sword"))
+	{
+		WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("MeleeSocket"));
+		WeaponType = 2;
+		SetAnimation();
+	}
 }
 
 
