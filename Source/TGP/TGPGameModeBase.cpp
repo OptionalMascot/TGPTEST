@@ -21,7 +21,7 @@ void ATGPGameModeBase::BeginPlay()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.bNoFail = true;
 
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "THUWHUDHAWd ");
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "THUWHUDHAWd ");
 	
 	for (uint8 i = 0; i < MaxEnemies; i++) // Init Pool
 	{
@@ -30,6 +30,7 @@ void ATGPGameModeBase::BeginPlay()
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
+	
 }
 
 void ATGPGameModeBase::Tick(float DeltaSeconds)
@@ -62,7 +63,10 @@ void ATGPGameModeBase::Tick(float DeltaSeconds)
 void ATGPGameModeBase::BeginRound()
 {
 	if(regions.Num()>0)
+	{
 		currentRegion = regions[UKismetMathLibrary::RandomInteger(regions.Num())];
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "Region Spawn");
+	}
 	
 	EnemiesToSpawn = (int)((SpawnIncreaseExponential * CurrentRound) * 24);
 	SpawnerTimer = 0.f;
@@ -172,6 +176,11 @@ void ATGPGameModeBase::SpawnEnemy(uint8 EnemyIndex, const FVector& Position) // 
 bool ATGPGameModeBase::IsLookingAtDir(const FVector& PawnDir, const FVector& DirToPoint) const
 {
 	return FVector::DotProduct(PawnDir, DirToPoint) > 0.f;
+}
+
+void ATGPGameModeBase::SetRegions()
+{
+	
 }
 
 void ATGPGameModeBase::DEBUG_KILL_ENEMY()

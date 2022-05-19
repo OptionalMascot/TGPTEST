@@ -59,6 +59,8 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	bool CheckLineOfSight(const FVector& PawnLoc, const FVector& SpawnPoint) const;
 	bool IsLookingAtDir(const FVector& PawnDir, const FVector& DirToPoint) const;
 
+	void SetRegions();
+	
 	UFUNCTION(CallInEditor) void DEBUG_KILL_ENEMY();
 
 protected:
