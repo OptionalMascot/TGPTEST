@@ -164,8 +164,7 @@ protected:
 	 * @returns true if touch controls were enabled.
 	 */
 	void TryEnableTouchscreenMovement(UInputComponent* InputComponent);
-
-
+	
 	// Weapon Stuff
 
 	UPROPERTY() class AGunHostActor* _currentWeapon;
@@ -178,9 +177,21 @@ protected:
 	void ThrowUtility();
 	
 	bool _weaponQueued;
-	
+
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
 
+	UFUNCTION(Server, Reliable) void OnPickUpItem(class AItemActor* ItemActor);
+	void OnPickUpItem_Implementation(AItemActor* ItemActor);
+	
+	UFUNCTION(Server, Reliable) void OnWeaponDropped();
+	void OnWeaponDropped_Implementation();
+	
+	UFUNCTION(NetMulticast, Reliable) void ChangeWeaponMeshMulti(int ItemId);
+	void ChangeWeaponMeshMulti_Implementation(int ItemId);
+
+	UFUNCTION(Server, Reliable) void RequestWeaponMeshChange(int Slot);
+	void RequestWeaponMeshChange_Implementation(int Slot);
+	
 	UPROPERTY() AActor* _lastLooked;
 	IIInteractable* _lastLookedInterface;
 	void InteractWithObject();

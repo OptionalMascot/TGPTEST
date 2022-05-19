@@ -27,7 +27,7 @@ void ATGPGameModeBase::BeginPlay()
 	//	EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClass ? AiActorClass : ABaseAiCharacter::StaticClass(), FVector() + (FVector(100.f, 0.f, 0.f) * i), FRotator(), SpawnParams));
 	//	EnemyPool[i]->SetHidden(true);
 	//}
-
+//
 	//GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
 }
 

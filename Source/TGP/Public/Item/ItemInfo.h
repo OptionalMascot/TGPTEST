@@ -46,7 +46,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemInfo") UStaticMesh* ItemMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") TEnumAsByte<ERarity> ItemRarity;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") int MaxStack;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") int MaxStack = 1;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") int TradePrice;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") UTexture2D* ItemIcon;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, BlueprintReadOnly, Category = "ItemData") TSubclassOf<class UBaseItem> ItemClass; // TODO: REPLACE WITH ITEM CLASS
@@ -67,6 +67,8 @@ class TGP_API UWeaponInfo : public UItemInfo
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponInfo") float Damage = 10.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponVisuals") USkeletalMesh* WeaponSkeletalMesh;
+
+	virtual bool IsSupportedForNetworking() const override { return true; }
 };
 
 UCLASS()

@@ -4,8 +4,10 @@
 #include "Components/BoxComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Engine/ActorChannel.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Net/UnrealNetwork.h"
 #include "Weapons/UI/WeaponStatUIWidget.h"
 
 AItemActor::AItemActor()
@@ -35,11 +37,39 @@ AItemActor::AItemActor()
 	StatWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	StatWidget->SetupAttachment(RootComponent);
 	//StatWidget->SetWidgetClass(UWeaponStatUIWidget::StaticClass());
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+}
+
+void AItemActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AItemActor, DefinedItem);
+}
+
+bool AItemActor::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
+{
+	bool bUpdate = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
+	bUpdate |= Channel->ReplicateSubobject(DefinedItem, *Bunch, *RepFlags);
+
+	return bUpdate;
 }
 
 void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (!HasAuthority())
+	{ 
+		if (DefinedItem)
+		{
+			DefinedItem->UpdateItemInfo();
+			Initialize(DefinedItem);
+		}
+	}
+	
 	_playerController = nullptr;
 	StatWidget->SetHiddenInGame(true);
 }
@@ -165,7 +195,7 @@ void AItemActor::Initialize(UBaseItem* Item)
 		LightColourSetup(WepInfo);
 		InitialiseWidgetText(WepInfo);
 	}
-	else
+	else if (Info != nullptr)
 		ItemMesh->SetStaticMesh(Info->ItemMesh);
 }
 
@@ -173,4 +203,3 @@ void AItemActor::OnPickUp_Implementation()
 {
 	Destroy(true);
 }
-

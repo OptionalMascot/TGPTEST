@@ -1,16 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Weapons/HitscanWeaponComponent.h"
-
-#include <mftransform.h>
-
 #include "Weapons/UI/MyDamageMarker.h"
 #include "Weapons/UI/UserWidgetTest.h"
 #include "Weapons/HealthComponent.h"
 #include "Item/BaseItem.h"
 #include "Item/ItemInfo.h"
-#include <string>
 #include "Components/WidgetComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
@@ -78,11 +73,11 @@ void UHitscanWeaponComponent::OnFire()
 				AActor* hit = result.GetActor(); // Get Actor
 				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass()); // Attempt to apply damage
 			}
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
 			TryReload(_parent); // If can't shoot, try and reload
 		}
 	}
@@ -144,7 +139,7 @@ void UHitscanWeaponComponent::RecoilTimelineProgressYaw(float Value)
 
 void UHitscanWeaponComponent::RecoilTimelineFinished()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Timeline Ended"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Timeline Ended"));
 	if(GetTimelineDirection() == ERecoilDirection::Backwards && !singleFireRecoilStarted)
 	{
 		EndRecoil();

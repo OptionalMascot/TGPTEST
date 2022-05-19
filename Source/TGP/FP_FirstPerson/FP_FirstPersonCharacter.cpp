@@ -1,10 +1,13 @@
 #include "FP_FirstPersonCharacter.h"
+
+#include "DrawDebugHelpers.h"
 #include "Animation/AnimInstance.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "GameInstance/BaseGameInstance.h"
 #include "Weapons/GunHostActor.h"
 #include "Weapons/WeaponComponent.h"
 #include "Weapons/Interfaces/WeaponInterfaces.h"
@@ -44,7 +47,7 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 
 	// Create a gun mesh component
 	FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
-	FP_Gun->SetOnlyOwnerSee(true);			// Only the owning player will see this mesh
+	FP_Gun->SetOnlyOwnerSee(false);			// Only the owning player will see this mesh
 	FP_Gun->bCastDynamicShadow = false;		// Disallow mesh to cast dynamic shadows
 	FP_Gun->CastShadow = false;			// Disallow mesh to cast other shadows
 	FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
@@ -53,7 +56,7 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 	GunActorComponent->SetChildActorClass(AGunHostActor::StaticClass());
 	GunActorComponent->SetupAttachment(Mesh1P);
 
-	PlayerInventory = CreateDefaultSubobject<UPlayerInventory>(TEXT("PlayerInventory"));
+	PlayerInventory = CreateDefaultSubobject<UPlayerInventory>(TEXT("PlayerInv"));
 	AddOwnedComponent(PlayerInventory);
 
 	// Set weapon damage and range
@@ -110,7 +113,9 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 {
 	if (Val != 0.f)
+	{
 		PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
+	}
 }
 
 void AFP_FirstPersonCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
@@ -329,8 +334,10 @@ void AFP_FirstPersonCharacter::DropWeapon()
 	//	_currentWeapon = nullptr;
 	//}
 
+	OnWeaponDropped();
+
 	_currentWeaponComponent->DropWeapon();
-	PlayerInventory->DropWeapon();
+	//PlayerInventory->DropWeapon();
 }
 
 void AFP_FirstPersonCharacter::ReloadWeapon()
@@ -341,7 +348,7 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 		if(AmmoRef != nullptr)
 		{
 			AmmoRef->TryReload(_currentWeapon);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 		}
 	}
 }
@@ -374,13 +381,38 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(nullptr);
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
-	{
 		_currentWeaponComponent->InitializeWeapon(Gun);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NOT VALID");
-	}
+
+	RequestWeaponMeshChange(PlayerInventory->GetSelectedWeaponSlot());
+}
+
+void AFP_FirstPersonCharacter::OnPickUpItem_Implementation(AItemActor* ItemActor)
+{
+	if(PlayerInventory->TryPickUpItem(ItemActor->GetItem()))
+		ItemActor->Destroy();
+}
+
+void AFP_FirstPersonCharacter::OnWeaponDropped_Implementation()
+{
+	AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(PlayerInventory->GetItemActor(), GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
+	ItemActor->Initialize(PlayerInventory->GetSelectedWeapon());
+
+	PlayerInventory->DropWeapon();
+}
+
+void AFP_FirstPersonCharacter::ChangeWeaponMeshMulti_Implementation(int ItemId)
+{
+	if (UBaseGameInstance* GI = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+		if (UWeaponInfo* Info = Cast<UWeaponInfo>(GI->FindInfoUniqueId(ItemId)))
+			FP_Gun->SetSkeletalMesh(Info->WeaponSkeletalMesh);
+}
+
+void AFP_FirstPersonCharacter::RequestWeaponMeshChange_Implementation(int Slot)
+{
+	PlayerInventory->ChangeWeapon((EWeaponSlot)Slot, true, false);
+
+	if (const UWeaponItem* Wep = PlayerInventory->GetSelectedWeapon())
+		ChangeWeaponMeshMulti(Wep->GetItemId());
 }
 
 void AFP_FirstPersonCharacter::InteractWithObject()
@@ -390,8 +422,7 @@ void AFP_FirstPersonCharacter::InteractWithObject()
 		if(_lastLooked->ActorHasTag(TEXT("Weapon")))
 		{
 			if (AItemActor* ItemActor = Cast<AItemActor>(_lastLooked))
-				if(PlayerInventory->TryPickUpItem(ItemActor->GetItem()))
-					ItemActor->Destroy();
+					OnPickUpItem(ItemActor);
 		}
 		else if(_lastLookedInterface)
 		{
