@@ -69,8 +69,6 @@ void UWeaponComponent::PickupWeapon(AActor* parent)
 	{
 		_parent = parent;
 		_parentController = nullptr;
-		//_parentMesh->SetSimulatePhysics(false);
-		//_parentMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 

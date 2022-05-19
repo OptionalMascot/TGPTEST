@@ -9,7 +9,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun1.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun2.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun2.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_GunInfo.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_GunInfo.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_GunInfo2.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_GunInfo2.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,33 +39,29 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIWidget.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" />
       <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponHoldComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HealthComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/MyDamageMarker.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" />
@@ -62,11 +69,15 @@
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HitscanWeaponComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/Interfaces/WeaponInterfaces.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Interactables/InteractableComponent.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Interactables/InteractableComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Interactables/InteractableComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Interactables/InteractableComponent.cpp" />
     </changedPaths>
   </component>
   <component name="MarkdownSettingsMigration">
@@ -346,6 +357,7 @@
       <workItem from="1652790973823" duration="8829000" />
       <workItem from="1652898898736" duration="1819000" />
       <workItem from="1652955305841" duration="356000" />
+      <workItem from="1652968080026" duration="2689000" />
     </task>
     <servers />
   </component>
@@ -369,5 +381,16 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp</url>
+          <line>58</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

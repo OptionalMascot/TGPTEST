@@ -46,3 +46,12 @@ void AGunHostActor::DebugMessage()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Screen Message"));
 }
 
+void AGunHostActor::AssignNewComponent(UWeaponComponent* component)
+{
+	if(component)
+	{
+		component->RegisterComponent();
+		AddOwnedComponent(component);
+	}
+}
+

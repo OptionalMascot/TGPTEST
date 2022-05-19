@@ -372,6 +372,20 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(Cast<UWeaponInfo>(WeaponItem->GetItemInfo())->WeaponSkeletalMesh);
 	else
 		FP_Gun->SetSkeletalMesh(nullptr);
+
+	// Unregister old component
+	_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
+
+	UWeaponComponent* newComponent = NewObject<UWeaponComponent>(_currentWeapon, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, TEXT("Weapon Component"));
+	
+	_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
+
+	_currentWeaponComponent = newComponent; // Save reference
+	
+	_currentWeaponComponent->PickupWeapon(this); // Assign player to component
+
+	_currentWeaponComponent->SetParentMesh(FP_Gun);
+	
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
 	{
