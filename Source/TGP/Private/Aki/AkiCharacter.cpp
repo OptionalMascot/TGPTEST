@@ -193,6 +193,7 @@ void AAkiCharacter::SetWeaponTransformDefaults()
 {
 	WeaponDefaultLocation = GetMesh()->GetRelativeLocation();
 	WeaponLocationOffset = Camera->GetComponentLocation() - WeaponMesh->GetSocketLocation(FName("AimSocket"));
+	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Purple, WeaponLocationOffset.ToString());
 	const float TempY = WeaponLocationOffset.Y;
 	WeaponLocationOffset.Y = WeaponLocationOffset.X;
 	WeaponLocationOffset.X = TempY;

@@ -392,8 +392,7 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NOT VALID");
 	}
 	
-	SetAnimation();
-	SetWeaponTransformDefaults();
+	AttachWeapon();
 }
 
 void AFP_FirstPersonCharacter::InteractWithObject()
@@ -479,19 +478,19 @@ void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
 {
 	WeaponDefaultLocation = Mesh1P->GetRelativeLocation();
-	WeaponLocationOffset = FirstPersonCameraComponent->GetComponentLocation() - FP_Gun->GetSocketLocation(FName("AimSocket"));
-	const float TempY = WeaponLocationOffset.Y;
-	WeaponLocationOffset.Y = WeaponLocationOffset.X;
-	WeaponLocationOffset.X = TempY;
+	WeaponAimLocation = FirstPersonCameraComponent->GetComponentLocation() - FP_Gun->GetSocketLocation(FName("AimSocket"));
+	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Purple, WeaponAimLocation.ToString());
+	const float TempY = WeaponAimLocation.Y;
+	WeaponAimLocation.Y = WeaponAimLocation.X;
+	WeaponAimLocation.X = TempY;
 
-	WeaponLocationOffset = WeaponDefaultLocation + WeaponLocationOffset;
+	WeaponAimLocation = WeaponDefaultLocation + WeaponAimLocation;
 
 	MeshDefaultRotation = Mesh1P->GetRelativeRotation();
 
-	WeaponDefaultRotation = FP_Gun->GetComponentRotation();
-	WeaponDefaultRotation.Yaw += 90.0;
+	WeaponDefaultRotation = FP_Gun->GetRelativeRotation();
 
-	WeaponYawDiff = FirstPersonCameraComponent->GetComponentRotation().Yaw - WeaponDefaultRotation.Yaw;
+	WeaponYawDiff = FirstPersonCameraComponent->GetRelativeLocation().Z - WeaponDefaultRotation.Yaw;
 	WeaponAimYaw = Mesh1P->GetRelativeRotation().Yaw + WeaponYawDiff;
 }
 
@@ -525,7 +524,6 @@ void AFP_FirstPersonCharacter::AttachWeapon()
 		break;
 	}
 	SetAnimation();
-	SetWeaponTransformDefaults();	
 }
 
 void AFP_FirstPersonCharacter::Sprint()

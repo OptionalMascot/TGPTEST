@@ -73,7 +73,7 @@ public:
 	float WeaponDamage;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
-	FVector WeaponLocationOffset;
+	FVector WeaponAimLocation;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
 	FVector WeaponDefaultLocation;
