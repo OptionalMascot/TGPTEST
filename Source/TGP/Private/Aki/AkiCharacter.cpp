@@ -20,9 +20,6 @@ AAkiCharacter::AAkiCharacter()
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon Mesh"));
 	WeaponMesh->SetupAttachment(GetMesh());
 
-	AimLocation = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Location"));
-	AimLocation->SetupAttachment(Camera);
-
 	M_CameraSensitivity = 0.6f; //Try keep between 0-1 otherwise sensitivity gets out of hand
 
 	IsSprinting = false;
@@ -43,8 +40,7 @@ void AAkiCharacter::BeginPlay()
 
 	AttachWeapon();
 	
-	WeaponDefaultLocation = GetMesh()->GetRelativeLocation();
-	WeaponLocationOffset = WeaponDefaultLocation + (AimLocation->GetComponentLocation() - WeaponMesh->GetSocketLocation(FName("AimSocket")));
+	
 }
 
 // Called every frame
@@ -76,6 +72,8 @@ void AAkiCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AAkiCharacter::EndAim);
 
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AAkiCharacter::Reload);
+
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AAkiCharacter::Attack);
 
 }
 
@@ -119,14 +117,29 @@ void AAkiCharacter::StopSprint()
 
 void AAkiCharacter::BeginAim()
 {
-	IsAiming = true;
-	Aim();
+	if(WeaponType != 2)
+	{
+		IsAiming = true;
+		if(WeaponMesh->SkeletalMesh->GetName().Contains("Sniper"))
+		{
+			Camera->SetFieldOfView(60.0f);
+		}
+		else
+		{
+			Camera->SetFieldOfView(85.0f);
+		}		
+		Aim();
+	}
 }
 
 void AAkiCharacter::EndAim()
 {
-	IsAiming = false;
-	StopAim();
+	if(WeaponType != 2)
+	{
+		IsAiming = false;
+		Camera->SetFieldOfView(100.0f);
+		StopAim();
+	}
 }
 
 void AAkiCharacter::Reload()
@@ -149,9 +162,16 @@ void AAkiCharacter::ReloadFinished()
 
 void AAkiCharacter::AttachWeapon()
 {
-	if(WeaponMesh->SkeletalMesh->GetName().Contains("Rifle") || WeaponMesh->SkeletalMesh->GetName().Contains("Shotgun") || WeaponMesh->SkeletalMesh->GetName().Contains("Sniper"))
+	if(WeaponMesh->SkeletalMesh->GetName().Contains("Rifle") || WeaponMesh->SkeletalMesh->GetName().Contains("SMG") || WeaponMesh->SkeletalMesh->GetName().Contains("Shotgun") || WeaponMesh->SkeletalMesh->GetName().Contains("Sniper"))
 	{
-		WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+		if(WeaponMesh->SkeletalMesh->GetName().Contains("SMG"))
+		{
+			WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("SubMachineSocket"));
+		}
+		else
+		{
+			WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+		}
 		WeaponType = 0;
 		SetAnimation();
 	}
@@ -166,6 +186,43 @@ void AAkiCharacter::AttachWeapon()
 		WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("MeleeSocket"));
 		WeaponType = 2;
 		SetAnimation();
+	}
+}
+
+void AAkiCharacter::SetWeaponTransformDefaults()
+{
+	WeaponDefaultLocation = GetMesh()->GetRelativeLocation();
+	WeaponLocationOffset = Camera->GetComponentLocation() - WeaponMesh->GetSocketLocation(FName("AimSocket"));
+	const float TempY = WeaponLocationOffset.Y;
+	WeaponLocationOffset.Y = WeaponLocationOffset.X;
+	WeaponLocationOffset.X = TempY;
+
+	WeaponLocationOffset = WeaponDefaultLocation + WeaponLocationOffset;
+	WeaponLocationOffset.Y += 7.5f;
+
+	MeshDefaultRotation = GetMesh()->GetRelativeRotation();
+
+	WeaponDefaultRotation = WeaponMesh->GetComponentRotation();
+	WeaponDefaultRotation.Yaw += 90.0;
+
+	WeaponYawDiff = Camera->GetComponentRotation().Yaw - WeaponDefaultRotation.Yaw;
+	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Black, FString::SanitizeFloat(WeaponYawDiff));
+	WeaponAimYaw = GetMesh()->GetRelativeRotation().Yaw + WeaponYawDiff;
+}
+
+void AAkiCharacter::Attack()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if(!AnimInstance)
+	{
+		return;
+	}
+	
+	if(WeaponMesh->SkeletalMesh->GetName().Contains("Sword") && !AnimInstance->Montage_IsPlaying(CombatMontage))
+	{
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection(FName("Melee2"), CombatMontage);
 	}
 }
 
