@@ -17,6 +17,14 @@ UPlayerInventory::UPlayerInventory()
 	SetIsReplicated(true);
 }
 
+void UPlayerInventory::SrvDropWeapon_Implementation(int Slot)
+{
+	AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(GetItemActor(), GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
+	ItemActor->Initialize(GetSelectedWeapon());
+
+	DropWeapon(Slot);
+}
+
 void UPlayerInventory::BeginPlay()
 {
 	Super::BeginPlay();
@@ -60,14 +68,7 @@ void UPlayerInventory::AddWeapon_Implementation(UWeaponItem* Item, int Slot)
 	if (Item != nullptr)
 	{
 		UBaseItem* ItemAtSlot = WeaponContainer->GetItemAt(Slot);
-	
-		//if (ItemAtSlot)
-		//DropWeapon(Slot);
-	
 		WeaponContainer->AddItem(Item, Slot);
-		ItemAtSlot = WeaponContainer->GetItemAt(Slot);
-
-		return;
 	}
 }
 
@@ -171,8 +172,9 @@ bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 	if (SelectedWeapon != EWeaponSlot::Melee)
 	{
 		const EWeaponSlot ActiveSlot = SelectedWeapon;
-		
-		DropWeapon(SelectedWeapon);
+
+		SrvDropWeapon(SelectedWeapon);
+
 		SelectedWeapon = ActiveSlot;
 		PickUpWeapon(WeaponItem);
 		ChangeWeapon(SelectedWeapon, true);

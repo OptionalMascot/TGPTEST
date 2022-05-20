@@ -13,7 +13,7 @@ class TGP_API UBaseGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
-	TArray<UItemInfo*> ItemInfos;
+	UPROPERTY() TArray<UItemInfo*> ItemInfos;
 
 	void OnLoadedInfos();
 	void LoadInfos();

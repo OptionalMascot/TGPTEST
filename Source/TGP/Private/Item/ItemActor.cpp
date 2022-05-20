@@ -43,7 +43,7 @@ AItemActor::AItemActor()
 }
 
 void AItemActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
+{ 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AItemActor, DefinedItem);
@@ -61,8 +61,19 @@ void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!HasAuthority())
-	{ 
+	if (HasAuthority())
+	{
+		if (!DefinedItem && ItemInfoToSpawn && ItemClassToSpawn)
+		{
+			UBaseItem* SpawnedItem = NewObject<UBaseItem>(this, ItemClassToSpawn);
+			SpawnedItem->Init(ItemInfoToSpawn, 1);
+
+			DefinedItem = SpawnedItem;
+			Initialize(DefinedItem);
+		}
+	}
+	else
+	{
 		if (DefinedItem)
 		{
 			DefinedItem->UpdateItemInfo();

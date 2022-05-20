@@ -22,10 +22,13 @@ class TGP_API AItemActor : public AActor, public IIInteractable
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UPointLightComponent* ItemPointLight;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) class UWidgetComponent* StatWidget;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DebugSpawn", meta=(AllowPrivateAccess = true)) UItemInfo* ItemInfoToSpawn;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DebugSpawn", meta=(AllowPrivateAccess = true)) TSubclassOf<UBaseItem> ItemClassToSpawn;
+	
 	UPROPERTY() APlayerController* _playerController;
 	
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Item", Meta = (AllowPrivateAccess = true)) UBaseItem* DefinedItem;
-
+	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 	
@@ -42,7 +45,7 @@ public:
 
 	void LightColourSetup(const UWeaponInfo* info) const;
 
-	USkeletalMeshComponent* GetSkeletalMesh() { return ItemSkeletalMesh; }
+	USkeletalMeshComponent* GetSkeletalMesh() const { return ItemSkeletalMesh; }
 
 	void AddInitialThrowForce(FVector dir, float force);
 

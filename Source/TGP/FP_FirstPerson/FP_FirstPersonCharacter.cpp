@@ -338,8 +338,7 @@ void AFP_FirstPersonCharacter::DropWeapon()
 	//	_currentWeapon = nullptr;
 	//}
 
-	OnWeaponDropped();
-
+	PlayerInventory->SrvDropWeapon(PlayerInventory->GetSelectedWeaponSlot());
 	_currentWeaponComponent->DropWeapon();
 	//PlayerInventory->DropWeapon();
 }
@@ -405,12 +404,12 @@ void AFP_FirstPersonCharacter::OnPickUpItem_Implementation(AItemActor* ItemActor
 
 void AFP_FirstPersonCharacter::OnWeaponDropped_Implementation()
 {
-	AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(PlayerInventory->GetItemActor(), GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
-	ItemActor->Initialize(PlayerInventory->GetSelectedWeapon());
-
-	PlayerInventory->DropWeapon();
+	//AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(PlayerInventory->GetItemActor(), GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
+	//ItemActor->Initialize(PlayerInventory->GetSelectedWeapon());
+//
+	//PlayerInventory->DropWeapon();
 }
-
+ 
 void AFP_FirstPersonCharacter::ChangeWeaponMeshMulti_Implementation(int ItemId)
 {
 	if (UBaseGameInstance* GI = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))

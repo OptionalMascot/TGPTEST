@@ -86,6 +86,9 @@ public:
 	void GenItems_Implementation();
 
 	UFUNCTION(BlueprintCallable) void PrintWeaponItems();
+
+	UFUNCTION(Server, Reliable) void SrvDropWeapon(int Slot);
+	void SrvDropWeapon_Implementation(int Slot);
 	
 	void OnUseUtility();
 };
