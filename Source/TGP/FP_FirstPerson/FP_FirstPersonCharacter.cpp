@@ -301,6 +301,9 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFP_FirstPersonCharacter::Sprint);
 	PlayerInputComponent->BindAction("Sprint",  IE_Released,  this, &AFP_FirstPersonCharacter::StopSprint);
+
+	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AFP_FirstPersonCharacter::BeginAim);
+	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AFP_FirstPersonCharacter::EndAim);
 }
 
 
@@ -376,11 +379,7 @@ void AFP_FirstPersonCharacter::ThrowUtility()
 void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 {
 	if (WeaponItem != nullptr)
-	{
 		FP_Gun->SetSkeletalMesh(Cast<UWeaponInfo>(WeaponItem->GetItemInfo())->WeaponSkeletalMesh);
-		SetWeaponTransformDefaults();
-		SetAnimation();
-	}
 	else
 		FP_Gun->SetSkeletalMesh(nullptr);
 	
@@ -392,6 +391,9 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NOT VALID");
 	}
+	
+	SetAnimation();
+	SetWeaponTransformDefaults();
 }
 
 void AFP_FirstPersonCharacter::InteractWithObject()
@@ -483,7 +485,6 @@ void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
 	WeaponLocationOffset.X = TempY;
 
 	WeaponLocationOffset = WeaponDefaultLocation + WeaponLocationOffset;
-	WeaponLocationOffset.Y += 7.5f;
 
 	MeshDefaultRotation = Mesh1P->GetRelativeRotation();
 
@@ -496,34 +497,35 @@ void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
 
 void AFP_FirstPersonCharacter::AttachWeapon()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Attaching Weapon"));
-	if(FP_Gun->SkeletalMesh->GetName().Contains("Rifle") || FP_Gun->SkeletalMesh->GetName().Contains("SMG") || FP_Gun->SkeletalMesh->GetName().Contains("Shotgun") || FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
 	{
-		if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
-		{
-			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("SubMachineSocket"));
-		}
-		else
-		{
-			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
-		}
-		WeaponType = 0;
-		SetAnimation();
+		case EWeaponType::OneHand:
+			{
+				FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("PistolSocket"));
+				break;
+			}
+		case EWeaponType::TwoHand:
+			{
+				if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
+				{
+					FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("SubMachineSocket"));
+				}
+				else
+				{
+					FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+				}
+				break;
+			}
+		case EWeaponType::Sword:
+			{
+				FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("MeleeSocket"));
+				break;
+			}
+	default:
+		break;
 	}
-	else if(FP_Gun->SkeletalMesh->GetName().Contains("Pistol") || FP_Gun->SkeletalMesh->GetName().Contains("Revolver"))
-	{
-		FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("PistolSocket"));
-		WeaponType = 1;
-		SetAnimation();
-	}
-	else if(FP_Gun->SkeletalMesh->GetName().Contains("Sword"))
-	{
-		FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("MeleeSocket"));
-		WeaponType = 2;
-		SetAnimation();
-	}
-
-	SetWeaponTransformDefaults();
+	SetAnimation();
+	SetWeaponTransformDefaults();	
 }
 
 void AFP_FirstPersonCharacter::Sprint()
@@ -539,5 +541,37 @@ void AFP_FirstPersonCharacter::StopSprint()
 {
 	IsSprinting = false;
 	GetCharacterMovement()->MaxWalkSpeed = M_DefaultSpeed;
+}
+
+void AFP_FirstPersonCharacter::BeginAim()
+{
+	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+	{
+		return;
+	}
+	
+	IsAiming = true;
+	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+	{
+		FirstPersonCameraComponent->SetFieldOfView(60.0f);
+	}
+	else
+	{
+		FirstPersonCameraComponent->SetFieldOfView(85.0f);
+	}		
+	Aim();
+	
+}
+
+void AFP_FirstPersonCharacter::EndAim()
+{
+	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+	{
+		return;
+	}
+	
+	IsAiming = false;
+	FirstPersonCameraComponent->SetFieldOfView(100.0f);
+	StopAim();	
 }
 

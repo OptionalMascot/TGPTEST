@@ -90,9 +90,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
 	float WeaponAimYaw;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Animation")
-	int WeaponType;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
 	bool IsSprinting;
 	
@@ -200,7 +197,7 @@ protected:
 	// Weapon Stuff
 
 	UPROPERTY() class AGunHostActor* _currentWeapon;
-	UPROPERTY() class UWeaponComponent* _currentWeaponComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="WeaponComponent") class UWeaponComponent* _currentWeaponComponent;
 	bool _fireHeld;
 	
 	void PickupWeapon();
@@ -248,5 +245,14 @@ public:
 
 	void Sprint();
 	void StopSprint();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void Aim();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StopAim();
+
+	void BeginAim();
+	void EndAim();
 };
 
