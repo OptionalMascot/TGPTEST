@@ -4,25 +4,38 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Interfaces/WeaponInterfaces.h"
+#include "Weapons/WeaponComponent.h"
 #include "ProjectileWeaponComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class TGP_API UProjectileWeaponComponent : public UActorComponent
+class TGP_API UProjectileWeaponComponent : public UWeaponComponent, public IWaitTimer, public IHasAmmo, public IUseRecoil
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UProjectileWeaponComponent();
-
 protected:
-	// Called when the game starts
+	virtual void StartReloadAmmo(AActor* actor) override;
+	virtual void StartWaitTimer(AActor* actor, float time) override;
+	virtual void CancelReload(AActor* actor) override;
+
+	UFUNCTION() void RecoilTimelineProgressPitch(float Value);
+	UFUNCTION() void RecoilTimelineProgressYaw(float Value);
+	UFUNCTION() void RecoilTimelineFinished();
+	UFUNCTION() void SingleFireRecoilReset();
+
+	void ResetRecoilTimeline();
+	
+    UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
+
+	UPROPERTY() class UCurveFloat* _curve;
+public:
+	UProjectileWeaponComponent();
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
+	virtual void OnFire() override;
+	virtual void OnFireEnd() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	virtual void InitializeWeapon(UGunItem* gunItem) override;
+	virtual void DropWeapon() override;
 		
 };

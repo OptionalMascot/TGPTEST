@@ -88,6 +88,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") UCurveFloat* RecoilCurveYaw;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float RecoilRecoveryModifier = 1.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") TSubclassOf<class UWeaponComponent> BaseWeaponClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") TSubclassOf<class AActor> ProjectileToSpawn;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") bool UnlimitedAmmo = false;
 
