@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Weapons/GunHostActor.h"
 #include "Weapons/WeaponComponent.h"
 #include "Weapons/Interfaces/WeaponInterfaces.h"
@@ -62,6 +63,9 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 30.0f, 10.0f);
+
+	M_DefaultSpeed = 600.0f;
+	M_SprintSpeed = 1350.0f;
 
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -293,7 +297,10 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 {
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AFP_FirstPersonCharacter::BeginTouch);
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AFP_FirstPersonCharacter::EndTouch);
-	PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AFP_FirstPersonCharacter::TouchUpdate);	
+	PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AFP_FirstPersonCharacter::TouchUpdate);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFP_FirstPersonCharacter::Sprint);
+	PlayerInputComponent->BindAction("Sprint",  IE_Released,  this, &AFP_FirstPersonCharacter::StopSprint);
 }
 
 
@@ -369,7 +376,11 @@ void AFP_FirstPersonCharacter::ThrowUtility()
 void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 {
 	if (WeaponItem != nullptr)
+	{
 		FP_Gun->SetSkeletalMesh(Cast<UWeaponInfo>(WeaponItem->GetItemInfo())->WeaponSkeletalMesh);
+		SetWeaponTransformDefaults();
+		SetAnimation();
+	}
 	else
 		FP_Gun->SetSkeletalMesh(nullptr);
 	
@@ -433,7 +444,7 @@ void AFP_FirstPersonCharacter::CastForInteractable(float DeltaTime)
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
 	_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
 	_currentWeaponComponent->SetParentMesh(FP_Gun);
@@ -447,6 +458,8 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	PlayerInventory->ComponentLoadComplete();
 
 	_lastLooked = nullptr;
+
+	AttachWeapon();
 }
 
 void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
@@ -459,5 +472,72 @@ void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 	{
 		_currentWeaponComponent->OnFire();
 	}
+}
+
+void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
+{
+	WeaponDefaultLocation = Mesh1P->GetRelativeLocation();
+	WeaponLocationOffset = FirstPersonCameraComponent->GetComponentLocation() - FP_Gun->GetSocketLocation(FName("AimSocket"));
+	const float TempY = WeaponLocationOffset.Y;
+	WeaponLocationOffset.Y = WeaponLocationOffset.X;
+	WeaponLocationOffset.X = TempY;
+
+	WeaponLocationOffset = WeaponDefaultLocation + WeaponLocationOffset;
+	WeaponLocationOffset.Y += 7.5f;
+
+	MeshDefaultRotation = Mesh1P->GetRelativeRotation();
+
+	WeaponDefaultRotation = FP_Gun->GetComponentRotation();
+	WeaponDefaultRotation.Yaw += 90.0;
+
+	WeaponYawDiff = FirstPersonCameraComponent->GetComponentRotation().Yaw - WeaponDefaultRotation.Yaw;
+	WeaponAimYaw = Mesh1P->GetRelativeRotation().Yaw + WeaponYawDiff;
+}
+
+void AFP_FirstPersonCharacter::AttachWeapon()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Attaching Weapon"));
+	if(FP_Gun->SkeletalMesh->GetName().Contains("Rifle") || FP_Gun->SkeletalMesh->GetName().Contains("SMG") || FP_Gun->SkeletalMesh->GetName().Contains("Shotgun") || FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+	{
+		if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
+		{
+			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("SubMachineSocket"));
+		}
+		else
+		{
+			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+		}
+		WeaponType = 0;
+		SetAnimation();
+	}
+	else if(FP_Gun->SkeletalMesh->GetName().Contains("Pistol") || FP_Gun->SkeletalMesh->GetName().Contains("Revolver"))
+	{
+		FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("PistolSocket"));
+		WeaponType = 1;
+		SetAnimation();
+	}
+	else if(FP_Gun->SkeletalMesh->GetName().Contains("Sword"))
+	{
+		FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("MeleeSocket"));
+		WeaponType = 2;
+		SetAnimation();
+	}
+
+	SetWeaponTransformDefaults();
+}
+
+void AFP_FirstPersonCharacter::Sprint()
+{
+	if(!IsReloading)
+	{
+		IsSprinting = true;
+		GetCharacterMovement()->MaxWalkSpeed = M_SprintSpeed;
+	}
+}
+
+void AFP_FirstPersonCharacter::StopSprint()
+{
+	IsSprinting = false;
+	GetCharacterMovement()->MaxWalkSpeed = M_DefaultSpeed;
 }
 

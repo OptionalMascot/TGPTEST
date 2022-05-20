@@ -32,5 +32,5 @@ private:
 	bool IsAiming;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = true), Category="Player")
-	class AAkiCharacter* Player;
+	class AFP_FirstPersonCharacter* Player;
 };
