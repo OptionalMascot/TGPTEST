@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapons/HitscanWeaponComponent.h"
+#include "Weapons/ProjectileWeaponComponent.h"
 #include "Weapons/UI/MyDamageMarker.h"
 #include "Weapons/UI/UserWidgetTest.h"
 #include "Weapons/HealthComponent.h"
@@ -12,15 +12,20 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Weapons/Projectiles/Projectile.h"
 
-UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
+// Sets default values for this component's properties
+UProjectileWeaponComponent::UProjectileWeaponComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-    // off to improve performance if you don't need them.
-    PrimaryComponentTick.bCanEverTick = true;
+	// off to improve performance if you don't need them.
+	PrimaryComponentTick.bCanEverTick = true;
+
+	// ...
 }
 
-void UHitscanWeaponComponent::BeginPlay()
+
+void UProjectileWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	reloadTime = 1.0f;
@@ -32,7 +37,7 @@ void UHitscanWeaponComponent::BeginPlay()
 	notPlayedFullyValue = 1.0f;
 }
 
-void UHitscanWeaponComponent::OnFire()
+void UProjectileWeaponComponent::OnFire()
 {
 	if(!CheckMouseReleased()) // If single fire check is turned on, require a release before firing again
 		return;
@@ -66,15 +71,18 @@ void UHitscanWeaponComponent::OnFire()
 			
 			StartWaitTimer(_parent, _weaponInfo->AttackRate); // Start timer for gun to be able to shoot again
 			
-			DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
+			//DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
 
-
-			if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
-			{
-				AActor* hit = result.GetActor(); // Get Actor
-				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass()); // Attempt to apply damage
-			}
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
+			// Spawn Projectile
+			APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
+			FVector pos;
+			FRotator rot;
+			_playerController->GetPlayerViewPoint(pos, rot);
+	
+			AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(_weaponInfo->ProjectileToSpawn->ThrowableBlueprint, _parentMesh->GetComponentLocation() + rot.Vector() * 50.0f, FRotator());
+			ThrowableActor->Initialize(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn));
+			ThrowableActor->SetProjectileParameters(_playerController, rot.Vector(), _weaponInfo->ProjectileLaunchSpeed);
+			
 		}
 		else
 		{
@@ -84,7 +92,7 @@ void UHitscanWeaponComponent::OnFire()
 	}
 }
 
-void UHitscanWeaponComponent::OnFireEnd() // Called by parent on releasing left click
+void UProjectileWeaponComponent::OnFireEnd() // Called by parent on releasing left click
 {
 	if(HasStartedRecoil())
 	{
@@ -104,11 +112,10 @@ void UHitscanWeaponComponent::OnFireEnd() // Called by parent on releasing left 
 		}
 		_singleFireCheck = false; // Allow single fire to shoot again
 	}
-
 	// The only reason the above doesnt happen for single fire, is that the timeline should play in full for single fire
 }
 
-void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
+void UProjectileWeaponComponent::StartReloadAmmo(AActor* actor)
 {
 	if(!reloading)
 	{
@@ -117,13 +124,13 @@ void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
 	}
 }
 
-void UHitscanWeaponComponent::StartWaitTimer(AActor* actor, float time)
+void UProjectileWeaponComponent::StartWaitTimer(AActor* actor, float time)
 {
 	StartUse();
-	GetWorld()->GetTimerManager().SetTimer(waitTimeHandler, this, &UHitscanWeaponComponent::EndUse, time, false);
+	GetWorld()->GetTimerManager().SetTimer(waitTimeHandler, this, &UProjectileWeaponComponent::EndUse, time, false);
 }
 
-void UHitscanWeaponComponent::CancelReload(AActor* actor)
+void UProjectileWeaponComponent::CancelReload(AActor* actor)
 {
 	GetWorld()->GetTimerManager().ClearTimer(reloadTimerHandler);
 }
@@ -131,17 +138,17 @@ void UHitscanWeaponComponent::CancelReload(AActor* actor)
 // Following two functions are callbacks for timeline
 // If playing forward, the curve result is flipped to allow pitch to move upwards
 // If backwards and full auto, AdjustRecoilForCompensate judges how far the gun should move back down, and cancels any movement lower than origin
-void UHitscanWeaponComponent::RecoilTimelineProgressPitch(float Value)
+void UProjectileWeaponComponent::RecoilTimelineProgressPitch(float Value)
 {
 	ApplyRecoilPitch(_parentController, Value * 100.0f, _weaponInfo->FireType == EFireType::Single);
 }
 
-void UHitscanWeaponComponent::RecoilTimelineProgressYaw(float Value)
+void UProjectileWeaponComponent::RecoilTimelineProgressYaw(float Value)
 {
 	ApplyRecoilYaw(_parentController, Value * 100.0f, _weaponInfo->FireType == EFireType::Single);
 }
 
-void UHitscanWeaponComponent::RecoilTimelineFinished()
+void UProjectileWeaponComponent::RecoilTimelineFinished()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Timeline Ended"));
 	if(GetTimelineDirection() == ERecoilDirection::Backwards && !singleFireRecoilStarted)
@@ -153,7 +160,7 @@ void UHitscanWeaponComponent::RecoilTimelineFinished()
 		SingleFireRecoilReset();
 }
 
-void UHitscanWeaponComponent::SingleFireRecoilReset()
+void UProjectileWeaponComponent::SingleFireRecoilReset()
 {
 	if(!recoilTimeline.IsReversing() && singleFireRecoilStarted) // Once recoil has finished for single fire, play it backwards as expected
 	{
@@ -162,7 +169,7 @@ void UHitscanWeaponComponent::SingleFireRecoilReset()
 	}
 }
 
-void UHitscanWeaponComponent::ResetRecoilTimeline() // Resets the recoil timeline variables once a new gun has been picked up, passing in new curves
+void UProjectileWeaponComponent::ResetRecoilTimeline() // Resets the recoil timeline variables once a new gun has been picked up, passing in new curves
 {
 	recoilTimeline = FTimeline();
 	if(_weaponInfo->RecoilCurvePitch && _weaponInfo->RecoilCurveYaw)
@@ -180,14 +187,14 @@ void UHitscanWeaponComponent::ResetRecoilTimeline() // Resets the recoil timelin
 }
 
 
-void UHitscanWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+void UProjectileWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                             FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	recoilTimeline.TickTimeline(DeltaTime);
 }
 
-void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
+void UProjectileWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 {	
 	Super::InitializeWeapon(gunItem);
 
@@ -204,7 +211,7 @@ void UHitscanWeaponComponent::InitializeWeapon(UGunItem* gunItem)
 	recoilTimelineDirection = ERecoilDirection::Forwards;
 }
 
-void UHitscanWeaponComponent::DropWeapon()
+void UProjectileWeaponComponent::DropWeapon()
 {
 	if (_weaponItem != nullptr)
 	{

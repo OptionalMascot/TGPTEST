@@ -6,14 +6,16 @@
 #include "GameFramework/Actor.h"
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "NiagaraComponent.h"
-#include "Weapons/Throwables/ThrowableWeapon.h"
+#include "Weapons/Projectiles/IProjectile.h"
+#include "Weapons/Projectiles/Projectile.h"
+#include "Weapons/Projectiles/IProjectile.h"
 #include "GrenadeWeapon.generated.h"
 
 class UThrowableInfo;
 class APlayerController;
 
 UCLASS()
-class TGP_API AGrenadeWeapon : public AThrowableWeapon, public IWaitTimer
+class TGP_API AGrenadeWeapon : public AProjectile, public IIProjectile, public IWaitTimer
 {
 	GENERATED_BODY()
 	
@@ -38,5 +40,6 @@ public:
 	// Called every frame
 	void DestroyObj();
 	virtual void Tick(float DeltaTime) override;
-	void Initialize(UThrowableInfo* throwableInfo) override;
+	virtual void SetProjectileParameters(APlayerController* spawnedBy, FVector dir, float speed) override;
+	void Initialize(UThrowableInfo* throwableInfo);
 };

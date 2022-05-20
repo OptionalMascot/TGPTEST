@@ -12,6 +12,7 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
+#include "Weapons/Projectiles/Projectile.h"
 #include "Weapons/Throwables/ThrowableWeapon.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
@@ -357,10 +358,9 @@ void AFP_FirstPersonCharacter::ThrowUtility()
 		FRotator rot;
 		_playerController->GetPlayerViewPoint(pos, rot);
 	
-		AThrowableWeapon* ThrowableActor = GetWorld()->SpawnActor<AThrowableWeapon>(Cast<UThrowableInfo>(Throwable->GetItemInfo())->ThrowableBlueprint, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
+		AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(Cast<UThrowableInfo>(Throwable->GetItemInfo())->ThrowableBlueprint, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
 		ThrowableActor->Initialize(Cast<UThrowableInfo>(Throwable->GetItemInfo()));
-		ThrowableActor->SetInitialThrowForce(rot.Vector() * 100000.0f);
-		ThrowableActor->SetPlayerController(_playerController);
+		ThrowableActor->SetProjectileParameters(_playerController, rot.Vector(), 100000.0f);
 
 		PlayerInventory->OnUseUtility();
 	}
@@ -372,6 +372,25 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(Cast<UWeaponInfo>(WeaponItem->GetItemInfo())->WeaponSkeletalMesh);
 	else
 		FP_Gun->SetSkeletalMesh(nullptr);
+
+	// Unregister old component
+	_currentWeaponComponent->DropWeapon();
+	
+	_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
+	_currentWeaponComponent->DestroyComponent();
+
+	UWeaponComponent* newComponent = NewObject<UWeaponComponent>(_currentWeapon, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
+
+	newComponent->RegisterComponentWithWorld(GetWorld());
+	
+	_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
+
+	_currentWeaponComponent = newComponent; // Save reference
+	
+	_currentWeaponComponent->PickupWeapon(this); // Assign player to component
+
+	_currentWeaponComponent->SetParentMesh(FP_Gun);
+	
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
 	{

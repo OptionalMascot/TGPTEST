@@ -30,7 +30,6 @@ void AGrenadeWeapon::BeginPlay()
 	Super::BeginPlay();
 	_startFuse = false;
 	SetPhysicsMesh(ItemSkeletalMesh);
-	Initialize(_throwableInfo);
 	if(_particleSystem)
 	{
 		_particleSystem->Deactivate();
@@ -65,7 +64,7 @@ void AGrenadeWeapon::SphereCastForTargets()
 	{
 		for(int i = 0; i < OutHits.Num(); i++)
 		{
-			UGameplayStatics::ApplyDamage(OutHits[i].GetActor(), _throwableInfo->Damage, _controller, _controller->GetPawn(), UDamageType::StaticClass());
+			UGameplayStatics::ApplyDamage(OutHits[i].GetActor(), _throwableInfo->Damage, _spawnedBy, _spawnedBy->GetPawn(), UDamageType::StaticClass());
 			if(OutHits[i].GetActor() != nullptr)
 			{
 				if(!appliedPhysics.Contains(OutHits[i].GetActor()))
@@ -100,6 +99,14 @@ void AGrenadeWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+}
+
+void AGrenadeWeapon::SetProjectileParameters(APlayerController* spawnedBy, FVector dir, float speed)
+{
+	Super::SetProjectileParameters(spawnedBy, dir, speed);
+	_physicsMeshReference->AddForce(dir * speed);
+	FVector randSpin = FVector(FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f));
+	_physicsMeshReference->AddTorque(randSpin * 50000.0f);
 }
 
 void AGrenadeWeapon::Initialize(UThrowableInfo* throwableInfo)
