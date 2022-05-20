@@ -81,3 +81,9 @@ void ABaseAiCharacter::SetHidden(bool bEnemyHidden)
 	
 	baseAiController->ChangeAIControllerStatus(!bEnemyHidden);
 }
+
+void ABaseAiCharacter::Attack()
+{
+	GetMovementComponent()->StopMovementImmediately();
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Purple, "Attack");
+}

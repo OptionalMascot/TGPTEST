@@ -9,11 +9,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_Attack.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_ChaseTarget.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_CheckIfSpawned.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_DistanceCheck.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_RandomWalk.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_Attack.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_ChaseTarget.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_CheckIfSpawned.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_DistanceCheck.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_RandomWalk.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAi.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAi.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/TGP.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGP.Build.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,11 +44,19 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_ChaseTarget.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_CheckIfSpawned.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_DistanceCheck.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_RandomWalk.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_ChaseTarget.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_CheckIfSpawned.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_DistanceCheck.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BTTask_RandomWalk.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIWidget.h" root0="FORCE_HIGHLIGHTING" />
@@ -350,6 +368,11 @@
       <workItem from="1652884091731" duration="4308000" />
       <workItem from="1652959354205" duration="3463000" />
       <workItem from="1652979368651" duration="321000" />
+      <workItem from="1653041411243" duration="518000" />
+      <workItem from="1653042061426" duration="369000" />
+      <workItem from="1653055196564" duration="1656000" />
+      <workItem from="1653057566727" duration="5970000" />
+      <workItem from="1653067561518" duration="2075000" />
     </task>
     <servers />
   </component>

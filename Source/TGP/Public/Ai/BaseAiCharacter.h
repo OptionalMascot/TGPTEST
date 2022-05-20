@@ -36,4 +36,6 @@ public:
 	void SpawnEnemy(const FVector& RespawnPos);
 
 	void SetHidden(bool bEnemyHidden);
+
+	void Attack();
 };
