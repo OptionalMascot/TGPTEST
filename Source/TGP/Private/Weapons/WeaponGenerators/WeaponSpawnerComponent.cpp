@@ -24,23 +24,26 @@ UWeaponSpawnerComponent::UWeaponSpawnerComponent()
 
 void UWeaponSpawnerComponent::SpawnWeapon()
 {
-	for(int i = 0; i < _spawnAmount; i++)
+	if (GetOwner()->HasAuthority())
 	{
-		switch(_itemSpawnMode)
-    	{
-    	case EItemSpawn::Random:
-    		SpawnRandomWeapon();
-    		break;
-    	case EItemSpawn::Set:
-    		SpawnSetWeapon();
-    		break;
-    	case EItemSpawn::RandomRarity:
-    		SpawnRandomRarityWeapon();
-    		break;
-    	default:
-    		SpawnRandomWeapon();
-    		break;
-    	}	
+		for(int i = 0; i < _spawnAmount; i++)
+		{
+			switch(_itemSpawnMode)
+			{
+			case EItemSpawn::Random:
+				SpawnRandomWeapon();
+				break;
+			case EItemSpawn::Set:
+				SpawnSetWeapon();
+				break;
+			case EItemSpawn::RandomRarity:
+				SpawnRandomRarityWeapon();
+				break;
+			default:
+				SpawnRandomWeapon();
+				break;
+			}	
+		}
 	}
 }
 

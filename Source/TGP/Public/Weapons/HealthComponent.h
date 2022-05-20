@@ -31,7 +31,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentDeadSignature onComponentDead;
 	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentTookDamageSignature onComponentTakeDamage;
 	
-	UPROPERTY(EditAnywhere) int health;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) int health;
 	UPROPERTY(EditAnywhere) bool destroyOnDeath;
 	bool dead;
 	

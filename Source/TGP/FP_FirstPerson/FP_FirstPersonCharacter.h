@@ -36,7 +36,7 @@ class AFP_FirstPersonCharacter : public ACharacter
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	UPlayerInventory* PlayerInventory;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	UChildActorComponent* GunActorComponent;
 
 public:
@@ -167,8 +167,8 @@ protected:
 	
 	// Weapon Stuff
 
-	UPROPERTY() class AGunHostActor* _currentWeapon;
-	UPROPERTY() class UWeaponComponent* _currentWeaponComponent;
+	UPROPERTY(Replicated) class AGunHostActor* _currentWeapon;
+	UPROPERTY(Replicated) class UWeaponComponent* _currentWeaponComponent;
 	bool _fireHeld;
 	
 	void PickupWeapon();
@@ -178,7 +178,16 @@ protected:
 	
 	bool _weaponQueued;
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
+
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
+
+	UFUNCTION(Server, Reliable) void SrvHitScan();
+	void SrvHitScan_Implementation();
+
+	UFUNCTION(Server, Reliable) void ShootGun();
+	void ShootGun_Implementation();
 
 	UFUNCTION(Server, Reliable) void OnChangeSelectedWeapon(int Slot);
 	void OnChangeSelectedWeapon_Implementation(int Slot);
@@ -208,8 +217,9 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	UFUNCTION(BlueprintImplementableEvent) void TestDebug();
+	
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
 };
-

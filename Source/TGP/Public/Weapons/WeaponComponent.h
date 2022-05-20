@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "WeaponComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TGP_API UWeaponComponent : public UActorComponent
 {
@@ -39,6 +38,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(Server, Reliable) void SrvOnFire();
+	virtual void SrvOnFire_Implementation();
+	
 	virtual void OnFire();
 	virtual void OnFireEnd();
 	
@@ -49,4 +51,6 @@ public:
 
 	void StartUse(){ _canUse = false;	}
 	void EndUse(){ _canUse = true;	}
+
+	bool bDidFire = false;
 };
