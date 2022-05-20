@@ -180,8 +180,11 @@ protected:
 
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
 
-	UFUNCTION(Server, Reliable) void OnPickUpItem(class AItemActor* ItemActor);
-	void OnPickUpItem_Implementation(AItemActor* ItemActor);
+	UFUNCTION(Server, Reliable) void OnChangeSelectedWeapon(int Slot);
+	void OnChangeSelectedWeapon_Implementation(int Slot);
+
+	UFUNCTION(Server, Reliable) void OnPickUpItem(class AItemActor* ItemActor, int Slot);
+	void OnPickUpItem_Implementation(AItemActor* ItemActor, int Slot);
 	
 	UFUNCTION(Server, Reliable) void OnWeaponDropped();
 	void OnWeaponDropped_Implementation();

@@ -76,7 +76,7 @@ public:
 	UFUNCTION(BlueprintCallable) void DropWeapon(int Slot = -1);
 	
 	UFUNCTION(BlueprintCallable) void ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate = false, bool bBroadcastChange = true);
-	UFUNCTION(BlueprintCallable) bool TryPickUpItem(UBaseItem* Item);
+	UFUNCTION(BlueprintCallable) bool TryPickUpItem(UBaseItem* Item, int SelectedSlot);
 	UFUNCTION(BlueprintCallable, BlueprintPure) class UWeaponItem* GetSelectedWeapon();
 	
 	UFUNCTION(BlueprintCallable) UBaseItem* GetItem() { return WeaponContainer->GetItemAt(0); };

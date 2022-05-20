@@ -114,7 +114,11 @@ void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 {
 	if (Val != 0.f)
 	{
-		PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
+		if ((int)Val - 1 != PlayerInventory->GetSelectedWeaponSlot())
+		{
+			PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
+			OnChangeSelectedWeapon(PlayerInventory->GetSelectedWeaponSlot());
+		}
 	}
 }
 
@@ -386,9 +390,16 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	RequestWeaponMeshChange(PlayerInventory->GetSelectedWeaponSlot());
 }
 
-void AFP_FirstPersonCharacter::OnPickUpItem_Implementation(AItemActor* ItemActor)
+void AFP_FirstPersonCharacter::OnChangeSelectedWeapon_Implementation(int Slot)
 {
-	if(PlayerInventory->TryPickUpItem(ItemActor->GetItem()))
+	PlayerInventory->ChangeWeapon((EWeaponSlot)Slot, true, false);
+}
+
+void AFP_FirstPersonCharacter::OnPickUpItem_Implementation(AItemActor* ItemActor, int Slot)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::FromInt(Slot));
+	
+	if(PlayerInventory->TryPickUpItem(ItemActor->GetItem(), Slot))
 		ItemActor->Destroy();
 }
 
@@ -422,7 +433,7 @@ void AFP_FirstPersonCharacter::InteractWithObject()
 		if(_lastLooked->ActorHasTag(TEXT("Weapon")))
 		{
 			if (AItemActor* ItemActor = Cast<AItemActor>(_lastLooked))
-					OnPickUpItem(ItemActor);
+					OnPickUpItem(ItemActor, PlayerInventory->GetSelectedWeaponSlot());
 		}
 		else if(_lastLookedInterface)
 		{

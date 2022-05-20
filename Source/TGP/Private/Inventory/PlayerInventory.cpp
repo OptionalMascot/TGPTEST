@@ -149,12 +149,13 @@ void UPlayerInventory::ComponentLoadComplete()
 
 bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 {
-	bool bPickedUp = false;
-	
 	if (WeaponContainer->GetItemAt(SelectedWeapon) == nullptr)
 	{
-		bPickedUp |= WeaponContainer->AddItem(WeaponItem);
-		ChangeWeapon(SelectedWeapon, true);
+		if (WeaponContainer->AddItem(WeaponItem, SelectedWeapon))
+		{
+			ChangeWeapon(SelectedWeapon, true);
+			return true;
+		}
 	}
 	
 	for(int i = 0; i < 2; i++)
@@ -167,7 +168,7 @@ bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 		}
 	}
 	
-	if (!bPickedUp && SelectedWeapon != EWeaponSlot::Melee)
+	if (SelectedWeapon != EWeaponSlot::Melee)
 	{
 		const EWeaponSlot ActiveSlot = SelectedWeapon;
 		
@@ -176,10 +177,10 @@ bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 		PickUpWeapon(WeaponItem);
 		ChangeWeapon(SelectedWeapon, true);
 
-		bPickedUp = true;
+		return true;
 	}
 
-	return bPickedUp;
+	return false;
 }
 
 void UPlayerInventory::ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate, bool bBroadcastChange)
@@ -233,8 +234,10 @@ void UPlayerInventory::DropWeapon(int Slot)
 	}
 }
 
-bool UPlayerInventory::TryPickUpItem(UBaseItem* Item)
+bool UPlayerInventory::TryPickUpItem(UBaseItem* Item, int SelectedSlot)
 {
+	SelectedWeapon = (EWeaponSlot)SelectedSlot;
+	
 	if (UWeaponItem* Wep = Cast<UWeaponItem>(Item))
 		return PickUpWeapon(Wep);
 
