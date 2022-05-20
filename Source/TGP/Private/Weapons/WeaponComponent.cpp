@@ -87,3 +87,4 @@ void UWeaponComponent::InitializeWeapon(UGunItem* gunItem) // Get and Update amm
 	_weaponInfo = Cast<UGunInfo>(gunItem->GetItemInfo());
 }
 
+

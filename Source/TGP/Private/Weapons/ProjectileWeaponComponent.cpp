@@ -71,7 +71,7 @@ void UProjectileWeaponComponent::OnFire()
 			
 			StartWaitTimer(_parent, _weaponInfo->AttackRate); // Start timer for gun to be able to shoot again
 			
-			DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
+			//DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
 
 			// Spawn Projectile
 			APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
@@ -79,9 +79,9 @@ void UProjectileWeaponComponent::OnFire()
 			FRotator rot;
 			_playerController->GetPlayerViewPoint(pos, rot);
 	
-			AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn, GetOwner()->GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
-			ThrowableActor->Initialize(Cast<UThrowableInfo>(Throwable->GetItemInfo()));
-			ThrowableActor->SetProjectileParameters(_playerController, rot.Vector(), 100000.0f);
+			AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(_weaponInfo->ProjectileToSpawn->ThrowableBlueprint, _parentMesh->GetComponentLocation() + rot.Vector() * 50.0f, FRotator());
+			ThrowableActor->Initialize(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn));
+			ThrowableActor->SetProjectileParameters(_playerController, rot.Vector(), _weaponInfo->ProjectileLaunchSpeed);
 			
 		}
 		else
@@ -94,22 +94,24 @@ void UProjectileWeaponComponent::OnFire()
 
 void UProjectileWeaponComponent::OnFireEnd() // Called by parent on releasing left click
 {
-	if(_weaponInfo->FireType != EFireType::Single)
+	if(HasStartedRecoil())
 	{
-		// recoilTimeline.SetNewTime(recoilTimeline.GetTimelineLength()); Make a new modifier to scale the value by how much of the timeline has played
-		notPlayedFullyValue = recoilTimeline.GetTimelineLength() / recoilTimeline.GetPlaybackPosition();
-		ReverseTimeline(_weaponInfo->RecoilRecoveryModifier); // Reverse the timeline
-		FVector CameraLoc;
-		FRotator CameraRot;
-		if(_parentController == nullptr)
+		if(_weaponInfo->FireType != EFireType::Single)
 		{
-			_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
+			// recoilTimeline.SetNewTime(recoilTimeline.GetTimelineLength()); Make a new modifier to scale the value by how much of the timeline has played
+			notPlayedFullyValue = recoilTimeline.GetTimelineLength() / recoilTimeline.GetPlaybackPosition();
+			ReverseTimeline(_weaponInfo->RecoilRecoveryModifier); // Reverse the timeline
+			FVector CameraLoc;
+			FRotator CameraRot;
+			if(_parentController == nullptr)
+			{
+				_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
+			}
+			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
+			postRecoilRotation = CameraRot; // Set post recoil rotation for recoil overriding
 		}
-		_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
-		postRecoilRotation = CameraRot; // Set post recoil rotation for recoil overriding
+		_singleFireCheck = false; // Allow single fire to shoot again
 	}
-	_singleFireCheck = false; // Allow single fire to shoot again
-
 	// The only reason the above doesnt happen for single fire, is that the timeline should play in full for single fire
 }
 

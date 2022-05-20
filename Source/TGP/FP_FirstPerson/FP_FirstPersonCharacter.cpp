@@ -374,9 +374,12 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(nullptr);
 
 	// Unregister old component
+	_currentWeaponComponent->DropWeapon();
+	
 	_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
+	_currentWeaponComponent->DestroyComponent();
 
-	UWeaponComponent* newComponent = NewObject<UWeaponComponent>(_currentWeapon, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, TEXT("Weapon Component"));
+	UWeaponComponent* newComponent = NewObject<UWeaponComponent>(_currentWeapon, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
 
 	newComponent->RegisterComponentWithWorld(GetWorld());
 	

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ItemInfo.h"
 #include "Engine/DataAsset.h"
 #include "ItemInfo.generated.h"
 
@@ -88,7 +89,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") UCurveFloat* RecoilCurveYaw;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float RecoilRecoveryModifier = 1.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") TSubclassOf<class UWeaponComponent> BaseWeaponClass;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") TSubclassOf<class AActor> ProjectileToSpawn;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") class UThrowableInfo* ProjectileToSpawn;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float ProjectileLaunchSpeed;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") bool UnlimitedAmmo = false;
 
