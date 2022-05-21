@@ -486,12 +486,23 @@ void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
 
 	WeaponAimLocation = WeaponDefaultLocation + WeaponAimLocation;
 
-	MeshDefaultRotation = Mesh1P->GetRelativeRotation();
+	if(GetActorRotation().Yaw != 0)
+	{
+		WeaponAimLocation.X = WeaponAimLocation.X * FMath::Cos(FMath::DegreesToRadians(-GetActorRotation().Yaw)) - WeaponAimLocation.X * FMath::Sin(FMath::DegreesToRadians(-GetActorRotation().Yaw));
+		WeaponAimLocation.Y = WeaponAimLocation.Y * FMath::Sin(FMath::DegreesToRadians(-GetActorRotation().Yaw)) + WeaponAimLocation.Y * FMath::Cos(FMath::DegreesToRadians(-GetActorRotation().Yaw));
+	}
+	
 
-	WeaponDefaultRotation = FP_Gun->GetRelativeRotation();
+	WeaponDefaultRotation = Mesh1P->GetRelativeRotation();
+	WeaponYawDiff = FirstPersonCameraComponent->GetComponentRotation().Yaw - FP_Gun->GetComponentRotation().Yaw + Mesh1P->GetComponentRotation().Yaw;
 
-	WeaponYawDiff = FirstPersonCameraComponent->GetRelativeLocation().Z - WeaponDefaultRotation.Yaw;
-	WeaponAimYaw = Mesh1P->GetRelativeRotation().Yaw + WeaponYawDiff;
+	if(WeaponDefaultRotation.Yaw != 0.0f)
+	{
+		WeaponYawDiff -= GetActorRotation().Yaw;
+	}
+
+	AimRotation = FRotator(WeaponDefaultRotation.Pitch, WeaponDefaultRotation.Yaw + WeaponYawDiff, WeaponDefaultRotation.Roll);
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Black, FString::SanitizeFloat(AimRotation.Yaw));
 }
 
 void AFP_FirstPersonCharacter::AttachWeapon()
@@ -551,7 +562,7 @@ void AFP_FirstPersonCharacter::BeginAim()
 	IsAiming = true;
 	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 	{
-		FirstPersonCameraComponent->SetFieldOfView(60.0f);
+		FirstPersonCameraComponent->SetFieldOfView(25.0f);
 	}
 	else
 	{

@@ -85,6 +85,9 @@ public:
 	FRotator MeshDefaultRotation;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	FRotator AimRotation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
 	float WeaponYawDiff;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
