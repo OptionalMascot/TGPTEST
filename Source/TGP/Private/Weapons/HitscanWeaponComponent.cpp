@@ -13,7 +13,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
-UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
+UHitscanWeaponComponent::UHitscanWeaponComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
     // off to improve performance if you don't need them.
@@ -26,6 +26,8 @@ void UHitscanWeaponComponent::SrvOnFire_Implementation()
 {
 	Super::SrvOnFire_Implementation();
 
+	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "THISIDJIJWAD");
+
 	FHitResult result;
 	FVector CameraLoc;
 	FRotator CameraRot;
@@ -35,14 +37,9 @@ void UHitscanWeaponComponent::SrvOnFire_Implementation()
 	
 	_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
 
-	auto t = Cast<AFP_FirstPersonCharacter>(_parentController->GetPawn());
+	DrawDebugLine(GetWorld(), _parentMesh->GetComponentLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 1.0f, 0, 1.0f);
 
-	if (t)
-	{
-		t->TestDebug();
-	}
-	
-	if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
+	if(DoRaycastReturnResult(GetWorld(), result, _parentMesh->GetComponentLocation(), CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
 	{
 		AActor* hit = result.GetActor(); // Get Actor
 		UGameplayStatics::ApplyDamage(hit, 100.f, nullptr, nullptr, UDamageType::StaticClass());
@@ -65,19 +62,8 @@ void UHitscanWeaponComponent::BeginPlay()
 
 void UHitscanWeaponComponent::OnFire()
 {
-	auto t = Cast<AFP_FirstPersonCharacter>((GetOwner()));
-
-	if (t)
-	{
-		t->TestDebug();
-	}
-	
-	return;
-	
-	bDidFire = false;
-	
-	//if(!CheckMouseReleased()) // If single fire check is turned on, require a release before firing again
-	//	return;
+	if(!CheckMouseReleased()) // If single fire check is turned on, require a release before firing again
+		return;
 	
 	if(_canUse)
 	{
@@ -88,10 +74,13 @@ void UHitscanWeaponComponent::OnFire()
 			FHitResult result;
 			FVector CameraLoc;
 			FRotator CameraRot;
+			
 			if(_parentController == nullptr)
 			{
-				_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
+				const APawn* Pawn = Cast<APawn>(GetOwner());
+				_parentController = Cast<APlayerController>(Pawn->GetController());
 			}
+			
 			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
 			
 			// Recoil Funcs
@@ -108,23 +97,22 @@ void UHitscanWeaponComponent::OnFire()
 			
 			StartWaitTimer(_parent, _weaponInfo->AttackRate); // Start timer for gun to be able to shoot again
 			
-			DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 0.0f, 0, 1.0f);
+			//DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 0.0f, 0, 1.0f);
 
-			bDidFire = true;
+			SrvOnFire();
+			
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 		}
 		else
 		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
-			TryReload(_parent); // If can't shoot, try and reload
+			TryReload(); // If can't shoot, try and reload
 		}
 	}
 }
 
 void UHitscanWeaponComponent::OnFireEnd() // Called by parent on releasing left click
 {
-	return;
-	
 	if(_weaponInfo->FireType != EFireType::Single)
 	{
 		// recoilTimeline.SetNewTime(recoilTimeline.GetTimelineLength()); Make a new modifier to scale the value by how much of the timeline has played
@@ -144,7 +132,7 @@ void UHitscanWeaponComponent::OnFireEnd() // Called by parent on releasing left 
 	// The only reason the above doesnt happen for single fire, is that the timeline should play in full for single fire
 }
 
-void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
+void UHitscanWeaponComponent::StartReloadAmmo()
 {
 	if(!reloading)
 	{

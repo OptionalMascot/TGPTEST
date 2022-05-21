@@ -13,7 +13,7 @@ class TGP_API UHitscanWeaponComponent : public UWeaponComponent, public IWaitTim
 {
 	GENERATED_BODY()
 protected:
-	virtual void StartReloadAmmo(AActor* actor) override;
+	virtual void StartReloadAmmo() override;
 	virtual void StartWaitTimer(AActor* actor, float time) override;
 	virtual void CancelReload(AActor* actor) override;
 

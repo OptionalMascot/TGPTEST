@@ -14,10 +14,8 @@ AItemActor::AItemActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
 	
-	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
-	ItemMesh->SetupAttachment(RootComponent);
 	ItemMesh->SetRelativeLocation(FVector::ZeroVector);
 	ItemMesh->SetSimulatePhysics(true);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
@@ -37,9 +35,19 @@ AItemActor::AItemActor()
 	StatWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
 	StatWidget->SetupAttachment(RootComponent);
 	//StatWidget->SetWidgetClass(UWeaponStatUIWidget::StaticClass());
+}
 
-	SetReplicates(true);
-	SetReplicateMovement(true);
+void AItemActor::OnRep_UpdateItem()
+{
+	Test();
+
+	if (DefinedItem)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, "VALIDDDDDDDDDDDDDDDDDDD");
+			
+		DefinedItem->UpdateItemInfo();
+		Initialize(DefinedItem);
+	}
 }
 
 void AItemActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -72,14 +80,6 @@ void AItemActor::BeginPlay()
 			Initialize(DefinedItem);
 		}
 	}
-	else
-	{
-		if (DefinedItem)
-		{
-			DefinedItem->UpdateItemInfo();
-			Initialize(DefinedItem);
-		}
-	}
 	
 	_playerController = nullptr;
 	StatWidget->SetHiddenInGame(true);
@@ -107,24 +107,27 @@ void AItemActor::InitialiseWidgetText(const UWeaponInfo* info)
 	{
 		UWeaponStatUIWidget* widget = Cast<UWeaponStatUIWidget>(StatWidget->GetUserWidgetObject());
 
-		FString output;
-		output += "Damage: " + FString::FromInt(info->Damage) + "\n";
-
-		const UGunInfo* gunInfoCast = Cast<UGunInfo>(info);
-		if(gunInfoCast)
+		if (widget)
 		{
-			output += "Rounds per Minute: " + FString::FromInt(60.0f / gunInfoCast->AttackRate) + "\n";
-			UGunItem* itemCast = Cast<UGunItem>(DefinedItem);
-			output += "Ammo In Clip: " + FString::FromInt(itemCast->GetAmmoInClip()) + "\n";
-			output += "Ammo Reserves: " + FString::FromInt(itemCast->GetAmmoCount()) + "\n";
-			FString fireType;
-			if(gunInfoCast->FireType == EFireType::Auto)
-				fireType = "Auto";
-			if(gunInfoCast->FireType == EFireType::Single)
-				fireType = "Single";
-			output += "Firing Mode: " + fireType;
+			FString output;
+			output += "Damage: " + FString::FromInt(info->Damage) + "\n";
+
+			const UGunInfo* gunInfoCast = Cast<UGunInfo>(info);
+			if(gunInfoCast)
+			{
+				output += "Rounds per Minute: " + FString::FromInt(60.0f / gunInfoCast->AttackRate) + "\n";
+				UGunItem* itemCast = Cast<UGunItem>(DefinedItem);
+				output += "Ammo In Clip: " + FString::FromInt(itemCast->GetAmmoInClip()) + "\n";
+				output += "Ammo Reserves: " + FString::FromInt(itemCast->GetAmmoCount()) + "\n";
+				FString fireType;
+				if(gunInfoCast->FireType == EFireType::Auto)
+					fireType = "Auto";
+				if(gunInfoCast->FireType == EFireType::Single)
+					fireType = "Single";
+				output += "Firing Mode: " + fireType;
+			}
+			widget->SetText(output);
 		}
-		widget->SetText(output);
 	}
 }
 

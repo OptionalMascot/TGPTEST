@@ -15,6 +15,7 @@ class UAnimMontage;
 class UWeaponItem;
 class UPlayerInventory;
 class AGrenadeWeapon;
+class UWeaponComponent;
 
 UCLASS(config=Game)
 class AFP_FirstPersonCharacter : public ACharacter
@@ -37,7 +38,7 @@ class AFP_FirstPersonCharacter : public ACharacter
 	UPlayerInventory* PlayerInventory;
 	
 	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
-	UChildActorComponent* GunActorComponent;
+	UWeaponComponent* WeaponComponent;
 
 public:
 	AFP_FirstPersonCharacter();
@@ -165,10 +166,6 @@ protected:
 	 */
 	void TryEnableTouchscreenMovement(UInputComponent* InputComponent);
 	
-	// Weapon Stuff
-
-	UPROPERTY(Replicated) class AGunHostActor* _currentWeapon;
-	UPROPERTY(Replicated) class UWeaponComponent* _currentWeaponComponent;
 	bool _fireHeld;
 	
 	void PickupWeapon();
@@ -182,13 +179,13 @@ protected:
 	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
-
+	
 	UFUNCTION(Server, Reliable) void SrvHitScan();
 	void SrvHitScan_Implementation();
-
-	UFUNCTION(Server, Reliable) void ShootGun();
-	void ShootGun_Implementation();
-
+	
+	UFUNCTION(Server, Reliable) void SrvShootGun();
+	void SrvShootGun_Implementation();
+	
 	UFUNCTION(Server, Reliable) void OnChangeSelectedWeapon(int Slot);
 	void OnChangeSelectedWeapon_Implementation(int Slot);
 
@@ -207,6 +204,7 @@ protected:
 	UPROPERTY() AActor* _lastLooked;
 	IIInteractable* _lastLookedInterface;
 	void InteractWithObject();
+	
 	void CastForInteractable(float DeltaTime);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) TSubclassOf<AGrenadeWeapon> _grenadeToSpawn;

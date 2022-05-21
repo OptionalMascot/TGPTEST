@@ -51,6 +51,4 @@ public:
 
 	void StartUse(){ _canUse = false;	}
 	void EndUse(){ _canUse = true;	}
-
-	bool bDidFire = false;
 };

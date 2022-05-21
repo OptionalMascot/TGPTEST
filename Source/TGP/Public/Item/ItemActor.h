@@ -27,7 +27,9 @@ class TGP_API AItemActor : public AActor, public IIInteractable
 	
 	UPROPERTY() APlayerController* _playerController;
 	
-	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Item", Meta = (AllowPrivateAccess = true)) UBaseItem* DefinedItem;
+	UPROPERTY(ReplicatedUsing=OnRep_UpdateItem, BlueprintReadOnly, Category = "Item", Meta = (AllowPrivateAccess = true)) UBaseItem* DefinedItem;
+
+	UFUNCTION() void OnRep_UpdateItem();
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
@@ -57,4 +59,6 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable) virtual void OnPickUp();
 	void OnPickUp_Implementation();
+
+	UFUNCTION(BlueprintImplementableEvent) void Test();
 };

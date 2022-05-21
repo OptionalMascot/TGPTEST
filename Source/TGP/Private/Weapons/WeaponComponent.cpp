@@ -16,7 +16,7 @@ UWeaponComponent::UWeaponComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	SetIsReplicated(true);
-	
+
 	// ...
 	_canUse = true;
 	_singleFireCheck = false;
@@ -49,12 +49,12 @@ bool UWeaponComponent::CheckMouseReleased()
 
 void UWeaponComponent::SrvOnFire_Implementation()
 {
-	auto t = Cast<AFP_FirstPersonCharacter>((GetOwner()->GetOwner()));
-
-	if (t)
-	{
-		t->TestDebug();
-	}
+	//auto t = Cast<AFP_FirstPersonCharacter>((GetOwner()));
+//
+	//if (t)
+	//{
+	//	t->TestDebug();
+	//}
 }
 
 void UWeaponComponent::OnFire()
