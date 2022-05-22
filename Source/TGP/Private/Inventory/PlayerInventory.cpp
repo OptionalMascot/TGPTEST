@@ -124,7 +124,7 @@ UThrowableItem* UPlayerInventory::GetSelectedUtility()
 	if (Item == nullptr)
 	{
 		SelectedUtilitySlot = UtilityContainer->FindFirstValidItem();
-		Item = Cast<UThrowableItem>(UtilityContainer->GetItemAt(SelectedUtilitySlot));
+		Item = Cast<UThrowableItem>(UtilityContainer->GetItemAt(SelectebdUtilitySlot));
 	}
 	
 	return Item;
