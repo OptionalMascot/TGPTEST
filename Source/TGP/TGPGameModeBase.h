@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Item/BaseItem.h"
-
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameInstance/BaseGameInstance.h"
+#include "Misc/Region.h"
+
 #include "TGPGameModeBase.generated.h"
 
 class ABaseAiCharacter;
@@ -44,6 +45,9 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	bool bPendingRoundRestart = true;
 	float SpawnerTimer = 0.f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Regions", Meta = (AllowPrivateAccess = true)) TArray<ARegion*> regions;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Regions", Meta = (AllowPrivateAccess = true)) ARegion* currentRegion;
+
 	void BeginRound();
 	void EndRound();
 
@@ -55,6 +59,8 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	bool CheckLineOfSight(const FVector& PawnLoc, const FVector& SpawnPoint) const;
 	bool IsLookingAtDir(const FVector& PawnDir, const FVector& DirToPoint) const;
 
+	void SetRegions();
+	
 	UFUNCTION(CallInEditor) void DEBUG_KILL_ENEMY();
 
 protected:
