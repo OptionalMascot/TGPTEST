@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItemInfo.h"
 #include "Engine/DataAsset.h"
 #include "ItemInfo.generated.h"
 
