@@ -8,34 +8,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Animations/Player/Pistol/ABP_Pistol.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Animations/Player/Pistol/ABP_Pistol.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Animations/Player/Rifle/ABP_Rifle.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Animations/Player/Rifle/ABP_Rifle.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/GunInfo/DA_DebugGun1.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0_BuiltData.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/Accessories/SM_Wep_Attachment_Ironsight_02.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/Accessories/SM_Wep_Attachment_Ironsight_02.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Pistol_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Pistol_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Pistol_01_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Pistol_01_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Base_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Base_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Base_01_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Base_01_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Laser_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Laser_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Laser_01_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Laser_01_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Plasma_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Plasma_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Plasma_01_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Plasma_01_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Plasma_02_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Plasma_02_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Plasma_03_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Plasma_03_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Small_01_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Rifle_Small_01_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_SMG_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_SMG_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_SMG_01_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_SMG_01_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Shotgun_Plasma_01_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PolygonScifi/Meshes/Weapons/SK_Wep_Shotgun_Plasma_01_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TGP.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/TGP.uproject" afterDir="false" />
-    </list>
+    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -53,28 +26,28 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAIController.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Aki/AkiCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIWidget.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ThrowableWeapon.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/ThrowableWeapon.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/PlayerAnimInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/PlayerAnimInstance.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/ThrowableWeapon.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Aki/AkiCharacter.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/PlayerAnimInstance.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ThrowableWeapon.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIWidget.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -113,18 +86,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
   <component name="RunManager" selected="C++ Project.TGP">
     <configuration name="TGP" type="CppProject" factoryName="C++ Project">
       <configuration_1>
@@ -388,6 +359,7 @@
       <workItem from="1653044919365" duration="4835000" />
       <workItem from="1653054053961" duration="6442000" />
       <workItem from="1653156718668" duration="9943000" />
+      <workItem from="1653225764605" duration="7865000" />
     </task>
     <servers />
   </component>

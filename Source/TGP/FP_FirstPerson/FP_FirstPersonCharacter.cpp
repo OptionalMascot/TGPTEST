@@ -67,6 +67,11 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 	M_DefaultSpeed = 600.0f;
 	M_SprintSpeed = 1350.0f;
 
+	M_DefaultCameraSensitivity = 0.6;
+	M_SniperSensitivity = 3.25;
+	M_AimSensitivity = 1.5;
+	M_CameraSensitivity = M_DefaultCameraSensitivity;
+
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -103,9 +108,9 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("Turn", this, &AFP_FirstPersonCharacter::Turn);
 	PlayerInputComponent->BindAxis("TurnRate", this, &AFP_FirstPersonCharacter::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &AFP_FirstPersonCharacter::LookUp);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AFP_FirstPersonCharacter::LookUpAtRate);
 
 	PlayerInputComponent->BindAxis("ChangeWeapon", this, &AFP_FirstPersonCharacter::ChangeWeapon);
@@ -475,6 +480,16 @@ void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 	}
 }
 
+void AFP_FirstPersonCharacter::LookUp(float inputValue)
+{
+	AddControllerPitchInput(inputValue * M_CameraSensitivity);
+}
+
+void AFP_FirstPersonCharacter::Turn(float inputValue)
+{
+	//AddControllerYawInput(inputValue * M_CameraSensitivity);
+}
+
 void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
 {
 	WeaponDefaultLocation = Mesh1P->GetRelativeLocation();
@@ -483,13 +498,16 @@ void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
 	const float TempY = WeaponAimLocation.Y;
 	WeaponAimLocation.Y = WeaponAimLocation.X;
 	WeaponAimLocation.X = TempY;
+	WeaponAimLocation.Z = WeaponDefaultLocation.Z;
 
-	WeaponAimLocation = WeaponDefaultLocation + WeaponAimLocation;
+	//WeaponAimLocation = WeaponDefaultLocation + WeaponAimLocation;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Black, FString::SanitizeFloat(GetActorRotation().Yaw));
 
 	if(GetActorRotation().Yaw != 0)
 	{
-		WeaponAimLocation.X = WeaponAimLocation.X * FMath::Cos(FMath::DegreesToRadians(-GetActorRotation().Yaw)) - WeaponAimLocation.X * FMath::Sin(FMath::DegreesToRadians(-GetActorRotation().Yaw));
-		WeaponAimLocation.Y = WeaponAimLocation.Y * FMath::Sin(FMath::DegreesToRadians(-GetActorRotation().Yaw)) + WeaponAimLocation.Y * FMath::Cos(FMath::DegreesToRadians(-GetActorRotation().Yaw));
+		WeaponAimLocation.X = WeaponAimLocation.X * FMath::Cos(GetActorRotation().Yaw) - WeaponAimLocation.X * FMath::Sin(GetActorRotation().Yaw);
+		WeaponAimLocation.Y = WeaponAimLocation.Y * FMath::Sin(GetActorRotation().Yaw) + WeaponAimLocation.Y * FMath::Cos(GetActorRotation().Yaw);
 	}
 	
 
@@ -501,8 +519,7 @@ void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
 		WeaponYawDiff -= GetActorRotation().Yaw;
 	}
 
-	AimRotation = FRotator(WeaponDefaultRotation.Pitch, WeaponDefaultRotation.Yaw + WeaponYawDiff, WeaponDefaultRotation.Roll);
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Black, FString::SanitizeFloat(AimRotation.Yaw));
+	AimRotation = FRotator(WeaponDefaultRotation.Pitch + WeaponPitchDiff, WeaponDefaultRotation.Yaw + WeaponYawDiff, WeaponDefaultRotation.Roll);
 }
 
 void AFP_FirstPersonCharacter::AttachWeapon()
@@ -556,30 +573,29 @@ void AFP_FirstPersonCharacter::BeginAim()
 {
 	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 	{
+		EndAim();
 		return;
 	}
 	
 	IsAiming = true;
 	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 	{
+		M_CameraSensitivity = M_DefaultCameraSensitivity/M_SniperSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(25.0f);
 	}
 	else
 	{
+		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
 	}		
 	Aim();
-	
 }
 
 void AFP_FirstPersonCharacter::EndAim()
 {
-	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
-	{
-		return;
-	}
 	
 	IsAiming = false;
+	M_CameraSensitivity = M_DefaultCameraSensitivity;
 	FirstPersonCameraComponent->SetFieldOfView(100.0f);
 	StopAim();	
 }

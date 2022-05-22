@@ -91,7 +91,7 @@ public:
 	float WeaponYawDiff;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
-	float WeaponAimYaw;
+	float WeaponPitchDiff;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
 	bool IsSprinting;
@@ -221,7 +221,16 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera", meta=(AllowPrivateAccess = true))
+	float M_DefaultCameraSensitivity;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera", meta=(AllowPrivateAccess = true))
 	float M_CameraSensitivity;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera", meta=(AllowPrivateAccess = true))
+	float M_AimSensitivity;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera", meta=(AllowPrivateAccess = true))
+	float M_SniperSensitivity;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement", meta=(AllowPrivateAccess = true))
 	float M_DefaultSpeed;
@@ -237,6 +246,9 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
+
+	void LookUp(float inputValue);
+	void Turn(float inputValue);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetAnimation();
@@ -256,6 +268,7 @@ public:
 	void StopAim();
 
 	void BeginAim();
+	UFUNCTION(BlueprintCallable)
 	void EndAim();
 };
 
