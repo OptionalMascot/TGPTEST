@@ -1,9 +1,11 @@
 #include "TGPGameModeBase.h"
+
 #include "DrawDebugHelpers.h"
 #include "FP_FirstPerson/FP_FirstPersonCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Ai/BaseAiCharacter.h"
 #include "Ai/AiCharacterData.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ATGPGameModeBase::ATGPGameModeBase()
 {
@@ -19,7 +21,7 @@ void ATGPGameModeBase::BeginPlay()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.bNoFail = true;
 
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "THUWHUDHAWd ");
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "THUWHUDHAWd ");
 	
 	for (uint8 i = 0; i < MaxEnemies; i++) // Init Pool
 	{
@@ -28,6 +30,7 @@ void ATGPGameModeBase::BeginPlay()
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
+	
 }
 
 void ATGPGameModeBase::Tick(float DeltaSeconds)
@@ -59,9 +62,16 @@ void ATGPGameModeBase::Tick(float DeltaSeconds)
 
 void ATGPGameModeBase::BeginRound()
 {
+	if(regions.Num()>0)
+	{
+		currentRegion = regions[UKismetMathLibrary::RandomInteger(regions.Num())];
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "Region Spawn");
+	}
+	
 	EnemiesToSpawn = (int)((SpawnIncreaseExponential * CurrentRound) * 24);
 	SpawnerTimer = 0.f;
 	bPendingRoundRestart = false;
+	
 }
 
 void ATGPGameModeBase::EndRound()
@@ -79,7 +89,16 @@ bool ATGPGameModeBase::TrySpawnEnemy()
 	
 	for (int i = 0; i < 100; i++)
 	{
-		const FVector AttemptedSpawnPoint = FVector(FMath::RandRange(SpawnMinRange.X, SpawnMaxRange.X), FMath::RandRange(SpawnMinRange.Y, SpawnMaxRange.Y), 3000.f);
+		FVector AttemptedSpawnPoint;
+		if(currentRegion!=nullptr)
+		{
+			AttemptedSpawnPoint = currentRegion->GetRandomPointInRegion();
+		}
+		else
+		{
+			AttemptedSpawnPoint = FVector(FMath::RandRange(SpawnMinRange.X, SpawnMaxRange.X), FMath::RandRange(SpawnMinRange.Y, SpawnMaxRange.Y), 3000.f);
+		}
+		 
 
 		DrawDebugLine(GetWorld(),AttemptedSpawnPoint, AttemptedSpawnPoint + (FVector::DownVector * 6000.f), FColor::Red, false, 1.f);
 		
@@ -157,6 +176,11 @@ void ATGPGameModeBase::SpawnEnemy(uint8 EnemyIndex, const FVector& Position) // 
 bool ATGPGameModeBase::IsLookingAtDir(const FVector& PawnDir, const FVector& DirToPoint) const
 {
 	return FVector::DotProduct(PawnDir, DirToPoint) > 0.f;
+}
+
+void ATGPGameModeBase::SetRegions()
+{
+	
 }
 
 void ATGPGameModeBase::DEBUG_KILL_ENEMY()
