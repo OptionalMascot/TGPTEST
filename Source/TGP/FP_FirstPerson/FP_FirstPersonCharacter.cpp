@@ -600,3 +600,32 @@ void AFP_FirstPersonCharacter::EndAim()
 	StopAim();	
 }
 
+void AFP_FirstPersonCharacter::SwitchWeapon()
+{
+	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+
+	if(!AnimInstance)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Orange, TEXT("NoAnimations"));
+		return;
+	}
+	
+	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	{
+	case EWeaponType::TwoHand:
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection("SwitchRifle", CombatMontage);
+		break;
+	case EWeaponType::OneHand:
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection("SwitchPistol", CombatMontage);
+		break;
+	case EWeaponType::Sword:
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection("SwitchSword", CombatMontage);
+		break;
+	default:
+		break;
+	}
+}
+

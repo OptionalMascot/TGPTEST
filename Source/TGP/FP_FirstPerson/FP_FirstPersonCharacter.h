@@ -64,6 +64,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	UAnimMontage* FireAnimation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* CombatMontage;
+
 	/* This is when calculating the trace to determine what the weapon has hit */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	float WeaponRange;
@@ -270,5 +273,8 @@ public:
 	void BeginAim();
 	UFUNCTION(BlueprintCallable)
 	void EndAim();
+
+	UFUNCTION(BlueprintCallable)
+	void SwitchWeapon();
 };
 
