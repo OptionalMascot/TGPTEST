@@ -110,8 +110,8 @@ void UProjectileWeaponComponent::OnFireEnd() // Called by parent on releasing le
 			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
 			postRecoilRotation = CameraRot; // Set post recoil rotation for recoil overriding
 		}
-		_singleFireCheck = false; // Allow single fire to shoot again
 	}
+	_singleFireCheck = false; // Allow single fire to shoot again
 	// The only reason the above doesnt happen for single fire, is that the timeline should play in full for single fire
 }
 
