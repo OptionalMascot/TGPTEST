@@ -113,7 +113,8 @@ void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
 	if(!reloading)
 	{
 		reloading = true;
-		GetWorld()->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
+		//GetWorld()->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
+		ReloadEnded();
 	}
 }
 
@@ -211,4 +212,9 @@ void UHitscanWeaponComponent::DropWeapon()
 		_weaponItem->SetAmmoCount(currentReserves);
 		_weaponItem->SetAmmoInClip(currentAmmoClip);
 	}
+}
+
+FVector2D UHitscanWeaponComponent::GetCurrentAmmo()
+{
+	return FVector2D(currentAmmoClip, currentReserves);
 }

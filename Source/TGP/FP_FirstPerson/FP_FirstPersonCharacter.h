@@ -22,7 +22,7 @@ class AFP_FirstPersonCharacter : public ACharacter
 	GENERATED_BODY()
 
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
-	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh, meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* Mesh1P;
 
 	/** Gun mesh */
@@ -64,6 +64,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	UAnimMontage* FireAnimation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimMontage* CombatMontage;
+
 	/* This is when calculating the trace to determine what the weapon has hit */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	float WeaponRange;
@@ -71,6 +74,37 @@ public:
 	/* This is multiplied by the direction vector when the weapon trace hits something to apply velocity to the component that is hit */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	float WeaponDamage;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	FVector WeaponAimLocation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	FVector WeaponDefaultLocation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	FRotator WeaponDefaultRotation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	FRotator MeshDefaultRotation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	FRotator AimRotation;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	float WeaponYawDiff;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	float WeaponPitchDiff;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Movement")
+	bool IsSprinting;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Aim")
+	bool IsAiming;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat")
+	bool IsReloading;
+	
 
 protected:
 
@@ -171,7 +205,7 @@ protected:
 	// Weapon Stuff
 
 	UPROPERTY() class AGunHostActor* _currentWeapon;
-	UPROPERTY() class UWeaponComponent* _currentWeaponComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="WeaponComponent") class UWeaponComponent* _currentWeaponComponent;
 	bool _fireHeld;
 	
 	void PickupWeapon();
@@ -192,6 +226,26 @@ protected:
 
 	UFUNCTION() void OnOverlapWithActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 	
+
+private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera", meta=(AllowPrivateAccess = true))
+	float M_DefaultCameraSensitivity;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera", meta=(AllowPrivateAccess = true))
+	float M_CameraSensitivity;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera", meta=(AllowPrivateAccess = true))
+	float M_AimSensitivity;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Camera", meta=(AllowPrivateAccess = true))
+	float M_SniperSensitivity;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement", meta=(AllowPrivateAccess = true))
+	float M_DefaultSpeed;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement", meta=(AllowPrivateAccess = true))
+	float M_SprintSpeed;
+
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
@@ -203,5 +257,35 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	UWeaponComponent* GetCurrentWeaponComponent() { return _currentWeaponComponent; }
-};
 
+	
+	void LookUp(float inputValue);
+	void Turn(float inputValue);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetAnimation();
+
+	UFUNCTION(BlueprintCallable)
+	void SetWeaponTransformDefaults();
+	
+	void AttachWeapon();
+
+	void Sprint();
+	void StopSprint();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void Aim();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StopAim();
+
+	void BeginAim();
+	UFUNCTION(BlueprintCallable)
+	void EndAim();
+
+	UFUNCTION(BlueprintCallable)
+	void SwitchWeapon();
+
+	UFUNCTION(BlueprintCallable)
+	void Reload();
+};

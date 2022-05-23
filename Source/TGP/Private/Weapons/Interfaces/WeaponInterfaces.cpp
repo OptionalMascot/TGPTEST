@@ -64,7 +64,7 @@ void IHasAmmo::TryReload(AActor* actor)
 	{
 		StartReloadAmmo(actor);
 	}
-}
+} 
 
 void IHasAmmo::ReloadEnded()
 {

@@ -35,4 +35,5 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void InitializeWeapon(UGunItem* gunItem) override;
 	virtual void DropWeapon() override;
+	virtual FVector2D GetCurrentAmmo() override;
 };
