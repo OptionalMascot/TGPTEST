@@ -12,6 +12,7 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
+#include "Weapons/HealthComponent.h"
 #include "Weapons/Projectiles/Projectile.h"
 #include "Weapons/Throwables/ThrowableWeapon.h"
 
@@ -56,6 +57,9 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 
 	PlayerInventory = CreateDefaultSubobject<UPlayerInventory>(TEXT("PlayerInventory"));
 	AddOwnedComponent(PlayerInventory);
+
+	_healthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
+	AddOwnedComponent(_healthComponent);
 
 	// Set weapon damage and range
 	WeaponRange = 5000.0f;
@@ -447,12 +451,22 @@ void AFP_FirstPersonCharacter::CastForInteractable(float DeltaTime)
 	}
 }
 
+void AFP_FirstPersonCharacter::OnOverlapWithActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OVERLAP EVENT"));
+}
 
 
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// DEBUG
+	_healthComponent->health -= 80.0f;
+	
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::OnOverlapWithActor);
+	
 	_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
 	_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
 	_currentWeaponComponent->SetParentMesh(FP_Gun);

@@ -165,6 +165,8 @@ protected:
 	 */
 	void TryEnableTouchscreenMovement(UInputComponent* InputComponent);
 
+	// Health
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true")) class UHealthComponent* _healthComponent;
 
 	// Weapon Stuff
 
@@ -188,6 +190,8 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) TSubclassOf<AGrenadeWeapon> _grenadeToSpawn;
 
+	UFUNCTION() void OnOverlapWithActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
@@ -197,5 +201,7 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
+
+	UWeaponComponent* GetCurrentWeaponComponent() { return _currentWeaponComponent; }
 };
 
