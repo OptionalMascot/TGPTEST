@@ -3,7 +3,13 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "ItemInfo.generated.h"
-
+UENUM(BlueprintType)
+enum EWeaponType
+{
+	TwoHand		UMETA(DisplayName = "Rifles and Shotgun"),
+	OneHand		UMETA(DisplayName = "Pistol"),
+	Sword		UMETA(DisplayName = "Melee Weapon")
+};
 UENUM()
 enum EItemCategory
 {
@@ -46,6 +52,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemInfo") UStaticMesh* ItemMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") TEnumAsByte<ERarity> ItemRarity;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") TEnumAsByte<EWeaponType> WeaponType;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") int MaxStack;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") int TradePrice;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") UTexture2D* ItemIcon;

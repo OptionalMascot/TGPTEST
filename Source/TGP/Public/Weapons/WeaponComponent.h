@@ -46,6 +46,7 @@ public:
 	virtual void DropWeapon();
 	void SetParentMesh(class USkeletalMeshComponent* mesh) { _parentMesh = mesh; }
 	virtual void InitializeWeapon(class UGunItem* gunItem);
+	UFUNCTION(BlueprintCallable) UGunInfo* GetWeaponInfo() { return _weaponInfo; }
 	
 	void StartUse(){ _canUse = false;	}
 	void EndUse(){ _canUse = true;	}

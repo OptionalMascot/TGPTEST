@@ -5,12 +5,13 @@
 
 #include "Aki/AkiCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 void UPlayerAnimInstance::UpdateAnimationVariables()
 {
 	if(!Player)
 	{
-		Player = Cast<AAkiCharacter>(TryGetPawnOwner());
+		Player = Cast<AFP_FirstPersonCharacter>(TryGetPawnOwner());
 	}
 	else
 	{

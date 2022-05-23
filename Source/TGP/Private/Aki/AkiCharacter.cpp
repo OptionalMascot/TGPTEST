@@ -39,8 +39,6 @@ void AAkiCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	AttachWeapon();
-	
-	
 }
 
 // Called every frame
@@ -187,12 +185,15 @@ void AAkiCharacter::AttachWeapon()
 		WeaponType = 2;
 		SetAnimation();
 	}
+
+	SetWeaponTransformDefaults();
 }
 
 void AAkiCharacter::SetWeaponTransformDefaults()
 {
 	WeaponDefaultLocation = GetMesh()->GetRelativeLocation();
 	WeaponLocationOffset = Camera->GetComponentLocation() - WeaponMesh->GetSocketLocation(FName("AimSocket"));
+	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Purple, WeaponLocationOffset.ToString());
 	const float TempY = WeaponLocationOffset.Y;
 	WeaponLocationOffset.Y = WeaponLocationOffset.X;
 	WeaponLocationOffset.X = TempY;
@@ -206,7 +207,6 @@ void AAkiCharacter::SetWeaponTransformDefaults()
 	WeaponDefaultRotation.Yaw += 90.0;
 
 	WeaponYawDiff = Camera->GetComponentRotation().Yaw - WeaponDefaultRotation.Yaw;
-	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Black, FString::SanitizeFloat(WeaponYawDiff));
 	WeaponAimYaw = GetMesh()->GetRelativeRotation().Yaw + WeaponYawDiff;
 }
 
@@ -225,5 +225,7 @@ void AAkiCharacter::Attack()
 		AnimInstance->Montage_JumpToSection(FName("Melee2"), CombatMontage);
 	}
 }
+
+
 
 
