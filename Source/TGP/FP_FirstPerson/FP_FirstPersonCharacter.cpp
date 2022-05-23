@@ -14,6 +14,7 @@
 #include "Item/ItemInfo.h"
 #include "Weapons/HealthComponent.h"
 #include "Weapons/Projectiles/Projectile.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Weapons/Throwables/ThrowableWeapon.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
@@ -68,6 +69,14 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 30.0f, 10.0f);
 
+	M_DefaultSpeed = 600.0f;
+	M_SprintSpeed = 1350.0f;
+
+	M_DefaultCameraSensitivity = 0.6;
+	M_SniperSensitivity = 3.25;
+	M_AimSensitivity = 1.5;
+	M_CameraSensitivity = M_DefaultCameraSensitivity;
+
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -85,6 +94,9 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	// Bind jump events
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFP_FirstPersonCharacter::Sprint);
+	PlayerInputComponent->BindAction("Sprint",  IE_Released,  this, &AFP_FirstPersonCharacter::StopSprint);
 	
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_FirstPersonCharacter::OnFireWeapon);
@@ -104,9 +116,9 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("Turn", this, &AFP_FirstPersonCharacter::Turn);
 	PlayerInputComponent->BindAxis("TurnRate", this, &AFP_FirstPersonCharacter::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookUp", this,&AFP_FirstPersonCharacter::LookUp);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AFP_FirstPersonCharacter::LookUpAtRate);
 
 	PlayerInputComponent->BindAxis("ChangeWeapon", this, &AFP_FirstPersonCharacter::ChangeWeapon);
@@ -305,6 +317,12 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 void AFP_FirstPersonCharacter::OnFireWeapon()
 {
 	_fireHeld = true;
+	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+
+	if(AnimInstance)
+	{
+		AnimInstance->StopAllMontages(0.0f);
+	}
 }
 
 void AFP_FirstPersonCharacter::OnFireWeaponRelease()
@@ -342,11 +360,20 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 {
 	if(_currentWeapon != nullptr)
 	{
-		IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
+		/*IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
 		if(AmmoRef != nullptr)
 		{
 			AmmoRef->TryReload(_currentWeapon);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+		}*/
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+
+		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+		if(AnimInstance)
+		{
+			AnimInstance->Montage_Play(CombatMontage, 1.0f);
+			AnimInstance->Montage_JumpToSection("Reload", CombatMontage);
 		}
 	}
 }
@@ -404,6 +431,8 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NOT VALID");
 	}
+
+	AttachWeapon();
 }
 
 void AFP_FirstPersonCharacter::InteractWithObject()
@@ -491,6 +520,163 @@ void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 	if(_fireHeld && _currentWeapon != nullptr)
 	{
 		_currentWeaponComponent->OnFire();
+	}
+}
+
+void AFP_FirstPersonCharacter::LookUp(float inputValue)
+{
+	AddControllerPitchInput(inputValue * M_CameraSensitivity);
+}
+
+void AFP_FirstPersonCharacter::Turn(float inputValue)
+{
+	AddControllerYawInput(inputValue * M_CameraSensitivity);
+}
+
+void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
+{
+	WeaponDefaultLocation = Mesh1P->GetRelativeLocation();
+	WeaponAimLocation = FirstPersonCameraComponent->GetComponentLocation() - FP_Gun->GetSocketLocation(FName("AimSocket"));
+	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Purple, WeaponAimLocation.ToString());
+	const float TempY = WeaponAimLocation.Y;
+	WeaponAimLocation.Y = WeaponAimLocation.X;
+	WeaponAimLocation.X = TempY;
+	WeaponAimLocation.Z = WeaponDefaultLocation.Z;
+
+	//WeaponAimLocation = WeaponDefaultLocation + WeaponAimLocation;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Black, FString::SanitizeFloat(GetActorRotation().Yaw));
+
+	if(GetActorRotation().Yaw != 0)
+	{
+		WeaponAimLocation.X = WeaponAimLocation.X * FMath::Cos(GetActorRotation().Yaw) - WeaponAimLocation.X * FMath::Sin(GetActorRotation().Yaw);
+		WeaponAimLocation.Y = WeaponAimLocation.Y * FMath::Sin(GetActorRotation().Yaw) + WeaponAimLocation.Y * FMath::Cos(GetActorRotation().Yaw);
+	}
+	
+
+	WeaponDefaultRotation = Mesh1P->GetRelativeRotation();
+	WeaponYawDiff = FirstPersonCameraComponent->GetComponentRotation().Yaw - FP_Gun->GetComponentRotation().Yaw + Mesh1P->GetComponentRotation().Yaw;
+
+	if(WeaponDefaultRotation.Yaw != 0.0f)
+	{
+		WeaponYawDiff -= GetActorRotation().Yaw;
+	}
+
+	AimRotation = FRotator(WeaponDefaultRotation.Pitch + WeaponPitchDiff, WeaponDefaultRotation.Yaw + WeaponYawDiff, WeaponDefaultRotation.Roll);
+}
+
+void AFP_FirstPersonCharacter::AttachWeapon()
+{
+	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	{
+	case EWeaponType::OneHand:
+		{
+			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("PistolSocket"));
+			break;
+		}
+	case EWeaponType::TwoHand:
+		{
+			if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
+			{
+				FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("SubMachineSocket"));
+			}
+			else
+			{
+				FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+			}
+			break;
+		}
+	case EWeaponType::Sword:
+		{
+			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("MeleeSocket"));
+			break;
+		}
+	default:
+		break;
+	}
+	SetAnimation();
+}
+
+void AFP_FirstPersonCharacter::Sprint()
+{
+	if(!IsReloading)
+	{
+		IsSprinting = true;
+		GetCharacterMovement()->MaxWalkSpeed = M_SprintSpeed;
+	}
+}
+
+void AFP_FirstPersonCharacter::StopSprint()
+{
+	IsSprinting = false;
+	GetCharacterMovement()->MaxWalkSpeed = M_DefaultSpeed;
+}
+
+void AFP_FirstPersonCharacter::BeginAim()
+{
+	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+	{
+		EndAim();
+		return;
+	}
+	
+	IsAiming = true;
+	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+	{
+		M_CameraSensitivity = M_DefaultCameraSensitivity/M_SniperSensitivity;
+		FirstPersonCameraComponent->SetFieldOfView(25.0f);
+	}
+	else
+	{
+		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
+		FirstPersonCameraComponent->SetFieldOfView(85.0f);
+	}		
+	Aim();
+}
+
+void AFP_FirstPersonCharacter::EndAim()
+{
+	IsAiming = false;
+	M_CameraSensitivity = M_DefaultCameraSensitivity;
+	FirstPersonCameraComponent->SetFieldOfView(100.0f);
+	StopAim();	
+}
+
+void AFP_FirstPersonCharacter::SwitchWeapon()
+{
+	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+
+	if(!AnimInstance)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Orange, TEXT("NoAnimations"));
+		return;
+	}
+	
+	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	{
+	case EWeaponType::TwoHand:
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection("SwitchRifle", CombatMontage);
+		break;
+	case EWeaponType::OneHand:
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection("SwitchPistol", CombatMontage);
+		break;
+	case EWeaponType::Sword:
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection("SwitchSword", CombatMontage);
+		break;
+	default:
+		break;
+	}
+}
+
+void AFP_FirstPersonCharacter::Reload()
+{
+	IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
+	if(AmmoRef != nullptr)
+	{
+		AmmoRef->TryReload(_currentWeapon);
 	}
 }
 
