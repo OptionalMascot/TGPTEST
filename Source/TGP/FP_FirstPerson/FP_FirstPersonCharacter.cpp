@@ -393,23 +393,23 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(nullptr);
 
 	// Unregister old component
-	_currentWeaponComponent->DropWeapon();
+	WeaponComponent->DropWeapon();
 	
-	_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
-	_currentWeaponComponent->DestroyComponent();
+	//_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
+	//_currentWeaponComponent->DestroyComponent();
 
-	UWeaponComponent* newComponent = NewObject<UWeaponComponent>(_currentWeapon, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
+	if (HasAuthority())
+	{
+		WeaponComponent = NewObject<UWeaponComponent>(this, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
+		WeaponComponent->RegisterComponentWithWorld(GetWorld());
 
-	newComponent->RegisterComponentWithWorld(GetWorld());
+		WeaponComponent->PickupWeapon(this); // Assign player to component
+		WeaponComponent->SetParentMesh(FP_Gun);
+	}
 	
-	_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
+	//_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
 
-	_currentWeaponComponent = newComponent; // Save reference
-	
-	_currentWeaponComponent->PickupWeapon(this); // Assign player to component
-
-	_currentWeaponComponent->SetParentMesh(FP_Gun);
-	
+	//_currentWeaponComponent = newComponent; // Save reference
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
 		WeaponComponent->InitializeWeapon(Gun);
@@ -551,8 +551,11 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	//_currentWeapon = nullptr;
 	//_currentWeaponComponent = nullptr;
 
-	PlayerInventory->OnWeaponChangedEvent.AddDynamic(this, &AFP_FirstPersonCharacter::OnWeaponChanged);
-	PlayerInventory->ComponentLoadComplete();
+	if (PlayerInventory)
+	{
+		PlayerInventory->OnWeaponChangedEvent.AddDynamic(this, &AFP_FirstPersonCharacter::OnWeaponChanged);
+		PlayerInventory->ComponentLoadComplete();	
+	}
 	
 	if (HasAuthority())
 	{

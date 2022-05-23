@@ -15,7 +15,7 @@ class TGP_API UProjectileWeaponComponent : public UWeaponComponent, public IWait
 	GENERATED_BODY()
 
 protected:
-	virtual void StartReloadAmmo(AActor* actor) override;
+	virtual void StartReloadAmmo() override;
 	virtual void StartWaitTimer(AActor* actor, float time) override;
 	virtual void CancelReload(AActor* actor) override;
 

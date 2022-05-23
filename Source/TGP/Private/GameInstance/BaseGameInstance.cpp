@@ -4,8 +4,8 @@
 #include "Engine/AssetManager.h"
 #include "Item/ItemInfo.h"
 
-#include "Online.h"
 #include "steam/steam_api.h"
+#include "Online.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
 
@@ -53,15 +53,20 @@ void UBaseGameInstance::LoadInfos()
 void UBaseGameInstance::Init()
 {
 	Super::Init();
-
-	SteamAPI_Init();
 	
-	IOnlineSessionPtr SessionInterface = Online::GetSessionInterface();//OnlineSub->GetSessionInterface();
-
-	if (SessionInterface.IsValid())
+	if (SteamAPI_Init())
 	{
-		SessionInviteAcceptedDelegateHandle = SessionInterface->AddOnSessionUserInviteAcceptedDelegate_Handle(SessionInviteAcceptedDelegate);
-		SessionInviteReceivedDelegateHandle = SessionInterface->AddOnSessionInviteReceivedDelegate_Handle(SessionInviteReceivedDelegate);
+		IOnlineSessionPtr Session = Online::GetSessionInterface();//OnlineSub->GetSessionInterface();
+
+		if (Session.IsValid())
+		{
+			SessionInviteAcceptedDelegateHandle = Session->AddOnSessionUserInviteAcceptedDelegate_Handle(SessionInviteAcceptedDelegate);
+			SessionInviteReceivedDelegateHandle = Session->AddOnSessionInviteReceivedDelegate_Handle(SessionInviteReceivedDelegate);
+		}
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("FAILED TO INIT STEAM"));
 	}
 
 	LoadInfos();

@@ -280,21 +280,21 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	UWeaponComponent* GetCurrentWeaponComponent() { return _currentWeaponComponent; }
+	UWeaponComponent* GetCurrentWeaponComponent() { return WeaponComponent; }
 
-	void LookUp(float inputValue);
-	void Turn(float inputValue);
+	void LookUp(float inputValue) {};
+	void Turn(float inputValue){};
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetAnimation();
 
 	UFUNCTION(BlueprintCallable)
-	void SetWeaponTransformDefaults();
+	void SetWeaponTransformDefaults(){};
 	
-	void AttachWeapon();
+	void AttachWeapon(){};
 
-	void Sprint();
-	void StopSprint();
+	void Sprint(){};
+	void StopSprint(){};
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Aim();
@@ -302,14 +302,14 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void StopAim();
 
-	void BeginAim();
+	void BeginAim(){};
 	UFUNCTION(BlueprintCallable)
-	void EndAim();
+	void EndAim(){};
+ 
+	UFUNCTION(BlueprintCallable)
+	void SwitchWeapon(){};
 
 	UFUNCTION(BlueprintCallable)
-	void SwitchWeapon();
-
-	UFUNCTION(BlueprintCallable)
-	void Reload();
+	void Reload(){};
 };
 
