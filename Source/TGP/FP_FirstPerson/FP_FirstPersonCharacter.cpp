@@ -77,6 +77,12 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 	M_AimSensitivity = 1.5;
 	M_CameraSensitivity = M_DefaultCameraSensitivity;
 
+	CanFire = true;
+
+	SwordCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Sword Collider"));
+	SwordCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SwordCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -316,13 +322,36 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 
 void AFP_FirstPersonCharacter::OnFireWeapon()
 {
-	_fireHeld = true;
-	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-
-	if(AnimInstance)
+	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 	{
-		AnimInstance->StopAllMontages(0.0f);
+		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+
+		if(!AnimInstance)
+		{
+			return;
+		}
+
+		if(IsMeleeAttacking)
+		{
+			return;
+		}
+			
+		IsMeleeAttacking = true;
+		int AnimToPlay = FMath::RandRange(0,1);
+
+		if(AnimToPlay == 0)
+		{
+			AnimInstance->Montage_Play(CombatMontage, 1.0f);
+			AnimInstance->Montage_JumpToSection("Melee1", CombatMontage);
+		}
+		else
+		{
+			AnimInstance->Montage_Play(CombatMontage, 1.0f);
+			AnimInstance->Montage_JumpToSection("Melee2", CombatMontage);
+		}
+		return;
 	}
+	_fireHeld = true;
 }
 
 void AFP_FirstPersonCharacter::OnFireWeaponRelease()
@@ -358,7 +387,7 @@ void AFP_FirstPersonCharacter::DropWeapon()
 
 void AFP_FirstPersonCharacter::ReloadWeapon()
 {
-	if(_currentWeapon != nullptr)
+	if(!_currentWeapon)
 	{
 		/*IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
 		if(AmmoRef != nullptr)
@@ -366,15 +395,17 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 			AmmoRef->TryReload(_currentWeapon);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 		}*/
+		return;
+	}
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if(AnimInstance)
-		{
-			AnimInstance->Montage_Play(CombatMontage, 1.0f);
-			AnimInstance->Montage_JumpToSection("Reload", CombatMontage);
-		}
+	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+	if(AnimInstance)
+	{
+	
+		AnimInstance->Montage_Play(CombatMontage, _currentWeaponComponent->GetWeaponInfo()->ReloadSpeed);
+		AnimInstance->Montage_JumpToSection("Reload", CombatMontage);
 	}
 }
 
@@ -509,6 +540,8 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	PlayerInventory->ComponentLoadComplete();
 
 	_lastLooked = nullptr;
+
+	SwordCollider->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::MeleeDamage);
 }
 
 void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
@@ -589,6 +622,7 @@ void AFP_FirstPersonCharacter::AttachWeapon()
 	case EWeaponType::Sword:
 		{
 			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("MeleeSocket"));
+			SwordCollider->AttachToComponent(FP_Gun, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("Collider"));
 			break;
 		}
 	default:
@@ -677,6 +711,74 @@ void AFP_FirstPersonCharacter::Reload()
 	if(AmmoRef != nullptr)
 	{
 		AmmoRef->TryReload(_currentWeapon);
+		CanFire = true;
 	}
 }
 
+void AFP_FirstPersonCharacter::PlayFireAnim()
+{
+	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+
+	if(!AnimInstance)
+	{
+		return;
+	}
+	
+	float AnimLegnth = 0.0f;
+	float GunFireRate = 0.0f;
+	float AdjustedPlayRate =1.0f;
+
+	DisplayGunType(_currentWeaponComponent->GetWeaponInfo()->WeaponType);
+
+	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	{
+	case EWeaponType::TwoHand:
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Black, TEXT("Rifle shooting"));
+		AnimLegnth = CombatMontage->GetSectionLength(CombatMontage->GetSectionIndex("RifleFire"));
+		GunFireRate = _currentWeaponComponent->GetWeaponInfo()->AttackRate ;
+		AdjustedPlayRate = (GunFireRate * 60.0f)/AnimLegnth;
+
+		AnimInstance->Montage_Play(CombatMontage, AdjustedPlayRate);
+		AnimInstance->Montage_JumpToSection("RifleFire", CombatMontage);
+		break;
+	case EWeaponType::OneHand:
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Black, TEXT("Pistol shooting"));
+		AnimLegnth = CombatMontage->GetSectionLength(CombatMontage->GetSectionIndex("PistolFire"));
+		GunFireRate = _currentWeaponComponent->GetWeaponInfo()->AttackRate;
+		AdjustedPlayRate = (GunFireRate * 60.0f)/AnimLegnth;
+
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_JumpToSection("PistolFire", CombatMontage);
+		break;
+	default:
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Black, TEXT("No WeaponType"));
+		break;
+	}
+
+}
+
+void AFP_FirstPersonCharacter::ShowGun()
+{
+	DisplayGunType(_currentWeaponComponent->GetWeaponInfo()->WeaponType);
+}
+
+void AFP_FirstPersonCharacter::SwordColliderOn()
+{
+	SwordCollider->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+}
+
+void AFP_FirstPersonCharacter::SwordColliderOff()
+{
+	SwordCollider->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+}
+
+void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(!OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Damage Zombie"));
+		SwordColliderOff();
+		UGameplayStatics::ApplyDamage(OtherActor, _currentWeaponComponent->GetWeaponInfo()->Damage, GetController(), this, UDamageType::StaticClass());
+	}
+}

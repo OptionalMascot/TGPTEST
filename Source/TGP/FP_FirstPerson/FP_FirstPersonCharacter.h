@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interactables/IInteractable.h"
+#include "Item/ItemInfo.h"
 #include "FP_FirstPersonCharacter.generated.h"
 
 class UInputComponent;
@@ -43,6 +44,9 @@ public:
 	AFP_FirstPersonCharacter();
 
 	UPlayerInventory* GetInventory() const { return PlayerInventory; }
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat")
+	UCapsuleComponent* SwordCollider;
 	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -104,7 +108,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat")
 	bool IsReloading;
-	
+
+	bool CanFire;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Combat")
+	bool IsMeleeAttacking;
 
 protected:
 
@@ -210,7 +218,6 @@ protected:
 	
 	void PickupWeapon();
 	void DropWeapon();
-	void ReloadWeapon();
 	void ThrowUtility();
 	
 	bool _weaponQueued;
@@ -258,6 +265,8 @@ public:
 
 	UWeaponComponent* GetCurrentWeaponComponent() { return _currentWeaponComponent; }
 
+	void ReloadWeapon();
+
 	
 	void LookUp(float inputValue);
 	void Turn(float inputValue);
@@ -288,4 +297,20 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Reload();
+
+	void PlayFireAnim();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void DisplayGunType(EWeaponType Gun);
+
+	UFUNCTION(BlueprintCallable)
+	void ShowGun();
+
+	UFUNCTION(BlueprintCallable)
+	void SwordColliderOn();
+	UFUNCTION(BlueprintCallable)
+	void SwordColliderOff();
+
+	UFUNCTION()
+	void MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 #include "WeaponComponent.generated.h"
 
 
@@ -23,6 +24,7 @@ protected:
 	bool CheckMouseReleased();
 	
 	UPROPERTY() AActor* _parent;
+	UPROPERTY() AFP_FirstPersonCharacter* _player;
 	UPROPERTY() APlayerController* _parentController;
 	UPROPERTY() USceneComponent* _holdPoint;
 
