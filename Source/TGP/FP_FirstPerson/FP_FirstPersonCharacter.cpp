@@ -315,6 +315,12 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 void AFP_FirstPersonCharacter::OnFireWeapon()
 {
 	_fireHeld = true;
+	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+
+	if(AnimInstance)
+	{
+		AnimInstance->StopAllMontages(0.0f);
+	}
 }
 
 void AFP_FirstPersonCharacter::OnFireWeaponRelease()
@@ -350,6 +356,8 @@ void AFP_FirstPersonCharacter::DropWeapon()
 
 void AFP_FirstPersonCharacter::ReloadWeapon()
 {
+	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+	
 	if(_currentWeapon != nullptr)
 	{
 		IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
@@ -357,6 +365,12 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 		{
 			AmmoRef->TryReload(_currentWeapon);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+
+			if(AnimInstance)
+			{
+				AnimInstance->Montage_Play(CombatMontage, 1.0f);
+				AnimInstance->Montage_JumpToSection("Reload", CombatMontage);
+			}
 		}
 	}
 }
@@ -487,7 +501,7 @@ void AFP_FirstPersonCharacter::LookUp(float inputValue)
 
 void AFP_FirstPersonCharacter::Turn(float inputValue)
 {
-	//AddControllerYawInput(inputValue * M_CameraSensitivity);
+	AddControllerYawInput(inputValue * M_CameraSensitivity);
 }
 
 void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()

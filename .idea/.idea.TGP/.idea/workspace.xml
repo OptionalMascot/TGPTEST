@@ -26,28 +26,28 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/ThrowableWeapon.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Aki/AkiCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIWidget.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ThrowableWeapon.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/ThrowableWeapon.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/PlayerAnimInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/PlayerAnimInstance.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Aki/AkiCharacter.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAIController.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ThrowableWeapon.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Aki/AkiCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Aki/AkiCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/PlayerAnimInstance.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAIController.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/PlayerAnimInstance.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -361,6 +361,8 @@
       <workItem from="1653156718668" duration="9943000" />
       <workItem from="1653225764605" duration="7865000" />
       <workItem from="1653247868143" duration="2258000" />
+      <workItem from="1653305551559" duration="169000" />
+      <workItem from="1653305759514" duration="3380000" />
     </task>
     <servers />
   </component>
