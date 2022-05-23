@@ -12,6 +12,7 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 UHitscanWeaponComponent::UHitscanWeaponComponent() : UWeaponComponent()
 {
@@ -34,7 +35,11 @@ void UHitscanWeaponComponent::BeginPlay()
 
 void UHitscanWeaponComponent::OnFire()
 {
+	_player->DisplayGunType(_player->GetCurrentWeaponComponent()->GetWeaponInfo()->WeaponType);
 	if(!CheckMouseReleased()) // If single fire check is turned on, require a release before firing again
+		return;
+
+	if(!_player->CanFire)
 		return;
 	
 	if(_canUse)
@@ -75,11 +80,16 @@ void UHitscanWeaponComponent::OnFire()
 				float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass()); // Attempt to apply damage
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
+
+			
+			_player->PlayFireAnim();
 		}
 		else
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
-			TryReload(_parent); // If can't shoot, try and reload
+			_player->ReloadWeapon();
+			_player->CanFire = false;
+			//TryReload(_parent); // If can't shoot, try and reload
 		}
 	}
 }

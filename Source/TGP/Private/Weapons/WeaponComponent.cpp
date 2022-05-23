@@ -68,6 +68,7 @@ void UWeaponComponent::PickupWeapon(AActor* parent)
 	if(_parent == nullptr)
 	{
 		_parent = parent;
+		_player = Cast<AFP_FirstPersonCharacter>(_parent);
 		_parentController = nullptr;
 	}
 }
