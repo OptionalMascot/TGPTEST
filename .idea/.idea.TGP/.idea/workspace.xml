@@ -10,7 +10,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ItemInfos/ThrowableInfo/DA_Throwable2.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/ItemInfos/ThrowableInfo/DA_Throwable2.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/GrenadeWeapon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/GrenadeWeapon.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +81,9 @@
       <option value="$PROJECT_DIR$/Source/TGP/Private/Pickups/HealthPickupActor.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" />
       <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/GrenadeWeapon.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ScatterGrenadeWeapon.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/ScatterGrenadeWeapon.cpp" />
     </changedPaths>
   </component>
   <component name="MarkdownSettingsMigration">
@@ -365,6 +369,7 @@
       <workItem from="1653234905706" duration="808000" />
       <workItem from="1653235818902" duration="3924000" />
       <workItem from="1653298404525" duration="37000" />
+      <workItem from="1653311999702" duration="1334000" />
     </task>
     <servers />
   </component>
