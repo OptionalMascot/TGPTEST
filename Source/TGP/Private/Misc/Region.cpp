@@ -16,7 +16,6 @@ ARegion::ARegion()
 void ARegion::BeginPlay()
 {	
 	Super::BeginPlay();
-	GetRandomPointInRegion();
 }
 
 FVector ARegion::GetRandomPointInRegion()
@@ -26,5 +25,30 @@ FVector ARegion::GetRandomPointInRegion()
 	float sphr; // ignore this
 	UKismetSystemLibrary::GetComponentBounds(regionBounds,boxOrigin,boxExtent,sphr);
 	return  UKismetMathLibrary::RandomPointInBoundingBox(boxOrigin,boxExtent);
+}
+
+void ARegion::ChangeRenderCustomDepthPass(bool state)
+{
+	TArray<UStaticMeshComponent*> components;
+	objcetive->GetComponents<UStaticMeshComponent>(components);
+	components[0]->SetRenderCustomDepth(state);
+}
+
+void ARegion::PickObjective()
+{
+	TArray<AActor*> possibleTargets;
+	GetAttachedActors(possibleTargets,true);
+	objcetive=possibleTargets[0];
+	ChangeRenderCustomDepthPass(true);
+}
+
+void ARegion::EndOfRound()
+{
+	ChangeRenderCustomDepthPass(false);
+}
+
+void ARegion::BeginRound()
+{
+	PickObjective();
 }
 

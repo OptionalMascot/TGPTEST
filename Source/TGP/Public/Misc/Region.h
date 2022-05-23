@@ -17,9 +17,18 @@ private:
 	UBoxComponent* regionBounds;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings", Meta = (AllowPrivateAccess = true))
 	FString name;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings", Meta = (AllowPrivateAccess = true))
+	AActor* objcetive;
 
 	virtual void BeginPlay() override;
+
+	void ChangeRenderCustomDepthPass(bool state);
 public:	
 	ARegion();
 	FVector GetRandomPointInRegion();
+	FString GetName(){return name;}
+	AActor* GetObjective(){return objcetive;}
+	void PickObjective();
+	void EndOfRound();
+	void BeginRound();
 };

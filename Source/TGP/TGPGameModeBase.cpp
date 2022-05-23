@@ -65,7 +65,8 @@ void ATGPGameModeBase::BeginRound()
 	if(regions.Num()>0)
 	{
 		currentRegion = regions[UKismetMathLibrary::RandomInteger(regions.Num())];
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "Region Spawn");
+		currentRegion->BeginRound();
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, currentRegion->GetName());
 	}
 	
 	EnemiesToSpawn = (int)((SpawnIncreaseExponential * CurrentRound) * 24);
@@ -76,6 +77,7 @@ void ATGPGameModeBase::BeginRound()
 
 void ATGPGameModeBase::EndRound()
 {
+	currentRegion->EndOfRound();
 	CurrentRound++;
 	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false); // Begin Cooldown between rounds
 }

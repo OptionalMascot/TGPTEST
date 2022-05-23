@@ -69,6 +69,9 @@ protected:
 public:
 	ATGPGameModeBase();
 
+	AActor* GetCurrentRegionObjective() const {return currentRegion->GetObjective();}
+	FString GetCurrentRegionName() const {return currentRegion->GetName();}
+
 	virtual void Tick(float DeltaSeconds) override;
 
 	void OnEnemyKilled(ABaseAiCharacter* Enemy); // TODO: REPLACE WITH AI CLASS

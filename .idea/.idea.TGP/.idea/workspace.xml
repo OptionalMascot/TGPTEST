@@ -9,55 +9,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise00.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise000.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise01.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise02.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise03.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise04.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise06.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise07.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise08.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise09.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise10.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise11.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/Noise12.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise00.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise000.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise01.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise02.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise04.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise06.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise07.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise08.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise09.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise10.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise11.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/Noise12.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise00.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise000.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise01.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise02.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise04.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise06.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise07.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise08.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise09.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise10.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise11.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/Noise12.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_AggresiveAI.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_WanderAI.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BB_BaseAI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BB_BaseAI.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAIController.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAIController.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAi.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAi.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BTT_Attack.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_BaseAI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_BaseAI.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/GameModes/BP_BaseGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/GameModes/BP_BaseGameMode.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_PickupSet_1/Materials/Textures/T_Beam_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_PickupSet_1/Materials/Textures/T_Beam_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_PickupSet_1/Materials/Textures/T_NoiseCloud_1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_PickupSet_1/Materials/Textures/T_NoiseCloud_1.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_PickupSet_1/Materials/Textures/T_NoiseCloud_2.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_PickupSet_1/Materials/Textures/T_NoiseCloud_2.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_PickupSet_1/Materials/Textures/T_NoiseFurry.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_PickupSet_1/Materials/Textures/T_NoiseFurry.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/T_Beam_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Projectilevfx/Vfx/Materials/Textures/T_Beam_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/T_Beam_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_Rayvfx/Materials/Textures/T_Beam_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/T_Beam_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_SkillSet_1/Materials/Textures/T_Beam_01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_StylizedAttacksPack/Materials/Textures/T_Noise10.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/sA_Megapack_v1/sA_StylizedAttacksPack/Materials/Textures/T_Noise10.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_ChaseTarget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_ChaseTarget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_DistanceCheck.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_DistanceCheck.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAIController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAIController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Misc/Region.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Misc/Region.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Misc/Region.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Misc/Region.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +57,7 @@
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ThrowableWeapon.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
@@ -405,7 +376,7 @@
       <workItem from="1653234905706" duration="808000" />
       <workItem from="1653235818902" duration="3924000" />
       <workItem from="1653298404525" duration="37000" />
-      <workItem from="1653301214678" duration="1223000" />
+      <workItem from="1653301214678" duration="12301000" />
     </task>
     <servers />
   </component>
