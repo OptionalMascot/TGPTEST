@@ -15,7 +15,7 @@ class TGP_API ARegion : public AActor
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings", Meta = (AllowPrivateAccess = true))
 	UBoxComponent* regionBounds;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings", Meta = (AllowPrivateAccess = true))
 	FString name;
 
 	virtual void BeginPlay() override;

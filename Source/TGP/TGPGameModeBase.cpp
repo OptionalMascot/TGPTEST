@@ -21,7 +21,7 @@ void ATGPGameModeBase::BeginPlay()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.bNoFail = true;
 
-	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "THUWHUDHAWd ");
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "Amogus");
 	
 	for (uint8 i = 0; i < MaxEnemies; i++) // Init Pool
 	{
