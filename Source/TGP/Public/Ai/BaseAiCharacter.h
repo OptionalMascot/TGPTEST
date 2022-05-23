@@ -9,6 +9,14 @@
 
 class UAiCharacterData;
 
+UENUM(BlueprintType)
+enum class EZombieMoveType : uint8
+{
+	MoveState_SlowWalking		UMETA(DisplayName = "Slow Walking"),
+	MoveState_NormalWalking	UMETA(DisplayName = "Normal Walking"),
+	MoveState_Running			UMETA(DisplayName = "Running")
+};
+
 UCLASS()
 class TGP_API ABaseAiCharacter : public ACharacter
 {
@@ -19,6 +27,17 @@ class TGP_API ABaseAiCharacter : public ACharacter
 	
 	float Damage;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Movement", Meta = (AllowPrivateAccess = true)) EZombieMoveType ZombieType;
+	float RunMultiplier = 3.0f;
+	float SlowWalkMultiplier = 0.5f;
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* AttackMontage;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Animations") class UAnimMontage* DeathMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class USphereComponent* RightHandCollider;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class UCapsuleComponent* LeftArmCollider;
+ 
 protected:
 	virtual void BeginPlay() override;
 
@@ -38,4 +57,23 @@ public:
 	void SetHidden(bool bEnemyHidden);
 
 	void Attack();
+
+	void SetMoveType();
+
+	UFUNCTION(BlueprintCallable)
+	void RightColliderOn();
+	UFUNCTION(BlueprintCallable)
+	void RightColliderOff();
+	UFUNCTION()
+	void RightColliderHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+
+	UFUNCTION(BlueprintCallable)
+	void LeftColliderOn();
+	UFUNCTION(BlueprintCallable)
+	void LeftColliderOff();
+	UFUNCTION()
+	void LeftColliderHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+
+	UFUNCTION(BlueprintCallable)
+	void Die();
 };
