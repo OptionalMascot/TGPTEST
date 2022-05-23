@@ -68,11 +68,15 @@ void ATGPGameModeBase::BeginRound()
 		currentRegion->BeginRound();
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, currentRegion->GetName());
 	}
+	GetWorld()->GetTimerManager().SetTimer(RoundDelayHandler, this, &ATGPGameModeBase::BeginRoundDelay, 20, false);
+}
+
+void ATGPGameModeBase::BeginRoundDelay()
+{
 	
 	EnemiesToSpawn = (int)((SpawnIncreaseExponential * CurrentRound) * 24);
 	SpawnerTimer = 0.f;
 	bPendingRoundRestart = false;
-	
 }
 
 void ATGPGameModeBase::EndRound()
