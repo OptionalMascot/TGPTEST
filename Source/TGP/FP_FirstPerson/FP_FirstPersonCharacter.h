@@ -258,6 +258,7 @@ public:
 
 	UWeaponComponent* GetCurrentWeaponComponent() { return _currentWeaponComponent; }
 
+	/*
 	void LookUp(float inputValue);
 	void Turn(float inputValue);
 
@@ -287,5 +288,5 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Reload();
+	*/
 };
-
