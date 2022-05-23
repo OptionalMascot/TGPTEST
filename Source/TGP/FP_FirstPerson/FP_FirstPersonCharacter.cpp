@@ -360,17 +360,19 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 	
 	if(_currentWeapon != nullptr)
 	{
-		IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
+		/*IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
 		if(AmmoRef != nullptr)
 		{
 			AmmoRef->TryReload(_currentWeapon);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+			
+		}*/
 
-			if(AnimInstance)
-			{
-				AnimInstance->Montage_Play(CombatMontage, 1.0f);
-				AnimInstance->Montage_JumpToSection("Reload", CombatMontage);
-			}
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+
+		if(AnimInstance)
+		{
+			AnimInstance->Montage_Play(CombatMontage, 1.0f);
+			AnimInstance->Montage_JumpToSection("Reload", CombatMontage);
 		}
 	}
 }
@@ -640,6 +642,15 @@ void AFP_FirstPersonCharacter::SwitchWeapon()
 		break;
 	default:
 		break;
+	}
+}
+
+void AFP_FirstPersonCharacter::Reload()
+{
+	IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
+	if(AmmoRef != nullptr)
+	{
+		AmmoRef->TryReload(_currentWeapon);
 	}
 }
 

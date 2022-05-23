@@ -276,5 +276,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SwitchWeapon();
+
+	UFUNCTION(BlueprintCallable)
+	void Reload();
 };
 

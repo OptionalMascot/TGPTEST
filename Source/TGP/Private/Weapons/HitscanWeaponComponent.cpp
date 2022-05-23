@@ -110,7 +110,8 @@ void UHitscanWeaponComponent::StartReloadAmmo(AActor* actor)
 	if(!reloading)
 	{
 		reloading = true;
-		GetWorld()->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
+		//GetWorld()->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
+		ReloadEnded();
 	}
 }
 
