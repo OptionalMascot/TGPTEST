@@ -213,3 +213,8 @@ void UHitscanWeaponComponent::DropWeapon()
 		_weaponItem->SetAmmoInClip(currentAmmoClip);
 	}
 }
+
+FVector2D UHitscanWeaponComponent::GetCurrentAmmo()
+{
+	return FVector2D(currentAmmoClip, currentReserves);
+}

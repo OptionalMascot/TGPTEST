@@ -219,3 +219,8 @@ void UProjectileWeaponComponent::DropWeapon()
 		_weaponItem->SetAmmoInClip(currentAmmoClip);
 	}
 }
+
+FVector2D UProjectileWeaponComponent::GetCurrentAmmo()
+{
+	return FVector2D(currentAmmoClip, currentReserves);
+}
