@@ -64,7 +64,7 @@ void IHasAmmo::TryReload()
 	{
 		StartReloadAmmo();
 	}
-}
+} 
 
 void IHasAmmo::ReloadEnded()
 {
@@ -159,6 +159,10 @@ void IUseRecoil::ApplyRecoilPitch(APlayerController* controller, float Value, bo
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pitch Increase: ") + FString::SanitizeFloat(Value));
 	if(controller)
 		controller->AddPitchInput(Value * controller->GetWorld()->GetDeltaSeconds());
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("No Valid Controller"));
+	}
 }
 
 void IUseRecoil::ApplyRecoilYaw(APlayerController* controller, float Value, bool isSingleFire)

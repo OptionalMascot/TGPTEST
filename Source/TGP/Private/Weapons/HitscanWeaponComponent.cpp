@@ -113,19 +113,22 @@ void UHitscanWeaponComponent::OnFire()
 
 void UHitscanWeaponComponent::OnFireEnd() // Called by parent on releasing left click
 {
-	if(_weaponInfo->FireType != EFireType::Single)
+	if(HasStartedRecoil())
 	{
-		// recoilTimeline.SetNewTime(recoilTimeline.GetTimelineLength()); Make a new modifier to scale the value by how much of the timeline has played
-		notPlayedFullyValue = recoilTimeline.GetTimelineLength() / recoilTimeline.GetPlaybackPosition();
-		ReverseTimeline(_weaponInfo->RecoilRecoveryModifier); // Reverse the timeline
-		FVector CameraLoc;
-		FRotator CameraRot;
-		if(_parentController == nullptr)
+		if(_weaponInfo->FireType != EFireType::Single)
 		{
-			_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
+			// recoilTimeline.SetNewTime(recoilTimeline.GetTimelineLength()); Make a new modifier to scale the value by how much of the timeline has played
+			notPlayedFullyValue = recoilTimeline.GetTimelineLength() / recoilTimeline.GetPlaybackPosition();
+			ReverseTimeline(_weaponInfo->RecoilRecoveryModifier); // Reverse the timeline
+			FVector CameraLoc;
+			FRotator CameraRot;
+			if(_parentController == nullptr)
+			{
+				_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
+			}
+			_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
+			postRecoilRotation = CameraRot; // Set post recoil rotation for recoil overriding
 		}
-		_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
-		postRecoilRotation = CameraRot; // Set post recoil rotation for recoil overriding
 	}
 	_singleFireCheck = false; // Allow single fire to shoot again
 
@@ -137,7 +140,8 @@ void UHitscanWeaponComponent::StartReloadAmmo()
 	if(!reloading)
 	{
 		reloading = true;
-		GetWorld()->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
+		//GetWorld()->GetTimerManager().SetTimer(reloadTimerHandler, this, &IHasAmmo::ReloadEnded, reloadTime, false);
+		ReloadEnded();
 	}
 }
 

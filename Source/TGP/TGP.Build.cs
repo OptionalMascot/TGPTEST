@@ -8,7 +8,7 @@ public class TGP : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "AIModule", "Niagara", "OnlineSubsystem", "OnlineSubsystemUtils", "Networking", "Sockets", "Steamworks" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "AIModule", "Niagara", "GameplayTasks", "NavigationSystem", "OnlineSubsystem", "OnlineSubsystemUtils", "Networking", "Sockets", "Steamworks" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

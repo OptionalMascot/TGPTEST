@@ -24,6 +24,7 @@ void UHealthComponent::BeginPlay()
 	// ...
 
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::ApplyDamage);
+	health = maxHealth;
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Linked OnTakeAnyDamage"));
 }
 
@@ -40,13 +41,17 @@ bool UHealthComponent::AdjustHealth(AController* causer, float damage)
 {
 	health -= damage;
 	onComponentTakeDamage.Broadcast(causer, damage);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Hit! Health: ") + FString::FromInt(health));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("New Health: ") + FString::FromInt(health));
 	if(health <= 0)
 	{
 		dead = true;
 		onComponentDead.Broadcast(causer);
 		if(destroyOnDeath)
 			KillObject();
+	}
+	else if(health > maxHealth)
+	{
+		health = maxHealth;
 	}
 	return dead;
 }

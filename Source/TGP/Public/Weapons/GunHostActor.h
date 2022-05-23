@@ -29,4 +29,5 @@ public:
 
 	void DebugMessage();
 	class UWeaponComponent* GetWeaponComponent() { return _weapon; }
+	void AssignNewComponent(UWeaponComponent* component);
 };

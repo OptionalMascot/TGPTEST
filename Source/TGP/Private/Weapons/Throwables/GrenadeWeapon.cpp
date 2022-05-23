@@ -29,7 +29,7 @@ void AGrenadeWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	_startFuse = false;
-	Initialize(_throwableInfo);
+	SetPhysicsMesh(ItemSkeletalMesh);
 	if(_particleSystem)
 	{
 		_particleSystem->Deactivate();
@@ -44,7 +44,7 @@ void AGrenadeWeapon::StartWaitTimer(AActor* actor, float time)
 
 void AGrenadeWeapon::ExplodeGrenade()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("BOOM"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("BOOM"));
 	_particleSystem->Activate();
 	ItemSkeletalMesh->SetHiddenInGame(true);
 
@@ -64,13 +64,13 @@ void AGrenadeWeapon::SphereCastForTargets()
 	{
 		for(int i = 0; i < OutHits.Num(); i++)
 		{
-			UGameplayStatics::ApplyDamage(OutHits[i].GetActor(), _throwableInfo->Damage, _controller, _controller->GetPawn(), UDamageType::StaticClass());
+			UGameplayStatics::ApplyDamage(OutHits[i].GetActor(), _throwableInfo->Damage, _spawnedBy, _spawnedBy->GetPawn(), UDamageType::StaticClass());
 			if(OutHits[i].GetActor() != nullptr)
 			{
 				if(!appliedPhysics.Contains(OutHits[i].GetActor()))
 				{
 					appliedPhysics.Add(OutHits[i].GetActor());
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, OutHits[i].GetActor()->GetName());
+					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, OutHits[i].GetActor()->GetName());
 					UStaticMeshComponent* mesh = OutHits[i].GetActor()->FindComponentByClass<UStaticMeshComponent>();
 					USkeletalMeshComponent* skeleMesh = OutHits[i].GetActor()->FindComponentByClass<USkeletalMeshComponent>();
 					if(skeleMesh)
@@ -101,11 +101,12 @@ void AGrenadeWeapon::Tick(float DeltaTime)
 	
 }
 
-void AGrenadeWeapon::SetInitialThrowForce(FVector forceDir)
+void AGrenadeWeapon::SetProjectileParameters(APlayerController* spawnedBy, FVector dir, float speed)
 {
-	ItemSkeletalMesh->AddForce(forceDir);
+	Super::SetProjectileParameters(spawnedBy, dir, speed);
+	_physicsMeshReference->AddForce(dir * speed);
 	FVector randSpin = FVector(FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f), FMath::RandRange(-1.0f, 1.0f));
-	ItemSkeletalMesh->AddTorque(randSpin * 50000.0f);
+	_physicsMeshReference->AddTorque(randSpin * 50000.0f);
 }
 
 void AGrenadeWeapon::Initialize(UThrowableInfo* throwableInfo)
@@ -113,10 +114,5 @@ void AGrenadeWeapon::Initialize(UThrowableInfo* throwableInfo)
 	_throwableInfo = throwableInfo;
 	ItemSkeletalMesh->SetSkeletalMesh(_throwableInfo->WeaponSkeletalMesh);
 	StartWaitTimer(this, _throwableInfo->FuseTime);	
-}
-
-void AGrenadeWeapon::SetPlayerController(APlayerController* controller)
-{
-	_controller = controller;
 }
 

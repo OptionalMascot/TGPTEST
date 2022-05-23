@@ -3,7 +3,13 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "ItemInfo.generated.h"
-
+UENUM(BlueprintType)
+enum EWeaponType
+{
+	TwoHand		UMETA(DisplayName = "Rifles and Shotgun"),
+	OneHand		UMETA(DisplayName = "Pistol"),
+	Sword		UMETA(DisplayName = "Melee Weapon")
+};
 UENUM()
 enum EItemCategory
 {
@@ -46,7 +52,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemInfo") UStaticMesh* ItemMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") TEnumAsByte<ERarity> ItemRarity;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") int MaxStack = 1;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") TEnumAsByte<EWeaponType> WeaponType;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") int MaxStack;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") int TradePrice;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") UTexture2D* ItemIcon;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, BlueprintReadOnly, Category = "ItemData") TSubclassOf<class UBaseItem> ItemClass; // TODO: REPLACE WITH ITEM CLASS
@@ -89,6 +96,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") UCurveFloat* RecoilCurvePitch;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") UCurveFloat* RecoilCurveYaw;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float RecoilRecoveryModifier = 1.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") TSubclassOf<class UWeaponComponent> BaseWeaponClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") class UThrowableInfo* ProjectileToSpawn;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float ProjectileLaunchSpeed;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") bool UnlimitedAmmo = false;
 
@@ -108,6 +118,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") float KnockbackForce = 1000.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") float FuseTime = 5.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") float ThrowForce = 100.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ThrowableInfo") TSubclassOf<AActor> ThrowableBlueprint;
 
 	virtual void GenerateStats() override;
 	virtual FPrimaryAssetId GetPrimaryAssetId() const override;

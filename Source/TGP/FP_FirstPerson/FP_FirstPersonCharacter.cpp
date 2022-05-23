@@ -19,6 +19,9 @@
 #include "Net/UnrealNetwork.h"
 #include "Weapons/HitscanWeaponComponent.h"
 #include "Weapons/Throwables/GrenadeWeapon.h"
+#include "Weapons/HealthComponent.h"
+#include "Weapons/Projectiles/Projectile.h"
+#include "Weapons/Throwables/ThrowableWeapon.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -60,6 +63,9 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 
 	PlayerInventory = CreateDefaultSubobject<UPlayerInventory>(TEXT("PlayerInv"));
 	AddOwnedComponent(PlayerInventory);
+
+	_healthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
+	AddOwnedComponent(_healthComponent);
 
 	// Set weapon damage and range
 	WeaponRange = 5000.0f;
@@ -371,10 +377,9 @@ void AFP_FirstPersonCharacter::ThrowUtility()
 		FRotator rot;
 		_playerController->GetPlayerViewPoint(pos, rot);
 	
-		AGrenadeWeapon* GrenadeActor = GetWorld()->SpawnActor<AGrenadeWeapon>(_grenadeToSpawn, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
-		GrenadeActor->Initialize(Cast<UThrowableInfo>(Throwable->GetItemInfo()));
-		GrenadeActor->SetInitialThrowForce(rot.Vector() * 100000.0f);
-		GrenadeActor->SetPlayerController(_playerController);
+		AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(Cast<UThrowableInfo>(Throwable->GetItemInfo())->ThrowableBlueprint, GetActorLocation() + FVector(0.0f, 0.0f, 50.0f) + rot.Vector() * 100.0f, FRotator());
+		ThrowableActor->Initialize(Cast<UThrowableInfo>(Throwable->GetItemInfo()));
+		ThrowableActor->SetProjectileParameters(_playerController, rot.Vector(), 100000.0f);
 
 		PlayerInventory->OnUseUtility();
 	}
@@ -386,6 +391,25 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(Cast<UWeaponInfo>(WeaponItem->GetItemInfo())->WeaponSkeletalMesh);
 	else
 		FP_Gun->SetSkeletalMesh(nullptr);
+
+	// Unregister old component
+	_currentWeaponComponent->DropWeapon();
+	
+	_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
+	_currentWeaponComponent->DestroyComponent();
+
+	UWeaponComponent* newComponent = NewObject<UWeaponComponent>(_currentWeapon, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
+
+	newComponent->RegisterComponentWithWorld(GetWorld());
+	
+	_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
+
+	_currentWeaponComponent = newComponent; // Save reference
+	
+	_currentWeaponComponent->PickupWeapon(this); // Assign player to component
+
+	_currentWeaponComponent->SetParentMesh(FP_Gun);
+	
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
 		WeaponComponent->InitializeWeapon(Gun);
@@ -504,12 +528,21 @@ void AFP_FirstPersonCharacter::CastForInteractable(float DeltaTime)
 	}
 }
 
+void AFP_FirstPersonCharacter::OnOverlapWithActor(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("OVERLAP EVENT"));
+}
 
 
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	_healthComponent->health -= 80.0f;
+	
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::OnOverlapWithActor);
+
 	//_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
 	//_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
 	WeaponComponent->SetParentMesh(FP_Gun);

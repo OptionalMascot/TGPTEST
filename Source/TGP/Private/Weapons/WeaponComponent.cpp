@@ -81,8 +81,6 @@ void UWeaponComponent::PickupWeapon(AActor* parent)
 	{
 		_parent = parent;
 		_parentController = nullptr;
-		//_parentMesh->SetSimulatePhysics(false);
-		//_parentMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 
@@ -100,4 +98,5 @@ void UWeaponComponent::InitializeWeapon(UGunItem* gunItem) // Get and Update amm
 	_weaponItem = gunItem;
 	_weaponInfo = Cast<UGunInfo>(gunItem->GetItemInfo());
 }
+
 
