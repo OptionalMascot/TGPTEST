@@ -73,8 +73,8 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 	M_SprintSpeed = 1350.0f;
 
 	M_DefaultCameraSensitivity = 0.6;
-	M_SniperSensitivity = 3.25;
-	M_AimSensitivity = 1.5;
+	M_SniperSensitivity = 4.5;
+	M_AimSensitivity = 2;
 	M_CameraSensitivity = M_DefaultCameraSensitivity;
 
 	CanFire = true;
@@ -658,19 +658,39 @@ void AFP_FirstPersonCharacter::StopSprint()
 
 void AFP_FirstPersonCharacter::NewAim()
 {
+	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+	{
+		EndAim();
+		return;
+	}
+	
+	IsAiming = true;
+	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+	{
+		M_CameraSensitivity = M_DefaultCameraSensitivity/M_SniperSensitivity;
+		FirstPersonCameraComponent->SetFieldOfView(25.0f);
+	}
+	else
+	{
+		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
+		FirstPersonCameraComponent->SetFieldOfView(85.0f);
+	}
+	
 	Mesh1P->SetHiddenInGame(true);
 	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
-
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Blue, FP_Gun->SkeletalMesh->GetName());
+	
 	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
 	{
 	case EWeaponType::TwoHand:
-		if(FP_Gun->GetName().Contains("SMG"))
+		if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
 		{
+			UE_LOG(LogTemp, Warning, TEXT("SMGGGG"));
 			AdjustToIrons();
 			break;
 		}
 
-		if(FP_Gun->GetName().Contains("Sniper"))
+		if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 		{
 			break;
 		}
@@ -678,6 +698,12 @@ void AFP_FirstPersonCharacter::NewAim()
 		AdjustToSight();
 		break;
 	case EWeaponType::OneHand:
+		if(FP_Gun->SkeletalMesh->GetName().Contains("Machine"))
+		{
+			AdjustToSight();
+			break;
+		}
+		AdjustToIrons();
 		break;
 	default:
 		break;
@@ -688,6 +714,9 @@ void AFP_FirstPersonCharacter::NewAim()
 void AFP_FirstPersonCharacter::NewStopAim()
 {
 	Mesh1P->SetHiddenInGame(false);
+	IsAiming = false;
+	M_CameraSensitivity = M_DefaultCameraSensitivity;
+	FirstPersonCameraComponent->SetFieldOfView(100.0f);
 	AttachWeapon();
 }
 
@@ -710,7 +739,7 @@ void AFP_FirstPersonCharacter::BeginAim()
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
 	}		
-	NewAim();
+	
 }
 
 void AFP_FirstPersonCharacter::EndAim()
