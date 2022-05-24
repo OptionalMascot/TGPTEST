@@ -784,7 +784,11 @@ void AFP_FirstPersonCharacter::NewAim()
 {
 	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 	{
-		EndAim();
+		if(IsAiming)
+		{
+			NewStopAim();
+		}
+		
 		return;
 	}
 	
@@ -838,42 +842,22 @@ void AFP_FirstPersonCharacter::NewAim()
 
 void AFP_FirstPersonCharacter::NewStopAim()
 {
+	if(IsAiming)
+	{
+		Mesh1P->SetHiddenInGame(false);
+		IsAiming = false;
+		M_CameraSensitivity = M_DefaultCameraSensitivity;
+		FirstPersonCameraComponent->SetFieldOfView(100.0f);
+		AttachWeapon();
+	}
+}
+
+void AFP_FirstPersonCharacter::ResetAim()
+{
 	Mesh1P->SetHiddenInGame(false);
 	IsAiming = false;
 	M_CameraSensitivity = M_DefaultCameraSensitivity;
 	FirstPersonCameraComponent->SetFieldOfView(100.0f);
-	AttachWeapon();
-}
-
-void AFP_FirstPersonCharacter::BeginAim()
-{
-	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
-	{
-		EndAim();
-		return;
-	}
-	
-	IsAiming = true;
-	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
-	{
-		M_CameraSensitivity = M_DefaultCameraSensitivity/M_SniperSensitivity;
-		FirstPersonCameraComponent->SetFieldOfView(25.0f);
-	}
-	else
-	{
-		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
-		FirstPersonCameraComponent->SetFieldOfView(85.0f);
-	}
-	
-	NewAim();
-}
-
-void AFP_FirstPersonCharacter::EndAim()
-{
-	IsAiming = false;
-	M_CameraSensitivity = M_DefaultCameraSensitivity;
-	FirstPersonCameraComponent->SetFieldOfView(100.0f);
-	NewStopAim();
 }
 
 void AFP_FirstPersonCharacter::SwitchWeapon()
@@ -952,11 +936,6 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 
 }
 
-void AFP_FirstPersonCharacter::ShowGun()
-{
-	DisplayGunType(WeaponComponent->GetWeaponInfo()->WeaponType);
-}
-
 void AFP_FirstPersonCharacter::SwordColliderOn()
 {
 	SwordCollider->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
@@ -972,7 +951,6 @@ void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedCompon
 {
 	if(!OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Damage Zombie"));
 		SwordColliderOff();
 		UGameplayStatics::ApplyDamage(OtherActor, WeaponComponent->GetWeaponInfo()->Damage, GetController(), this, UDamageType::StaticClass());
 	}

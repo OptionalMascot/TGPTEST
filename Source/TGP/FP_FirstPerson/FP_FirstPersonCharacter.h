@@ -312,19 +312,11 @@ public:
 	void Sprint();
 	void StopSprint();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void Aim();
-
 	void NewAim();
 	UFUNCTION(BlueprintCallable)
 	void NewStopAim();
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void StopAim();
-
-	void BeginAim();
 	UFUNCTION(BlueprintCallable)
-	void EndAim();
+	void ResetAim();
  
 	UFUNCTION(BlueprintCallable)
 	void SwitchWeapon();
@@ -333,9 +325,6 @@ public:
 	void Reload();
 
 	void PlayFireAnim();
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void DisplayGunType(EWeaponType Gun);
 
 	UFUNCTION(BlueprintCallable)
 	void ShowGun();
