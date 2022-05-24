@@ -337,18 +337,22 @@ void AFP_FirstPersonCharacter::OnFireWeapon()
 		}
 			
 		IsMeleeAttacking = true;
-		int AnimToPlay = FMath::RandRange(0,1);
-
-		if(AnimToPlay == 0)
-		{
-			AnimInstance->Montage_Play(CombatMontage, 1.0f);
-			AnimInstance->Montage_JumpToSection("Melee1", CombatMontage);
-		}
-		else
-		{
-			AnimInstance->Montage_Play(CombatMontage, 1.0f);
-			AnimInstance->Montage_JumpToSection("Melee2", CombatMontage);
-		}
+		// int AnimToPlay = FMath::RandRange(0,1);
+		//
+		// if(AnimToPlay == 0)
+		// {
+		// 	AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		// 	AnimInstance->Montage_JumpToSection("Melee1", CombatMontage);
+		// }
+		// else
+		// {
+		// 	AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		// 	AnimInstance->Montage_JumpToSection("Melee2", CombatMontage);
+		// }
+		
+		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+       	AnimInstance->Montage_JumpToSection("Melee1", CombatMontage);
+		
 		return;
 	}
 	_fireHeld = true;
@@ -728,12 +732,9 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 	float GunFireRate = 0.0f;
 	float AdjustedPlayRate =1.0f;
 
-	DisplayGunType(_currentWeaponComponent->GetWeaponInfo()->WeaponType);
-
 	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
 	{
 	case EWeaponType::TwoHand:
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Black, TEXT("Rifle shooting"));
 		AnimLegnth = CombatMontage->GetSectionLength(CombatMontage->GetSectionIndex("RifleFire"));
 		GunFireRate = _currentWeaponComponent->GetWeaponInfo()->AttackRate ;
 		AdjustedPlayRate = (GunFireRate * 60.0f)/AnimLegnth;
@@ -747,11 +748,10 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 		GunFireRate = _currentWeaponComponent->GetWeaponInfo()->AttackRate;
 		AdjustedPlayRate = (GunFireRate * 60.0f)/AnimLegnth;
 
-		AnimInstance->Montage_Play(CombatMontage, 1.0f);
+		AnimInstance->Montage_Play(CombatMontage, AdjustedPlayRate);
 		AnimInstance->Montage_JumpToSection("PistolFire", CombatMontage);
 		break;
 	default:
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Black, TEXT("No WeaponType"));
 		break;
 	}
 
