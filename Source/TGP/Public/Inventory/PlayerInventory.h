@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItemContainer.h"
 #include "Components/ActorComponent.h"
 #include "Item/ItemActor.h"
 #include "PlayerInventory.generated.h"
@@ -31,21 +30,17 @@ class TGP_API UPlayerInventory : public UActorComponent
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InventorySettings", Meta = (AllowPrivateAccess = true)) uint8 MaxConsumableAmount = 4;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InventorySettings", Meta = (AllowPrivateAccess = true)) TSubclassOf<AItemActor> ItemActorClass;
 	
-	UPROPERTY(Replicated) UItemContainer* UtilityContainer;
-	UPROPERTY(Replicated) UItemContainer* ConsumableContainer;
-	UPROPERTY(Replicated) UItemContainer* WeaponContainer;
-	
-	EWeaponSlot SelectedWeapon = EWeaponSlot::Melee;
+	UPROPERTY() UItemContainer* UtilityContainer;
+	UPROPERTY() UItemContainer* ConsumableContainer;
+	UPROPERTY() UItemContainer* WeaponContainer;
+
+	EWeaponSlot SelectedWeapon;
 	uint8 SelectedUtilitySlot = 0;
 
 	void TryFindAndSelectValidUtility();
 
-	void InitDefaultGuns();
-
-	// Replication \\
-
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
+	UFUNCTION(Server, Reliable) void InitDefaultGuns();
+	void InitDefaultGuns_Implementation();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -61,10 +56,9 @@ public:
 	void SelectUtility(uint8 Slot);
 	UThrowableItem* GetSelectedUtility();
 
-	EWeaponSlot GetSelectedWeaponSlot() const { return SelectedWeapon; }
-	TSubclassOf<AItemActor> GetItemActor() const { return ItemActorClass; }
-
 	void ComponentLoadComplete();
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UPROPERTY(BlueprintAssignable, Category="WeaponChangedEvent")
 	FOnWeaponChanged OnWeaponChangedEvent;
@@ -75,20 +69,9 @@ public:
 	bool PickUpWeapon(UWeaponItem* WeaponItem);
 	UFUNCTION(BlueprintCallable) void DropWeapon(int Slot = -1);
 	
-	UFUNCTION(BlueprintCallable) void ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate = false, bool bBroadcastChange = true);
-	UFUNCTION(BlueprintCallable) bool TryPickUpItem(UBaseItem* Item, int SelectedSlot);
+	UFUNCTION(BlueprintCallable) void ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate = false);
+	UFUNCTION(BlueprintCallable) bool TryPickUpItem(UBaseItem* Item);
 	UFUNCTION(BlueprintCallable, BlueprintPure) class UWeaponItem* GetSelectedWeapon();
-	
-	UFUNCTION(BlueprintCallable) UBaseItem* GetItem() { return WeaponContainer->GetItemAt(0); };
-	UFUNCTION(BlueprintCallable) int GetContainerId() { return WeaponContainer->DebugId; };
 
-	UFUNCTION(Server, Reliable, BlueprintCallable) void GenItems();
-	void GenItems_Implementation();
-
-	UFUNCTION(BlueprintCallable) void PrintWeaponItems();
-
-	UFUNCTION(Server, Reliable) void SrvDropWeapon(int Slot);
-	void SrvDropWeapon_Implementation(int Slot);
-	
 	void OnUseUtility();
 };

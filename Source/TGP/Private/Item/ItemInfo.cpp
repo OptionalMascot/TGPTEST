@@ -3,7 +3,6 @@
 
 #include "Item/ItemInfo.h"
 #include "Item/BaseItem.h"
-#include "Net/UnrealNetwork.h"
 
 void UItemInfo::GenerateStats()
 {

@@ -6,7 +6,6 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemInfo.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()
@@ -14,9 +13,7 @@ UWeaponComponent::UWeaponComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	SetIsReplicatedByDefault(true);
-
+	
 	// ...
 	_canUse = true;
 	_singleFireCheck = false;
@@ -56,20 +53,10 @@ FVector UWeaponComponent::BulletSpreadCalculation(FVector dir, FVector up, FVect
 	return dir;
 }
 
-void UWeaponComponent::SrvOnFire_Implementation()
-{
-	//auto t = Cast<AFP_FirstPersonCharacter>((GetOwner()));
-//
-	//if (t)
-	//{
-	//	t->TestDebug();
-	//}
-}
 
-bool UWeaponComponent::OnFire()
+void UWeaponComponent::OnFire()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pew Pew"));
-	return true;
 }
 
 void UWeaponComponent::OnFireEnd()
@@ -102,8 +89,12 @@ void UWeaponComponent::DropWeapon()
 
 void UWeaponComponent::InitializeWeapon(UGunItem* gunItem) // Get and Update ammo count from _weaponItem
 {
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "grfeasdfewa");
+	
 	DropWeapon();
 	
 	_weaponItem = gunItem;
 	_weaponInfo = Cast<UGunInfo>(gunItem->GetItemInfo());
 }
+
+

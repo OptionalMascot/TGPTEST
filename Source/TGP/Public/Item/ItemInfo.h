@@ -74,8 +74,6 @@ class TGP_API UWeaponInfo : public UItemInfo
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponInfo") float Damage = 10.f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponVisuals") USkeletalMesh* WeaponSkeletalMesh;
-
-	virtual bool IsSupportedForNetworking() const override { return true; }
 };
 
 UCLASS()

@@ -47,5 +47,4 @@ void AWeaponSpawnerChest::Tick(float DeltaTime)
 void AWeaponSpawnerChest::OpenChest(AController* causer)
 {
 	_weaponSpawn->SpawnWeapon();
-	Destroy();
 }

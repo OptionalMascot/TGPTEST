@@ -4,18 +4,18 @@
 #include "Components/BoxComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Components/WidgetComponent.h"
-#include "Engine/ActorChannel.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Net/UnrealNetwork.h"
 #include "Weapons/UI/WeaponStatUIWidget.h"
 
 AItemActor::AItemActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComponent = ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	
+	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
+	ItemMesh->SetupAttachment(RootComponent);
 	ItemMesh->SetRelativeLocation(FVector::ZeroVector);
 	ItemMesh->SetSimulatePhysics(true);
 	ItemMesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
@@ -37,50 +37,9 @@ AItemActor::AItemActor()
 	//StatWidget->SetWidgetClass(UWeaponStatUIWidget::StaticClass());
 }
 
-void AItemActor::OnRep_UpdateItem()
-{
-	Test();
-
-	if (DefinedItem)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, "VALIDDDDDDDDDDDDDDDDDDD");
-			
-		DefinedItem->UpdateItemInfo();
-		Initialize(DefinedItem);
-	}
-}
-
-void AItemActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{ 
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(AItemActor, DefinedItem);
-}
-
-bool AItemActor::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
-{
-	bool bUpdate = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
-	bUpdate |= Channel->ReplicateSubobject(DefinedItem, *Bunch, *RepFlags);
-
-	return bUpdate;
-}
-
 void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (HasAuthority())
-	{
-		if (!DefinedItem && ItemInfoToSpawn && ItemClassToSpawn)
-		{
-			UBaseItem* SpawnedItem = NewObject<UBaseItem>(this, ItemClassToSpawn);
-			SpawnedItem->Init(ItemInfoToSpawn, 1);
-
-			DefinedItem = SpawnedItem;
-			Initialize(DefinedItem);
-		}
-	}
-	
 	_playerController = nullptr;
 	StatWidget->SetHiddenInGame(true);
 }
@@ -107,27 +66,24 @@ void AItemActor::InitialiseWidgetText(const UWeaponInfo* info)
 	{
 		UWeaponStatUIWidget* widget = Cast<UWeaponStatUIWidget>(StatWidget->GetUserWidgetObject());
 
-		if (widget)
-		{
-			FString output;
-			output += "Damage: " + FString::FromInt(info->Damage) + "\n";
+		FString output;
+		output += "Damage: " + FString::FromInt(info->Damage) + "\n";
 
-			const UGunInfo* gunInfoCast = Cast<UGunInfo>(info);
-			if(gunInfoCast)
-			{
-				output += "Rounds per Minute: " + FString::FromInt(60.0f / gunInfoCast->AttackRate) + "\n";
-				UGunItem* itemCast = Cast<UGunItem>(DefinedItem);
-				output += "Ammo In Clip: " + FString::FromInt(itemCast->GetAmmoInClip()) + "\n";
-				output += "Ammo Reserves: " + FString::FromInt(itemCast->GetAmmoCount()) + "\n";
-				FString fireType;
-				if(gunInfoCast->FireType == EFireType::Auto)
-					fireType = "Auto";
-				if(gunInfoCast->FireType == EFireType::Single)
-					fireType = "Single";
-				output += "Firing Mode: " + fireType;
-			}
-			widget->SetText(output);
+		const UGunInfo* gunInfoCast = Cast<UGunInfo>(info);
+		if(gunInfoCast)
+		{
+			output += "Rounds per Minute: " + FString::FromInt(60.0f / gunInfoCast->AttackRate) + "\n";
+			UGunItem* itemCast = Cast<UGunItem>(DefinedItem);
+			output += "Ammo In Clip: " + FString::FromInt(itemCast->GetAmmoInClip()) + "\n";
+			output += "Ammo Reserves: " + FString::FromInt(itemCast->GetAmmoCount()) + "\n";
+			FString fireType;
+			if(gunInfoCast->FireType == EFireType::Auto)
+				fireType = "Auto";
+			if(gunInfoCast->FireType == EFireType::Single)
+				fireType = "Single";
+			output += "Firing Mode: " + fireType;
 		}
+		widget->SetText(output);
 	}
 }
 
@@ -209,7 +165,7 @@ void AItemActor::Initialize(UBaseItem* Item)
 		LightColourSetup(WepInfo);
 		InitialiseWidgetText(WepInfo);
 	}
-	else if (Info != nullptr)
+	else
 		ItemMesh->SetStaticMesh(Info->ItemMesh);
 }
 
@@ -217,3 +173,4 @@ void AItemActor::OnPickUp_Implementation()
 {
 	Destroy(true);
 }
+

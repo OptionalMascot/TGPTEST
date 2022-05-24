@@ -36,6 +36,7 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) uint8 MaxEnemiesPerSpawnWave = 4;
 
 	FTimerHandle RoundCooldownHandler;
+	FTimerHandle RoundDelayHandler;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DEBUG_VISIBLE", Meta = (AllowPrivateAccess = true)) uint8 EnemiesAlive = 0;
 	
@@ -49,6 +50,7 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Regions", Meta = (AllowPrivateAccess = true)) ARegion* currentRegion;
 
 	void BeginRound();
+	void BeginRoundDelay();
 	void EndRound();
 
 	bool TrySpawnEnemy();
@@ -69,19 +71,22 @@ protected:
 public:
 	ATGPGameModeBase();
 
+	AActor* GetCurrentRegionObjective() const {return currentRegion->GetObjective();}
+	FString GetCurrentRegionName() const {return currentRegion->GetName();}
+
 	virtual void Tick(float DeltaSeconds) override;
 
 	void OnEnemyKilled(ABaseAiCharacter* Enemy); // TODO: REPLACE WITH AI CLASS
 	
 	template<class T>
-	T* CreateItemByShortName(const FString& ItemShortName, const int Amount = 1, AActor* Owner = nullptr);
+	T* CreateItemByShortName(const FString& ItemShortName, const int Amount = 1);
 
 	template<class T>
-	T* CreateItemByUniqueId(int UniqueId, const int Amount = 1, AActor* Owner = nullptr);
+	T* CreateItemByUniqueId(int UniqueId, const int Amount = 1);
 };
 
 template <class T>
-T* ATGPGameModeBase::CreateItemByShortName(const FString& ItemShortName, const int Amount, AActor* Owner)
+T* ATGPGameModeBase::CreateItemByShortName(const FString& ItemShortName, const int Amount)
 {
 	if (TIsDerivedFrom<T, UBaseItem>::IsDerived)
 	{
@@ -89,10 +94,8 @@ T* ATGPGameModeBase::CreateItemByShortName(const FString& ItemShortName, const i
 
 		if (Info != nullptr)
 		{
-			T* NewItem = NewObject<T>(Owner == nullptr ? this : Owner);
+			T* NewItem = NewObject<T>();
 			Cast<UBaseItem>(NewItem)->Init(Info, Amount);
-
-			return NewItem;
 		}
 	}
 	
@@ -100,19 +103,16 @@ T* ATGPGameModeBase::CreateItemByShortName(const FString& ItemShortName, const i
 }
 
 template <class T>
-T* ATGPGameModeBase::CreateItemByUniqueId(int UniqueId, const int Amount, AActor* Owner)
+T* ATGPGameModeBase::CreateItemByUniqueId(int UniqueId, const int Amount)
 {
-	if (TIsDerivedFrom<T, UBaseItem>::IsDerived)
+	UItemInfo* Info = Cast<UBaseGameInstance>(GetGameInstance())->FindInfoUniqueId(UniqueId);
+
+	if (Info != nullptr)
 	{
-		UItemInfo* Info = Cast<UBaseGameInstance>(GetGameInstance())->FindInfoUniqueId(UniqueId);
+		T* NewItem = NewObject<T>();
+		Cast<UBaseItem>(NewItem)->Init(Info, Amount);
 
-		if (Info != nullptr)
-		{
-			T* NewItem = NewObject<T>(Owner == nullptr ? this : Owner);
-			Cast<UBaseItem>(NewItem)->Init(Info, Amount);
-
-			return NewItem;
-		}
+		return NewItem;
 	}
 	
 	return nullptr;
