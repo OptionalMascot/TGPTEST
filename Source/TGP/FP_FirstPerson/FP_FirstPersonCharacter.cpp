@@ -456,18 +456,17 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(Cast<UWeaponInfo>(WeaponItem->GetItemInfo())->WeaponSkeletalMesh);
 	else
 		FP_Gun->SetSkeletalMesh(nullptr);
-
-	// Unregister old component
-	WeaponComponent->DropWeapon();
 	
-	if (HasAuthority())
-	{
-		WeaponComponent = NewObject<UWeaponComponent>(this, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
-		WeaponComponent->RegisterComponentWithWorld(GetWorld());
-
-		WeaponComponent->PickupWeapon(this); // Assign player to component
-		WeaponComponent->SetParentMesh(FP_Gun);
-	}
+	//if (HasAuthority())
+	//{
+	//	WeaponComponent->DropWeapon();
+	//	
+	//	WeaponComponent = NewObject<UWeaponComponent>(this, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
+	//	WeaponComponent->RegisterComponentWithWorld(GetWorld());
+//
+	//	WeaponComponent->PickupWeapon(this); // Assign player to component
+	//	WeaponComponent->SetParentMesh(FP_Gun);
+	//}
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
 		WeaponComponent->InitializeWeapon(Gun);
@@ -532,6 +531,9 @@ void AFP_FirstPersonCharacter::OnWeaponDropped_Implementation()
  
 void AFP_FirstPersonCharacter::ChangeWeaponMeshMulti_Implementation(int ItemId)
 {
+	if (GetLocalRole() == ROLE_AutonomousProxy)
+		return;
+	
 	if (UBaseGameInstance* GI = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
 		if (UWeaponInfo* Info = Cast<UWeaponInfo>(GI->FindInfoUniqueId(ItemId)))
 			FP_Gun->SetSkeletalMesh(Info->WeaponSkeletalMesh);
@@ -627,7 +629,7 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	if (PlayerInventory)
 	{
 		PlayerInventory->OnWeaponChangedEvent.AddDynamic(this, &AFP_FirstPersonCharacter::OnWeaponChanged);
-		PlayerInventory->ComponentLoadComplete();	
+		PlayerInventory->ComponentLoadComplete();
 	}
 	
 	if (HasAuthority())
