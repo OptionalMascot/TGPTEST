@@ -15,17 +15,17 @@ ABaseAiCharacter::ABaseAiCharacter()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	AddOwnedComponent(HealthComponent);
 
-	RightHandCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Right Hand Collider"));
-	RightHandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RightArmCollider"));
+	//RightHandCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Right Hand Collider"));
+	//RightHandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RightArmCollider"));
 	//RightHandCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	RightHandCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
-	RightHandCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	//RightHandCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+	//RightHandCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 	
-	LeftArmCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Left Arm Collider"));
-	LeftArmCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("LeftArmCollider"));
-	LeftArmCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	LeftArmCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
-	LeftArmCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	//LeftArmCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Left Arm Collider"));
+	//LeftArmCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("LeftArmCollider"));
+	//LeftArmCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	//LeftArmCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+	//LeftArmCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 }
 
 void ABaseAiCharacter::BeginPlay()
