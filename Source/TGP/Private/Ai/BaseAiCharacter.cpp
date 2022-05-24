@@ -17,7 +17,7 @@ ABaseAiCharacter::ABaseAiCharacter()
 
 	RightHandCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Right Hand Collider"));
 	RightHandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RightArmCollider"));
-	RightHandCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	//RightHandCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	RightHandCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
 	RightHandCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 	

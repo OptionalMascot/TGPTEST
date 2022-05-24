@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 #include "WeaponComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnFireSuccess, FVector, dir, float, damage);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TGP_API UWeaponComponent : public UActorComponent
@@ -21,8 +23,11 @@ protected:
 	virtual void BeginPlay() override;
 
 	bool CheckMouseReleased();
+
+	FVector BulletSpreadCalculation(FVector dir, FVector up, FVector right, FVector2D spread);
 	
 	UPROPERTY() AActor* _parent;
+	UPROPERTY() AFP_FirstPersonCharacter* _player;
 	UPROPERTY() APlayerController* _parentController;
 	UPROPERTY() USceneComponent* _holdPoint;
 
@@ -48,6 +53,7 @@ public:
 	virtual void InitializeWeapon(class UGunItem* gunItem);
 	UFUNCTION(BlueprintCallable) UGunInfo* GetWeaponInfo() { return _weaponInfo; }
 	UFUNCTION(BlueprintCallable) virtual FVector2D GetCurrentAmmo() { return FVector2D(); };
+	UPROPERTY(BlueprintAssignable, Category = "Components") FOnFireSuccess onFireSuccess;
 	
 	void StartUse(){ _canUse = false;	}
 	void EndUse(){ _canUse = true;	}

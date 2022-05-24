@@ -44,6 +44,15 @@ bool UWeaponComponent::CheckMouseReleased()
 	return true;
 }
 
+FVector UWeaponComponent::BulletSpreadCalculation(FVector dir, FVector up, FVector right, FVector2D spread)
+{
+	float deviation = FMath::RandRange(-spread.X, spread.X);
+	float angle = FMath::RandRange(-spread.Y, spread.Y);
+	dir = dir.RotateAngleAxis(deviation, up);
+	dir = dir.RotateAngleAxis(angle, right);
+	return dir;
+}
+
 
 void UWeaponComponent::OnFire()
 {
@@ -68,6 +77,7 @@ void UWeaponComponent::PickupWeapon(AActor* parent)
 	if(_parent == nullptr)
 	{
 		_parent = parent;
+		_player = Cast<AFP_FirstPersonCharacter>(_parent);
 		_parentController = nullptr;
 	}
 }

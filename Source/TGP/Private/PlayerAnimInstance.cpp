@@ -21,7 +21,6 @@ void UPlayerAnimInstance::UpdateAnimationVariables()
 			MoveSpeed = FVector(Player->GetVelocity().X, Player->GetVelocity().Y, 0.0f).Size();
 			IsSprinitng = Player->IsSprinting;
 			IsJumping = !Player->GetCharacterMovement()->IsMovingOnGround();
-			IsAiming = Player->IsAiming;
 		}
 	}
 }
