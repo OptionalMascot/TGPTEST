@@ -66,9 +66,10 @@ void UWeaponComponent::SrvOnFire_Implementation()
 	//}
 }
 
-void UWeaponComponent::OnFire()
+bool UWeaponComponent::OnFire()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pew Pew"));
+	return true;
 }
 
 void UWeaponComponent::OnFireEnd()
@@ -101,12 +102,8 @@ void UWeaponComponent::DropWeapon()
 
 void UWeaponComponent::InitializeWeapon(UGunItem* gunItem) // Get and Update ammo count from _weaponItem
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "grfeasdfewa");
-	
 	DropWeapon();
 	
 	_weaponItem = gunItem;
 	_weaponInfo = Cast<UGunInfo>(gunItem->GetItemInfo());
 }
-
-

@@ -24,10 +24,12 @@ UHitscanWeaponComponent::UHitscanWeaponComponent()
 
 void UHitscanWeaponComponent::SrvOnFire_Implementation()
 {
-	Super::SrvOnFire_Implementation();
+	//Super::SrvOnFire_Implementation();
 
 	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "THISIDJIJWAD");
 
+	Cast<AFP_FirstPersonCharacter>(GetOwner())->TestDebug();
+	
 	FHitResult result;
 	FVector CameraLoc;
 	FRotator CameraRot;
@@ -37,14 +39,25 @@ void UHitscanWeaponComponent::SrvOnFire_Implementation()
 	
 	_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
 
-	DrawDebugLine(GetWorld(), _parentMesh->GetComponentLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 1.0f, 0, 1.0f);
+	//DrawDebugLine(GetWorld(), _parentMesh->GetComponentLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 1.0f, 0, 1.0f);
+//
+	//if(DoRaycastReturnResult(GetWorld(), result, _parentMesh->GetComponentLocation(), CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
+	//{
+	//	AActor* hit = result.GetActor(); // Get Actor
+	//	UGameplayStatics::ApplyDamage(hit, 100.f, _parentController, _parentController->GetPawn(), UDamageType::StaticClass());
+	//	
+	//	//float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass()); // Attempt to apply damage
+	//}
 
-	if(DoRaycastReturnResult(GetWorld(), result, _parentMesh->GetComponentLocation(), CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
+	for(int i = 0; i < _weaponInfo->BulletsPerShot; i++)
 	{
-		AActor* hit = result.GetActor(); // Get Actor
-		UGameplayStatics::ApplyDamage(hit, 100.f, nullptr, nullptr, UDamageType::StaticClass());
-		
-		//float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass()); // Attempt to apply damage
+		FVector newSpread = BulletSpreadCalculation(CameraRot.Vector(), _parent->GetActorUpVector(), _parent->GetActorRightVector(), FVector2D(_weaponInfo->Spread.X, _weaponInfo->Spread.Y));
+		DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + newSpread * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
+		if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + newSpread * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
+		{
+			AActor* hit = result.GetActor(); // Get Actor
+			float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parentController->GetPawn(), UDamageType::StaticClass()); // Attempt to apply damage
+		}
 	}
 }
 
@@ -60,13 +73,13 @@ void UHitscanWeaponComponent::BeginPlay()
 	notPlayedFullyValue = 1.0f;
 }
 
-void UHitscanWeaponComponent::OnFire()
+bool UHitscanWeaponComponent::OnFire()
 {
 	if(!CheckMouseReleased()) // If single fire check is turned on, require a release before firing again
-		return;
+		return false;
 
 	if(!_player->CanFire)
-		return;
+		return false;
 	
 	if(_canUse)
 	{
@@ -110,31 +123,30 @@ void UHitscanWeaponComponent::OnFire()
 			//		float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parentController->GetPawn(), UDamageType::StaticClass()); // Attempt to apply damage
 			//	}
 			//}
-
-			SrvOnFire();
 			
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
-
 			
 			_player->PlayFireAnim();
+			return true;
 		}
-		else
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
-			_player->ReloadWeapon();
-			_player->CanFire = false;
-			//TryReload(_parent); // If can't shoot, try and reload
-			//DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 0.0f, 0, 1.0f);
 
-			//TryReload();
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
-		}
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
+		_player->ReloadWeapon();
+		_player->CanFire = false;
+		//TryReload(_parent); // If can't shoot, try and reload
+		//DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 0.0f, 0, 1.0f);
+
+		//TryReload();
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
+
 		//else
 		//{
 		//	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
 		//	TryReload(); // If can't shoot, try and reload
 		//}
 	}
+
+	return false;
 }
 
 void UHitscanWeaponComponent::OnFireEnd() // Called by parent on releasing left click

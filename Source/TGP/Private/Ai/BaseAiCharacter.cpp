@@ -37,9 +37,13 @@ void ABaseAiCharacter::BeginPlay()
 	LeftArmCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
 	LeftArmCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 
-	HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
-	baseAiController = Cast<ABaseAIController>(GetController());
-	baseAiController->RunBT();
+	//HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
+//
+	//if (GetWorld()->IsServer())
+	//{
+	//	baseAiController = Cast<ABaseAIController>(GetController());
+	//	baseAiController->RunBT();
+	//}
 	
 	if (HasAuthority())
 	{

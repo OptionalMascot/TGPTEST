@@ -47,7 +47,7 @@ public:
 	UFUNCTION(Server, Reliable) void SrvOnFire();
 	virtual void SrvOnFire_Implementation();
 	
-	virtual void OnFire();
+	virtual bool OnFire();
 	virtual void OnFireEnd();
 	
 	void PickupWeapon(AActor* parent);

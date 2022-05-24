@@ -224,7 +224,7 @@ protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
-
+	
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
 	
 	UFUNCTION(Server, Reliable) void SrvHitScan();

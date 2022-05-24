@@ -33,7 +33,7 @@ public:
 	virtual void SrvOnFire_Implementation() override;
 	
 	virtual void BeginPlay() override;
-	virtual void OnFire() override;
+	virtual bool OnFire() override;
 	virtual void OnFireEnd() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void InitializeWeapon(UGunItem* gunItem) override;

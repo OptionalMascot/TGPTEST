@@ -460,9 +460,6 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	// Unregister old component
 	WeaponComponent->DropWeapon();
 	
-	//_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
-	//_currentWeaponComponent->DestroyComponent();
-
 	if (HasAuthority())
 	{
 		WeaponComponent = NewObject<UWeaponComponent>(this, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
@@ -471,10 +468,6 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		WeaponComponent->PickupWeapon(this); // Assign player to component
 		WeaponComponent->SetParentMesh(FP_Gun);
 	}
-	
-	//_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
-
-	//_currentWeaponComponent = newComponent; // Save reference
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
 		WeaponComponent->InitializeWeapon(Gun);
@@ -512,7 +505,7 @@ void AFP_FirstPersonCharacter::SrvShootGun_Implementation()
 {
 	//Cast<AGunHostActor>(GunActorComponent->GetChildActor())->GetWeaponComponent()->SrvOnFire();
 
-	TestDebug();
+	WeaponComponent->SrvOnFire();
 }
 
 void AFP_FirstPersonCharacter::OnChangeSelectedWeapon_Implementation(int Slot)
@@ -547,8 +540,20 @@ void AFP_FirstPersonCharacter::RequestWeaponMeshChange_Implementation(int Slot)
 {
 	PlayerInventory->ChangeWeapon((EWeaponSlot)Slot, true, false);
 
-	if (const UWeaponItem* Wep = PlayerInventory->GetSelectedWeapon())
+	if (UWeaponItem* Wep = PlayerInventory->GetSelectedWeapon())
+	{
 		ChangeWeaponMeshMulti(Wep->GetItemId());
+
+		if (UGunItem* Gun = Cast<UGunItem>(Wep))
+		{
+			WeaponComponent = NewObject<UWeaponComponent>(this, Cast<UGunInfo>(Gun->GetItemInfo())->BaseWeaponClass, FName(Gun->GetItemInfo()->ItemName));
+			WeaponComponent->RegisterComponentWithWorld(GetWorld());
+
+			WeaponComponent->PickupWeapon(this); // Assign player to component
+			WeaponComponent->SetParentMesh(FP_Gun);
+			WeaponComponent->InitializeWeapon(Gun);
+		}
+	}
 }
 
 void AFP_FirstPersonCharacter::InteractWithObject()
@@ -658,14 +663,17 @@ void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	
 	if (Controller)
-		CastForInteractable(DeltaSeconds);
-		
-	if(_fireHeld)
 	{
-		//if (HasAuthority())
-		//	WeaponComponent->SrvOnFire();
-		//else
-		WeaponComponent->OnFire();
+		CastForInteractable(DeltaSeconds);
+
+		if(_fireHeld)
+		{
+			//if (HasAuthority())
+			//	WeaponComponent->SrvOnFire();
+			//else
+			if (WeaponComponent->OnFire())
+				SrvShootGun();
+		}
 	}
 	
 	//if(_fireHeld && _currentWeapon != nullptr)
