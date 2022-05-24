@@ -93,17 +93,12 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 
 		HealthComponent->health = EnemyStats->DefaultHealth + (EnemyStats->DefaultHealth * FMath::RandRange(-EnemyStats->MaxDeviation, EnemyStats->MaxDeviation));
 		Damage = EnemyStats->DefaultDamage + (EnemyStats->DefaultDamage * FMath::RandRange(0.f, EnemyStats->MaxDeviation));
-
-		/*if (EnemyStats->AiControllerClass)
-		{
-			if (GetController()->StaticClass() != EnemyStats->AiControllerClass) // IF AI Controller is different replace with expected controller. (Used for swapping Ai to bosses/other enemy types)
-			{
-				AController* NewController = NewObject<AController>(EnemyStats->AiControllerClass);
-				NewController->Possess(this);
-			}
-		}*/	
 	}
 	SetMoveType();
+
+	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+		baseAiController->SetObjective(GM->GetCurrentRegionObjective());
+	
 	SetHidden(false);
 }
 
