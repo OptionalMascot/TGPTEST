@@ -396,8 +396,8 @@ void AFP_FirstPersonCharacter::DropWeapon()
 	//	_currentWeapon = nullptr;
 	//}
 
-	PlayerInventory->SrvDropWeapon(PlayerInventory->GetSelectedWeaponSlot());
 	WeaponComponent->DropWeapon();
+	PlayerInventory->SrvDropWeapon(PlayerInventory->GetSelectedWeaponSlot());
 	//PlayerInventory->DropWeapon();
 }
 
