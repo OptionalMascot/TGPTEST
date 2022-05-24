@@ -311,6 +311,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SwordColliderOff();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnProjectile();
+
 	UFUNCTION()
 	void MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

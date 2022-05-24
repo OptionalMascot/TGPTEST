@@ -755,6 +755,7 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 		break;
 	}
 
+	SpawnProjectile();
 }
 
 void AFP_FirstPersonCharacter::ShowGun()

@@ -78,8 +78,9 @@ void UHitscanWeaponComponent::OnFire()
 				if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + newSpread * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
 				{
 					AActor* hit = result.GetActor(); // Get Actor
-					float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parentController->GetPawn(), UDamageType::StaticClass()); // Attempt to apply damage
+					float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parentController->GetPawn(), UDamageType::StaticClass()); // Attempt to apply da
 				}
+				onFireSuccess.Broadcast(newSpread, _weaponInfo->Damage);
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 
