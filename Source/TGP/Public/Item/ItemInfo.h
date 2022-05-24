@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/Image.h"
 #include "Engine/DataAsset.h"
 #include "ItemInfo.generated.h"
 UENUM(BlueprintType)
@@ -50,6 +51,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemInfo") FString ItemName = "Undefined";
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemInfo") FString ItemDescription = "Undefined";
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemInfo") UStaticMesh* ItemMesh;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemInfo") UTexture* ItemImageDisplay;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") TEnumAsByte<ERarity> ItemRarity;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemData") TEnumAsByte<EWeaponType> WeaponType;
