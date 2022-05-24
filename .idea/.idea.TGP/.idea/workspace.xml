@@ -9,10 +9,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiChaseObjective.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiChasePlayer.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiControllerObj.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiControllerP.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_ObjectiveAI.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_PlayerChaseAI.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiController.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAIController.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAIController.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAi.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAi.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_AggresiveAI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_AggresiveAI.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +43,7 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files (x86)/Windows Kits/10/Include/10.0.19041.0/um/winnt.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAIController.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -40,7 +53,7 @@
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ThrowableWeapon.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
@@ -51,40 +64,31 @@
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponHoldComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HealthComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/MyDamageMarker.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Item/ItemInfo.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerComponent.h" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/GameInstance/BaseGameInstance.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HitscanWeaponComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/Interfaces/WeaponInterfaces.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Interfaces/WeaponInterfaces.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Interactables/InteractableComponent.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Interactables/InteractableComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Ai/BTTask_DistanceCheck.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Pickups/PickupActor.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Pickups/PickupActor.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Pickups/AmmoPickupActor.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HitscanWeaponComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Pickups/AmmoPickupActor.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/HealthComponent.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/HealthComponent.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Pickups/HealthPickupActor.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Pickups/HealthPickupActor.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/GrenadeWeapon.cpp" />
-      <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ScatterGrenadeWeapon.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/ScatterGrenadeWeapon.cpp" />
     </changedPaths>
   </component>
   <component name="MarkdownSettingsMigration">
@@ -96,12 +100,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="C++ Project.TGP">
     <configuration name="TGP" type="CppProject" factoryName="C++ Project">
       <configuration_1>
@@ -364,15 +372,8 @@
       <workItem from="1653234905706" duration="808000" />
       <workItem from="1653235818902" duration="3924000" />
       <workItem from="1653298404525" duration="37000" />
-      <workItem from="1653317243274" duration="605000" />
-      <workItem from="1653322870907" duration="1492000" />
-      <workItem from="1653329633336" duration="5449000" />
-      <workItem from="1653335275374" duration="245000" />
-      <workItem from="1653335795421" duration="1865000" />
-      <workItem from="1653337735404" duration="4462000" />
-      <workItem from="1653383995946" duration="22000" />
-      <workItem from="1653384050484" duration="11127000" />
-      <workItem from="1653420074543" duration="674000" />
+      <workItem from="1653301214678" duration="15120000" />
+      <workItem from="1653320609452" duration="637000" />
     </task>
     <servers />
   </component>
@@ -395,13 +396,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="CppProject">
-        <watch expression="start" language="C++" />
-        <watch expression="start" language="C++" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

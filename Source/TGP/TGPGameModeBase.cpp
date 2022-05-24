@@ -25,7 +25,14 @@ void ATGPGameModeBase::BeginPlay()
 	
 	for (uint8 i = 0; i < MaxEnemies; i++) // Init Pool
 	{
-		EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClass ? AiActorClass : ABaseAiCharacter::StaticClass(), FVector() + (FVector(200.f, 0.f, 500.f) * i), FRotator(), SpawnParams));
+		if(i%2==0)
+		{
+			EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClassObjectiveChaser ? AiActorClassObjectiveChaser : ABaseAiCharacter::StaticClass(), FVector() + (FVector(200.f, 0.f, 500.f) * i), FRotator(), SpawnParams));
+		}
+		else
+		{
+			EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClassObjectiveChaser ? AiActorClassObjectiveChaser : ABaseAiCharacter::StaticClass(), FVector() + (FVector(200.f, 0.f, 500.f) * i), FRotator(), SpawnParams));
+		}
 		EnemyPool[i]->SetHidden(true);
 	}
 
