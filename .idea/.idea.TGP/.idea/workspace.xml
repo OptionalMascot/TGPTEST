@@ -376,7 +376,7 @@
       <workItem from="1653235818902" duration="3924000" />
       <workItem from="1653298404525" duration="37000" />
       <workItem from="1653311999702" duration="1334000" />
-      <workItem from="1653380914895" duration="1053000" />
+      <workItem from="1653380914895" duration="3579000" />
     </task>
     <servers />
   </component>
@@ -399,5 +399,13 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="CppProject">
+        <watch expression="start" language="C++" />
+        <watch expression="start" language="C++" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

@@ -32,7 +32,7 @@ void AMyDamageMarker::WidgetBillboardAndMove(float DeltaTime)
 {
 	if(_spawnedBy)
 	{
-		FVector start =_widget->GetComponentTransform().GetLocation();
+		FVector start = GetActorLocation();
 		FVector target = _spawnedBy->GetActorLocation();
 		FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
 		SetActorRotation(rotator);
