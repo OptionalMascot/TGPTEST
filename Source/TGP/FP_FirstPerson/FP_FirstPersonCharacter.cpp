@@ -472,6 +472,7 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		WeaponComponent->InitializeWeapon(Gun);
 
 	RequestWeaponMeshChange(PlayerInventory->GetSelectedWeaponSlot());
+	AttachWeapon();
 }
 
 void AFP_FirstPersonCharacter::SrvHitScan_Implementation() // Rep is so scuffed within Gun actor I moved it here. I'm giving up on life at this point.
