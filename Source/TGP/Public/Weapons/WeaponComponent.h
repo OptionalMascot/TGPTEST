@@ -52,6 +52,7 @@ public:
 	virtual void InitializeWeapon(class UGunItem* gunItem);
 	UFUNCTION(BlueprintCallable) UGunInfo* GetWeaponInfo() { return _weaponInfo; }
 	UFUNCTION(BlueprintCallable) virtual FVector2D GetCurrentAmmo() { return FVector2D(); };
+	UFUNCTION(BlueprintImplementableEvent) void OnFireEvent(FVector dir, float damage);
 	
 	void StartUse(){ _canUse = false;	}
 	void EndUse(){ _canUse = true;	}
