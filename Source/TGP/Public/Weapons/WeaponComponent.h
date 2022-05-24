@@ -22,6 +22,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	bool CheckMouseReleased();
+
+	FVector BulletSpreadCalculation(FVector dir, FVector up, FVector right, FVector2D spread);
 	
 	UPROPERTY() AActor* _parent;
 	UPROPERTY() AFP_FirstPersonCharacter* _player;
