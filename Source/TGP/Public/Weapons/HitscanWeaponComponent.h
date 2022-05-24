@@ -13,7 +13,7 @@ class TGP_API UHitscanWeaponComponent : public UWeaponComponent, public IWaitTim
 {
 	GENERATED_BODY()
 protected:
-	virtual void StartReloadAmmo(AActor* actor) override;
+	virtual void StartReloadAmmo() override;
 	virtual void StartWaitTimer(AActor* actor, float time) override;
 	virtual void CancelReload(AActor* actor) override;
 
@@ -21,7 +21,7 @@ protected:
 	UFUNCTION() void RecoilTimelineProgressYaw(float Value);
 	UFUNCTION() void RecoilTimelineFinished();
 	UFUNCTION() void SingleFireRecoilReset();
-
+	
 	void ResetRecoilTimeline();
 	
     UPROPERTY(EditAnywhere) TSubclassOf<class AMyDamageMarker> _damageMarker;
@@ -29,8 +29,11 @@ protected:
 	UPROPERTY() class UCurveFloat* _curve;
 public:
 	UHitscanWeaponComponent();
+	
+	virtual void SrvOnFire_Implementation() override;
+	
 	virtual void BeginPlay() override;
-	virtual void OnFire() override;
+	virtual bool OnFire() override;
 	virtual void OnFireEnd() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void InitializeWeapon(UGunItem* gunItem) override;

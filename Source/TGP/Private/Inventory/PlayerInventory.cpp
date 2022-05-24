@@ -1,55 +1,52 @@
 #include "Inventory/PlayerInventory.h"
+
+#include "Engine/ActorChannel.h"
 #include "Inventory/ItemContainer.h"
 #include "Item/BaseItem.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 #include "TGP/TGPGameModeBase.h"
 
 UPlayerInventory::UPlayerInventory()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+
+	SetIsReplicated(true);
 }
 
-void UPlayerInventory::InitDefaultGuns_Implementation()
+void UPlayerInventory::SrvDropWeapon_Implementation(int Slot)
 {
-	ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(GetItemActor(), GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
+	ItemActor->Initialize(GetSelectedWeapon());
 
-	if (GM)
-	{
-		UGunItem* Item = GM->CreateItemByUniqueId<UGunItem>(72953608);
-
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green, Item != nullptr ? "VALIDDDDDDDDDDD" : "NOT VALSIE");
-		
-		AddWeapon(Item, 0);
-		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(214248416), 1);
-		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(137833872), 2);
-
-		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(92876440, 3));
-		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(111947304, 3));
-
-		return;
-	}
-
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green, "NONONONONONO");
+	DropWeapon(Slot);
 }
 
 void UPlayerInventory::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UtilityContainer = NewObject<UItemContainer>();
-	UtilityContainer->Initialize(MaxUtilityAmount);
-
-	ConsumableContainer = NewObject<UItemContainer>();
-	ConsumableContainer->Initialize(MaxConsumableAmount);
-
-	WeaponContainer = NewObject<UItemContainer>();
-	WeaponContainer->Initialize(3);
 
 	if (GetOwner()->HasAuthority())
+	{
+		UtilityContainer = NewObject<UItemContainer>(GetOwner());
+		UtilityContainer->Initialize(MaxUtilityAmount);
+
+		ConsumableContainer = NewObject<UItemContainer>(GetOwner());
+		ConsumableContainer->Initialize(MaxConsumableAmount);
+
+		WeaponContainer = NewObject<UItemContainer>(GetOwner());
+		WeaponContainer->Initialize(3);
+
 		InitDefaultGuns();
+	}
+
+	SelectedWeapon = EWeaponSlot::Melee;
+
+	//if (GetOwner()->HasAuthority())
+	//	InitDefaultGuns();
 	
    //ATGPGameModeBase* GameMode = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
    //
@@ -71,36 +68,52 @@ void UPlayerInventory::AddWeapon_Implementation(UWeaponItem* Item, int Slot)
 	if (Item != nullptr)
 	{
 		UBaseItem* ItemAtSlot = WeaponContainer->GetItemAt(Slot);
-	
-		//if (ItemAtSlot)
-		//DropWeapon(Slot);
-	
 		WeaponContainer->AddItem(Item, Slot);
-
-		ItemAtSlot = WeaponContainer->GetItemAt(Slot);
-
-		if (GetWorld()->IsServer())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("SERVER:   %s"), *ItemAtSlot->GetItemInfo()->ItemName);
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "ITEM IS VALIIIIDDDD!!!!!!!!!!!");
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("CLIENT :   %s     %d"), *ItemAtSlot->GetItemInfo()->ItemName, Slot);
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "NONONONNONONNONN!!!!!!!!");
-		}
-		
-		return;
 	}
-
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "ITEM IS NULL");
-
-	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "FAILED");
 }
 
 void UPlayerInventory::TryFindAndSelectValidUtility()
 {
 	SelectedUtilitySlot = UtilityContainer->FindFirstValidItem();
+}
+
+void UPlayerInventory::InitDefaultGuns()
+{
+	ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	if (GM)
+	{
+		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(72953608), 0);
+		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(214248416), 1);
+		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(137833872), 2);
+
+		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(92876440, 3));
+		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(111947304, 3));
+	}
+}
+
+void UPlayerInventory::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	//Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UPlayerInventory, UtilityContainer);
+	DOREPLIFETIME(UPlayerInventory, ConsumableContainer);
+	DOREPLIFETIME(UPlayerInventory, WeaponContainer);
+}
+
+bool UPlayerInventory::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
+{
+	bool bUpdate = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
+	
+	bUpdate |= Channel->ReplicateSubobject(UtilityContainer, *Bunch, *RepFlags);
+	bUpdate |= Channel->ReplicateSubobject(ConsumableContainer, *Bunch, *RepFlags);
+	bUpdate |= Channel->ReplicateSubobject(WeaponContainer, *Bunch, *RepFlags);
+
+	bUpdate |= UtilityContainer->ReplicateItems(Channel, Bunch, RepFlags);
+	bUpdate |= ConsumableContainer->ReplicateItems(Channel, Bunch, RepFlags);
+	bUpdate |= WeaponContainer->ReplicateItems(Channel, Bunch, RepFlags);
+	
+	return bUpdate;
 }
 
 bool UPlayerInventory::AddUtility(UThrowableItem* ThrowableItem) const
@@ -135,21 +148,15 @@ void UPlayerInventory::ComponentLoadComplete()
 	ChangeWeapon(EWeaponSlot::Primary, true);
 }
 
-void UPlayerInventory::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-}
-
 bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 {
-	bool bPickedUp = false;
-	
 	if (WeaponContainer->GetItemAt(SelectedWeapon) == nullptr)
 	{
-		bPickedUp |= WeaponContainer->AddItem(WeaponItem);
-		ChangeWeapon(SelectedWeapon, true);
-
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, "1");
+		if (WeaponContainer->AddItem(WeaponItem, SelectedWeapon))
+		{
+			ChangeWeapon(SelectedWeapon, true);
+			return true;
+		}
 	}
 	
 	for(int i = 0; i < 2; i++)
@@ -162,36 +169,30 @@ bool UPlayerInventory::PickUpWeapon(UWeaponItem* WeaponItem)
 		}
 	}
 	
-	if (!bPickedUp && SelectedWeapon != EWeaponSlot::Melee)
+	if (SelectedWeapon != EWeaponSlot::Melee)
 	{
 		const EWeaponSlot ActiveSlot = SelectedWeapon;
-		
-		DropWeapon(SelectedWeapon);
+
+		SrvDropWeapon(SelectedWeapon);
+
 		SelectedWeapon = ActiveSlot;
 		PickUpWeapon(WeaponItem);
 		ChangeWeapon(SelectedWeapon, true);
 
-		bPickedUp = true;
+		return true;
 	}
 
-	return bPickedUp;
+	return false;
 }
 
-
-void UPlayerInventory::ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate)
+void UPlayerInventory::ChangeWeapon(EWeaponSlot Slot, bool bForceUpdate, bool bBroadcastChange)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, FString::Printf(TEXT("%d"), (int)Slot));
-	
 	if ((Cast<UWeaponItem>(WeaponContainer->GetItemAt(Slot)) != nullptr && Slot != SelectedWeapon) || bForceUpdate)
 	{
-		
-		if (Cast<UWeaponItem>(WeaponContainer->GetItemAt(Slot)) != nullptr)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, *(Cast<UWeaponItem>(WeaponContainer->GetItemAt(Slot))->GetItemInfo()->ItemName));
-		}
-		
 		SelectedWeapon = Slot;
-		OnWeaponChangedEvent.Broadcast(Cast<UWeaponItem>(WeaponContainer->GetItemAt(SelectedWeapon)));
+
+		if (bBroadcastChange)
+			OnWeaponChangedEvent.Broadcast(Cast<UWeaponItem>(WeaponContainer->GetItemAt(SelectedWeapon)));
 	}
  }
 
@@ -206,13 +207,15 @@ void UPlayerInventory::DropWeapon(int Slot)
 
 		if (ItemToDrop != nullptr)
 		{
-			AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemActorClass, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
-			ItemActor->Initialize(ItemToDrop);
-			APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
-			FVector pos;
-			FRotator rot;
-			_playerController->GetPlayerViewPoint(pos, rot);
-			ItemActor->AddInitialThrowForce(rot.Vector(), 1000000.0f);
+			//AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemActorClass, GetOwner()->GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
+			//APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
+			//
+			//ItemActor->Initialize(ItemToDrop);
+			//
+			//FVector pos;
+			//FRotator rot;
+			//_playerController->GetPlayerViewPoint(pos, rot);
+			//ItemActor->AddInitialThrowForce(rot.Vector(), 1000000.0f);
 			
 			WeaponContainer->RemoveItem(Slot);
 
@@ -233,8 +236,10 @@ void UPlayerInventory::DropWeapon(int Slot)
 	}
 }
 
-bool UPlayerInventory::TryPickUpItem(UBaseItem* Item)
+bool UPlayerInventory::TryPickUpItem(UBaseItem* Item, int SelectedSlot)
 {
+	SelectedWeapon = (EWeaponSlot)SelectedSlot;
+	
 	if (UWeaponItem* Wep = Cast<UWeaponItem>(Item))
 		return PickUpWeapon(Wep);
 
@@ -244,6 +249,24 @@ bool UPlayerInventory::TryPickUpItem(UBaseItem* Item)
 UWeaponItem* UPlayerInventory::GetSelectedWeapon()
 {
 	return Cast<UWeaponItem>(WeaponContainer->GetItemAt(SelectedWeapon));
+}
+
+void UPlayerInventory::GenItems_Implementation()
+{
+	ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	if (GM)
+		WeaponContainer->AddItem(GM->CreateItemByUniqueId<UGunItem>(72953608, 1, GetOwner()));
+}
+
+void UPlayerInventory::PrintWeaponItems()
+{
+	for(uint8 i = 0; i < 3; i++)
+	{
+		auto Item = WeaponContainer->GetItemAt(i);
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Item ? FString::FromInt(Item->GetItemId()) : "NULL");
+	}
 }
 
 void UPlayerInventory::OnUseUtility()

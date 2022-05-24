@@ -12,13 +12,14 @@ AGunHostActor::AGunHostActor()
 {
 	//_sceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 
+	SetReplicates(true);
 	
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	_mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	RootComponent = _mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	_mesh->SetSimulatePhysics(true);
 	_mesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
-	SetRootComponent(_mesh);
+	//SetRootComponent(_mesh);
 	//_mesh->SetupAttachment(_sceneRoot);
 
 	_weapon = CreateDefaultSubobject<UHitscanWeaponComponent>(TEXT("Weapon"));
@@ -30,8 +31,6 @@ void AGunHostActor::BeginPlay()
 {
 	Super::BeginPlay();
 	//_weapon->SetParentMesh(_mesh);
-	
-	GetGameInstance();
 }
 
 // Called every frame
@@ -48,10 +47,10 @@ void AGunHostActor::DebugMessage()
 
 void AGunHostActor::AssignNewComponent(UWeaponComponent* component)
 {
-	if(component)
-	{
-		component->RegisterComponent();
-		AddOwnedComponent(component);
-	}
+	//if(component)
+	//{
+	//	component->RegisterComponent();
+	//	AddOwnedComponent(component);
+	//}
 }
 
