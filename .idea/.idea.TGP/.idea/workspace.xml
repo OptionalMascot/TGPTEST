@@ -9,20 +9,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Widgets/WG_SessionUI.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Items/BP_ItemActor.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Items/BP_ItemActor.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Level_0.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Level_0.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/WeaponSpawnerChestBP.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/WeaponSpawnerChestBP.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/ProjectileWeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/ProjectileWeaponComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/HitscanWeaponComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/HitscanWeaponComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/ProjectileWeaponComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/ProjectileWeaponComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Build/WindowsNoEditor/FileOpenOrder/CookerOpenOrder.log" beforeDir="false" afterPath="$PROJECT_DIR$/Build/WindowsNoEditor/FileOpenOrder/CookerOpenOrder.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/GameInstance/BaseGameInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/GameInstance/BaseGameInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/GameInstance/BaseGameInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TGP.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/TGP.uproject" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -392,6 +384,8 @@
       <workItem from="1653400771574" duration="1776000" />
       <workItem from="1653402676239" duration="961000" />
       <workItem from="1653403716451" duration="1665000" />
+      <workItem from="1653409696477" duration="927000" />
+      <workItem from="1653422932463" duration="598000" />
     </task>
     <servers />
   </component>

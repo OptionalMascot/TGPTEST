@@ -218,15 +218,15 @@ void UBaseGameInstance::CreateSession(int32 NumPublicConnections, bool bIsLanMat
 
 	SessionSettings = MakeShareable(new FOnlineSessionSettings());
 	SessionSettings->NumPrivateConnections = 0;
-	SessionSettings->NumPublicConnections = 4;
+	SessionSettings->NumPublicConnections = NumPublicConnections;
 	SessionSettings->bAllowInvites = true;
 	SessionSettings->bAllowJoinInProgress = true;
 	SessionSettings->bAllowJoinViaPresence = true;
 	SessionSettings->bAllowJoinViaPresenceFriendsOnly = true;
 	SessionSettings->bIsDedicated = false;
 	SessionSettings->bUsesPresence = true;
-	SessionSettings->bIsLANMatch = false;
-	SessionSettings->bShouldAdvertise = false;
+	SessionSettings->bIsLANMatch = bIsLanMatch;
+	SessionSettings->bShouldAdvertise = true;
 	SessionSettings->Set(SETTING_MAPNAME, FString("Lobby"), EOnlineDataAdvertisementType::ViaOnlineService);
 
 	CreateSessionCompleteDelegateHandle = Session->AddOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegate);
