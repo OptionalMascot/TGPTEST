@@ -118,7 +118,7 @@ void UProjectileWeaponComponent::OnFireEnd() // Called by parent on releasing le
 	// The only reason the above doesnt happen for single fire, is that the timeline should play in full for single fire
 }
 
-void UProjectileWeaponComponent::StartReloadAmmo(AActor* actor)
+void UProjectileWeaponComponent::StartReloadAmmo()
 {
 	if(!reloading)
 	{

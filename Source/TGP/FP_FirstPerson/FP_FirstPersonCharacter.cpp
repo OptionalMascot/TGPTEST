@@ -1,10 +1,14 @@
 #include "FP_FirstPersonCharacter.h"
+
+#include "DrawDebugHelpers.h"
 #include "Animation/AnimInstance.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Engine/ActorChannel.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "GameInstance/BaseGameInstance.h"
 #include "Weapons/GunHostActor.h"
 #include "Weapons/WeaponComponent.h"
 #include "Weapons/Interfaces/WeaponInterfaces.h"
@@ -12,6 +16,9 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
+#include "Net/UnrealNetwork.h"
+#include "Weapons/HitscanWeaponComponent.h"
+#include "Weapons/Throwables/GrenadeWeapon.h"
 #include "Weapons/HealthComponent.h"
 #include "Weapons/Projectiles/Projectile.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -47,16 +54,15 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 
 	// Create a gun mesh component
 	FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
-	FP_Gun->SetOnlyOwnerSee(true);			// Only the owning player will see this mesh
+	FP_Gun->SetOnlyOwnerSee(false);			// Only the owning player will see this mesh
 	FP_Gun->bCastDynamicShadow = false;		// Disallow mesh to cast dynamic shadows
 	FP_Gun->CastShadow = false;			// Disallow mesh to cast other shadows
 	FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
 
-	GunActorComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("GunActor"));
-	GunActorComponent->SetChildActorClass(AGunHostActor::StaticClass());
-	GunActorComponent->SetupAttachment(Mesh1P);
+	WeaponComponent = CreateDefaultSubobject<UHitscanWeaponComponent>(TEXT("GunComponent"));
+	AddOwnedComponent(WeaponComponent);
 
-	PlayerInventory = CreateDefaultSubobject<UPlayerInventory>(TEXT("PlayerInventory"));
+	PlayerInventory = CreateDefaultSubobject<UPlayerInventory>(TEXT("PlayerInv"));
 	AddOwnedComponent(PlayerInventory);
 
 	_healthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
@@ -139,7 +145,13 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 {
 	if (Val != 0.f)
-		PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
+	{
+		if ((int)Val - 1 != PlayerInventory->GetSelectedWeaponSlot())
+		{
+			PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
+			OnChangeSelectedWeapon(PlayerInventory->GetSelectedWeaponSlot());
+		}
+	}
 }
 
 void AFP_FirstPersonCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
@@ -197,12 +209,9 @@ void AFP_FirstPersonCharacter::OnFire()
 	{
 		//DamagedComponent->AddImpulseAtLocation(ShootDir * WeaponDamage, Impact.Location);
 	}
-
-
-	if(_currentWeaponComponent != nullptr)
-	{
-		_currentWeaponComponent->OnFire();
-	}
+	
+	if(WeaponComponent != nullptr)
+		WeaponComponent->OnFire();
 }
 
 void AFP_FirstPersonCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
@@ -325,7 +334,6 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AFP_FirstPersonCharacter::TouchUpdate);	
 }
 
-
 void AFP_FirstPersonCharacter::OnFireWeapon()
 {
 	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
@@ -367,16 +375,13 @@ void AFP_FirstPersonCharacter::OnFireWeapon()
 void AFP_FirstPersonCharacter::OnFireWeaponRelease()
 {
 	_fireHeld = false;
-	_currentWeaponComponent->OnFireEnd();
+	WeaponComponent->OnFireEnd();
 }
 
 void AFP_FirstPersonCharacter::PickupWeapon()
 {
-	_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
-	_currentWeaponComponent->PickupWeapon(this);
+	WeaponComponent->PickupWeapon(this);
 	FAttachmentTransformRules rules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true);
-	_currentWeapon->AttachToComponent(Mesh1P, rules, TEXT("GripPoint"));
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Successful Raycast"));
 }
 
 void AFP_FirstPersonCharacter::DropWeapon()
@@ -391,8 +396,9 @@ void AFP_FirstPersonCharacter::DropWeapon()
 	//	_currentWeapon = nullptr;
 	//}
 
-	_currentWeaponComponent->DropWeapon();
-	PlayerInventory->DropWeapon();
+	PlayerInventory->SrvDropWeapon(PlayerInventory->GetSelectedWeaponSlot());
+	WeaponComponent->DropWeapon();
+	//PlayerInventory->DropWeapon();
 }
 
 void AFP_FirstPersonCharacter::ReloadWeapon()
@@ -405,6 +411,12 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 			AmmoRef->TryReload(_currentWeapon);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 		}*/
+		IHasAmmo* AmmoRef = Cast<IHasAmmo>(WeaponComponent);
+		if(AmmoRef != nullptr)
+		{
+			AmmoRef->TryReload();
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+		}
 		return;
 	}
 
@@ -446,34 +458,97 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 		FP_Gun->SetSkeletalMesh(nullptr);
 
 	// Unregister old component
-	_currentWeaponComponent->DropWeapon();
+	WeaponComponent->DropWeapon();
 	
-	_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
-	_currentWeaponComponent->DestroyComponent();
+	//_currentWeapon->RemoveOwnedComponent(_currentWeaponComponent);
+	//_currentWeaponComponent->DestroyComponent();
 
-	UWeaponComponent* newComponent = NewObject<UWeaponComponent>(_currentWeapon, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
+	if (HasAuthority())
+	{
+		WeaponComponent = NewObject<UWeaponComponent>(this, Cast<UGunInfo>(WeaponItem->GetItemInfo())->BaseWeaponClass, FName(WeaponItem->GetItemInfo()->ItemName));
+		WeaponComponent->RegisterComponentWithWorld(GetWorld());
 
-	newComponent->RegisterComponentWithWorld(GetWorld());
+		WeaponComponent->PickupWeapon(this); // Assign player to component
+		WeaponComponent->SetParentMesh(FP_Gun);
+	}
 	
-	_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
+	//_currentWeapon->AddOwnedComponent(newComponent); // Add component to the Held Weapon Actor
 
-	_currentWeaponComponent = newComponent; // Save reference
-	
-	_currentWeaponComponent->PickupWeapon(this); // Assign player to component
-
-	_currentWeaponComponent->SetParentMesh(FP_Gun);
-	
+	//_currentWeaponComponent = newComponent; // Save reference
 	
 	if (UGunItem* Gun = Cast<UGunItem>(WeaponItem))
+		WeaponComponent->InitializeWeapon(Gun);
+
+	RequestWeaponMeshChange(PlayerInventory->GetSelectedWeaponSlot());
+}
+
+void AFP_FirstPersonCharacter::SrvHitScan_Implementation() // Rep is so scuffed within Gun actor I moved it here. I'm giving up on life at this point.
+{
+	FHitResult result;
+	FVector CameraLoc;
+	FRotator CameraRot;
+	
+	GetController()->GetPlayerViewPoint(CameraLoc, CameraRot);
+	if(GetWorld()->LineTraceSingleByChannel(result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
 	{
-		_currentWeaponComponent->InitializeWeapon(Gun);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, "NOT VALID");
+		UWeaponItem* Wep = PlayerInventory->GetSelectedWeapon();
+		UWeaponInfo* WepInfo =  Cast<UWeaponInfo>(Wep->GetItemInfo());
+
+		if (WepInfo)
+		{
+			AActor* hit = result.GetActor(); // Get Actor
+			UGameplayStatics::ApplyDamage(hit, WepInfo->Damage, GetController(), this, UDamageType::StaticClass());
+
+			TestDebug();
+		}
+		
+		//float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass()); // Attempt to apply damage
 	}
 
 	AttachWeapon();
+}
+
+void AFP_FirstPersonCharacter::SrvShootGun_Implementation()
+{
+	//Cast<AGunHostActor>(GunActorComponent->GetChildActor())->GetWeaponComponent()->SrvOnFire();
+
+	TestDebug();
+}
+
+void AFP_FirstPersonCharacter::OnChangeSelectedWeapon_Implementation(int Slot)
+{
+	PlayerInventory->ChangeWeapon((EWeaponSlot)Slot, true, false);
+}
+
+void AFP_FirstPersonCharacter::OnPickUpItem_Implementation(AItemActor* ItemActor, int Slot)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::FromInt(Slot));
+	
+	if(PlayerInventory->TryPickUpItem(ItemActor->GetItem(), Slot))
+		ItemActor->Destroy();
+}
+
+void AFP_FirstPersonCharacter::OnWeaponDropped_Implementation()
+{
+	//AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(PlayerInventory->GetItemActor(), GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
+	//ItemActor->Initialize(PlayerInventory->GetSelectedWeapon());
+//
+	//PlayerInventory->DropWeapon();
+}
+ 
+void AFP_FirstPersonCharacter::ChangeWeaponMeshMulti_Implementation(int ItemId)
+{
+	if (UBaseGameInstance* GI = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld())))
+		if (UWeaponInfo* Info = Cast<UWeaponInfo>(GI->FindInfoUniqueId(ItemId)))
+			FP_Gun->SetSkeletalMesh(Info->WeaponSkeletalMesh);
+}
+
+void AFP_FirstPersonCharacter::RequestWeaponMeshChange_Implementation(int Slot)
+{
+	PlayerInventory->ChangeWeapon((EWeaponSlot)Slot, true, false);
+
+	if (const UWeaponItem* Wep = PlayerInventory->GetSelectedWeapon())
+		ChangeWeaponMeshMulti(Wep->GetItemId());
 }
 
 void AFP_FirstPersonCharacter::InteractWithObject()
@@ -483,8 +558,7 @@ void AFP_FirstPersonCharacter::InteractWithObject()
 		if(_lastLooked->ActorHasTag(TEXT("Weapon")))
 		{
 			if (AItemActor* ItemActor = Cast<AItemActor>(_lastLooked))
-				if(PlayerInventory->TryPickUpItem(ItemActor->GetItem()))
-					ItemActor->Destroy();
+					OnPickUpItem(ItemActor, PlayerInventory->GetSelectedWeaponSlot());
 		}
 		else if(_lastLookedInterface)
 		{
@@ -531,39 +605,78 @@ void AFP_FirstPersonCharacter::OnOverlapWithActor(UPrimitiveComponent* Overlappe
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// DEBUG
+	
 	_healthComponent->health -= 80.0f;
 	
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::OnOverlapWithActor);
-	
-	_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
-	_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
-	_currentWeaponComponent->SetParentMesh(FP_Gun);
-	_currentWeaponComponent->PickupWeapon(this);
-	
-	//_currentWeapon = nullptr;
-	//_currentWeaponComponent = nullptr; 
-	_fireHeld = false;
 
-	PlayerInventory->OnWeaponChangedEvent.AddDynamic(this, &AFP_FirstPersonCharacter::OnWeaponChanged);
-	PlayerInventory->ComponentLoadComplete();
+	//_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
+	//_currentWeaponComponent = _currentWeapon->GetWeaponComponent();
+	WeaponComponent->SetParentMesh(FP_Gun);
+	WeaponComponent->PickupWeapon(this);
+		
+	//_currentWeapon = nullptr;
+	//_currentWeaponComponent = nullptr;
+
+	if (PlayerInventory)
+	{
+		PlayerInventory->OnWeaponChangedEvent.AddDynamic(this, &AFP_FirstPersonCharacter::OnWeaponChanged);
+		PlayerInventory->ComponentLoadComplete();	
+	}
+	
+	if (HasAuthority())
+	{
+		_fireHeld = false;
+	}
 
 	_lastLooked = nullptr;
 
 	SwordCollider->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::MeleeDamage);
 }
 
+void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	//DOREPLIFETIME(AFP_FirstPersonCharacter, _currentWeapon);
+	//DOREPLIFETIME(AFP_FirstPersonCharacter, _currentWeaponComponent);
+	//DOREPLIFETIME(AFP_FirstPersonCharacter, _fireHeld);
+}
+
+bool AFP_FirstPersonCharacter::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
+{
+	bool bUpdate = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
+
+	//bUpdate |= Channel->ReplicateSubobject(_currentWeapon, *Bunch, *RepFlags);
+	//bUpdate |= Channel->ReplicateSubobject(WeaponComponent, *Bunch, *RepFlags);
+ 
+	return bUpdate;
+}
+
 void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	CastForInteractable(DeltaSeconds);
 	
-	if(_fireHeld && _currentWeapon != nullptr)
+	if (Controller)
+		CastForInteractable(DeltaSeconds);
+		
+	if(_fireHeld)
 	{
-		_currentWeaponComponent->OnFire();
+		//if (HasAuthority())
+		//	WeaponComponent->SrvOnFire();
+		//else
+		WeaponComponent->OnFire();
 	}
+	
+	//if(_fireHeld && _currentWeapon != nullptr)
+	//{
+	//	_currentWeaponComponent->OnFire();
+	//	
+	//	if (_currentWeaponComponent->bDidFire)
+	//	{
+	//		//SrvHitScan();
+	//	}
+	//}
 }
 
 void AFP_FirstPersonCharacter::LookUp(float inputValue)

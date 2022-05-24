@@ -44,6 +44,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(Server, Reliable) void SrvOnFire();
+	virtual void SrvOnFire_Implementation();
+	
 	virtual void OnFire();
 	virtual void OnFireEnd();
 	

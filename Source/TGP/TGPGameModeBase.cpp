@@ -30,7 +30,6 @@ void ATGPGameModeBase::BeginPlay()
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
-	
 }
 
 void ATGPGameModeBase::Tick(float DeltaSeconds)

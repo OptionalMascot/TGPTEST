@@ -40,9 +40,16 @@ void ABaseAiCharacter::BeginPlay()
 	HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
 	baseAiController = Cast<ABaseAIController>(GetController());
 	baseAiController->RunBT();
+	
+	if (HasAuthority())
+	{
+		HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
+		baseAiController = Cast<ABaseAIController>(GetController());
+		baseAiController->RunBT();
 
-	LeftArmCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::LeftColliderHit);
-	RightHandCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::RightColliderHit);
+		LeftArmCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::LeftColliderHit);
+		RightHandCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::RightColliderHit);
+	}
 }
 
 void ABaseAiCharacter::Tick(float DeltaTime)

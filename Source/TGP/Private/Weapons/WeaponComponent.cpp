@@ -6,6 +6,7 @@
 #include "Item/BaseItem.h"
 #include "Item/ItemInfo.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()
@@ -13,7 +14,9 @@ UWeaponComponent::UWeaponComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	
+
+	SetIsReplicatedByDefault(true);
+
 	// ...
 	_canUse = true;
 	_singleFireCheck = false;
@@ -53,6 +56,15 @@ FVector UWeaponComponent::BulletSpreadCalculation(FVector dir, FVector up, FVect
 	return dir;
 }
 
+void UWeaponComponent::SrvOnFire_Implementation()
+{
+	//auto t = Cast<AFP_FirstPersonCharacter>((GetOwner()));
+//
+	//if (t)
+	//{
+	//	t->TestDebug();
+	//}
+}
 
 void UWeaponComponent::OnFire()
 {
