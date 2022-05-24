@@ -20,6 +20,11 @@ void ABaseAIController::ChangeAIControllerStatus(bool status)
 	}
 }
 
+void ABaseAIController::SetObjective(AActor* objective)
+{
+	blackboardComponenet->SetValueAsObject("objective",objective);
+}
+
 void ABaseAIController::BeginPlay()
 {
 	Super::BeginPlay();
