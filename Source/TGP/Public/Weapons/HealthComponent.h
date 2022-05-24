@@ -31,11 +31,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentDeadSignature onComponentDead;
 	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentTookDamageSignature onComponentTakeDamage;
 	
-	UPROPERTY(EditAnywhere) int maxHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float maxHealth;
 	UPROPERTY(EditAnywhere) bool destroyOnDeath;
-	int health;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float health;
 	bool dead;
-	
+
+	UFUNCTION() int GetHealth();
 	void SetHealth(float newHealth) { health = newHealth; dead = false; }
 	bool AdjustHealth(AController* causer, float damage);
 	bool isDead() { return dead; }

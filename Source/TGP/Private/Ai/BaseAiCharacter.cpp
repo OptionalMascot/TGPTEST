@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TGP/TGPGameModeBase.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 ABaseAiCharacter::ABaseAiCharacter()
 {
@@ -202,8 +203,12 @@ void ABaseAiCharacter::RightColliderOff()
 
 void ABaseAiCharacter::RightColliderHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("DAMAGE PLAYER"));
-	RightColliderOff();
+	if(OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("DAMAGE PLAYER"));
+		UGameplayStatics::ApplyDamage(OtherActor, Damage, GetController(), this, UDamageType::StaticClass());
+		RightColliderOff();
+	}
 }
 
 void ABaseAiCharacter::LeftColliderOn()
@@ -218,8 +223,13 @@ void ABaseAiCharacter::LeftColliderOff()
 
 void ABaseAiCharacter::LeftColliderHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("DAMAGE PLAYER"));
-	LeftColliderOff();
+	if(OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("DAMAGE PLAYER"));
+		UGameplayStatics::ApplyDamage(OtherActor, Damage, GetController(), this, UDamageType::StaticClass());
+		LeftColliderOff();
+	}
+	
 }
 
 void ABaseAiCharacter::Die()

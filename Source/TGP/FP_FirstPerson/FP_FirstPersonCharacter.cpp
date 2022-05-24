@@ -523,7 +523,7 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	// DEBUG
-	_healthComponent->health -= 80.0f;
+	//_healthComponent->health -= 80.0f;
 	
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::OnOverlapWithActor);
 	

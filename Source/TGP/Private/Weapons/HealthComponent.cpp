@@ -67,3 +67,8 @@ void UHealthComponent::ApplyDamage(AActor* DamagedActor, float Damage, const cla
 	AdjustHealth(InstigatedBy, Damage);
 }
 
+int UHealthComponent::GetHealth()
+{
+	return health;
+}
+
