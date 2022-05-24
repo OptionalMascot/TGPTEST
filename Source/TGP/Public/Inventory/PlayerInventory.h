@@ -56,8 +56,11 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable) void AddWeapon(UWeaponItem* Item, int Slot);
 	void AddWeapon_Implementation(UWeaponItem* Item, int Slot);
+
+	UFUNCTION(NetMulticast, Reliable) void AddUtility(UThrowableItem* Item, int Slot);
+	//void AddWeapon_Implementation(UWeaponItem* Item, int Slot);
 	
-	bool AddUtility(UThrowableItem* ThrowableItem) const;
+	//bool AddUtility(UThrowableItem* ThrowableItem) const;
 	void SelectUtility(uint8 Slot);
 	UThrowableItem* GetSelectedUtility();
 
@@ -89,6 +92,9 @@ public:
 
 	UFUNCTION(Server, Reliable) void SrvDropWeapon(int Slot);
 	void SrvDropWeapon_Implementation(int Slot);
+
+	UFUNCTION(BlueprintCallable) int GetNadeAmount() const;
+	UFUNCTION(BlueprintCallable) int GetFlashAmount() const;
 	
 	void OnUseUtility();
 };

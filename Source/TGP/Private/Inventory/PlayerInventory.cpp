@@ -32,7 +32,7 @@ void UPlayerInventory::BeginPlay()
 	if (GetOwner()->HasAuthority())
 	{
 		UtilityContainer = NewObject<UItemContainer>(GetOwner());
-		UtilityContainer->Initialize(MaxUtilityAmount);
+		UtilityContainer->Initialize(2);
 
 		ConsumableContainer = NewObject<UItemContainer>(GetOwner());
 		ConsumableContainer->Initialize(MaxConsumableAmount);
@@ -65,11 +65,17 @@ void UPlayerInventory::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UPlayerInventory::AddWeapon_Implementation(UWeaponItem* Item, int Slot)
 {
-	if (Item != nullptr)
+	if (Item)
 	{
-		UBaseItem* ItemAtSlot = WeaponContainer->GetItemAt(Slot);
+		//UBaseItem* ItemAtSlot = WeaponContainer->GetItemAt(Slot);
 		WeaponContainer->AddItem(Item, Slot);
 	}
+}
+
+void UPlayerInventory::AddUtility_Implementation(UThrowableItem* Item, int Slot)
+{
+	if (Item)
+		UtilityContainer->AddItem(Item, Slot);
 }
 
 void UPlayerInventory::TryFindAndSelectValidUtility()
@@ -87,8 +93,8 @@ void UPlayerInventory::InitDefaultGuns()
 		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(214248416), 1);
 		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(137833872), 2);
 
-		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(92876440, 3));
-		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(111947304, 3));
+		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(92876440, 3), 0);
+		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(111947304, 3), 1);
 	}
 }
 
@@ -114,14 +120,6 @@ bool UPlayerInventory::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bu
 	bUpdate |= WeaponContainer->ReplicateItems(Channel, Bunch, RepFlags);
 	
 	return bUpdate;
-}
-
-bool UPlayerInventory::AddUtility(UThrowableItem* ThrowableItem) const
-{
-	if (ThrowableItem)
-		return UtilityContainer->AddItem(ThrowableItem);
-
-	return false;
 }
 
 void UPlayerInventory::SelectUtility(uint8 Slot)
@@ -272,4 +270,30 @@ void UPlayerInventory::PrintWeaponItems()
 void UPlayerInventory::OnUseUtility()
 {
 	UtilityContainer->RemoveItem(SelectedUtilitySlot, 1);
+}
+
+int UPlayerInventory::GetNadeAmount() const
+{
+	const UBaseItem* Item = UtilityContainer->GetItemAt(0);
+	const UBaseItem* Item2 = UtilityContainer->GetItemAt(1);
+	
+	if (Item && Item->GetItemInfo()->UniqueId == 92876440)
+		return Item->GetAmount();
+	if (Item2 && Item2->GetItemInfo()->UniqueId == 92876440)
+		return Item2->GetAmount();
+
+	return 0;
+}
+
+int UPlayerInventory::GetFlashAmount() const
+{
+	const UBaseItem* Item = UtilityContainer->GetItemAt(0);
+	const UBaseItem* Item2 = UtilityContainer->GetItemAt(1);
+	
+	if (Item && Item->GetItemInfo()->UniqueId == 111947304)
+		return Item->GetAmount();
+	if (Item2 && Item2->GetItemInfo()->UniqueId == 111947304)
+		return Item2->GetAmount();
+
+	return 0;
 }
