@@ -15,7 +15,7 @@ class TGP_API UProjectileWeaponComponent : public UWeaponComponent, public IWait
 	GENERATED_BODY()
 
 protected:
-	virtual void StartReloadAmmo() override;
+	virtual void StartReloadAmmo(AActor* actor) override;
 	virtual void StartWaitTimer(AActor* actor, float time) override;
 	virtual void CancelReload(AActor* actor) override;
 
@@ -31,11 +31,8 @@ protected:
 	UPROPERTY() class UCurveFloat* _curve;
 public:
 	UProjectileWeaponComponent();
-
-	virtual void SrvOnFire_Implementation() override;
-	
 	virtual void BeginPlay() override;
-	virtual bool OnFire() override;
+	virtual void OnFire() override;
 	virtual void OnFireEnd() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	virtual void InitializeWeapon(UGunItem* gunItem) override;

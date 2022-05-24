@@ -8,14 +8,10 @@ public class TGP : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "AIModule", "Niagara", "GameplayTasks", "NavigationSystem", "OnlineSubsystem", "OnlineSubsystemUtils", "Networking", "Sockets" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "AIModule", "Niagara", "GameplayTasks","NavigationSystem" });
+
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
-		if ((Target.Platform == UnrealTargetPlatform.Win64) || (Target.Platform == UnrealTargetPlatform.Win32) || (Target.Platform == UnrealTargetPlatform.Linux) || (Target.Platform == UnrealTargetPlatform.Mac))
-		{
-			PublicDependencyModuleNames.AddRange(new string[] { "Steamworks", "OnlineSubsystemSteam" });
-		}
-		
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		

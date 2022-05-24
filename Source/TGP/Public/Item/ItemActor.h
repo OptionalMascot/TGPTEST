@@ -22,18 +22,10 @@ class TGP_API AItemActor : public AActor, public IIInteractable
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UPointLightComponent* ItemPointLight;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) class UWidgetComponent* StatWidget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DebugSpawn", meta=(AllowPrivateAccess = true)) UItemInfo* ItemInfoToSpawn;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "DebugSpawn", meta=(AllowPrivateAccess = true)) TSubclassOf<UBaseItem> ItemClassToSpawn;
-	
 	UPROPERTY() APlayerController* _playerController;
 	
-	UPROPERTY(ReplicatedUsing=OnRep_UpdateItem, BlueprintReadOnly, Category = "Item", Meta = (AllowPrivateAccess = true)) UBaseItem* DefinedItem;
+	UPROPERTY(BlueprintReadOnly, Category = "Item", Meta = (AllowPrivateAccess = true)) UBaseItem* DefinedItem;
 
-	UFUNCTION() void OnRep_UpdateItem();
-	
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
-	
 protected:
 	virtual void BeginPlay() override;
 
@@ -47,7 +39,7 @@ public:
 
 	void LightColourSetup(const UWeaponInfo* info) const;
 
-	USkeletalMeshComponent* GetSkeletalMesh() const { return ItemSkeletalMesh; }
+	USkeletalMeshComponent* GetSkeletalMesh() { return ItemSkeletalMesh; }
 
 	void AddInitialThrowForce(FVector dir, float force);
 
@@ -55,10 +47,8 @@ public:
 	virtual void EndHover() override;
 	
 	UFUNCTION(BlueprintCallable) void Initialize(UBaseItem* Item);
-	UFUNCTION(BlueprintCallable) UBaseItem* GetItem() const { return DefinedItem; }
+	UBaseItem* GetItem() const { return DefinedItem; }
 
 	UFUNCTION(NetMulticast, Reliable) virtual void OnPickUp();
 	void OnPickUp_Implementation();
-
-	UFUNCTION(BlueprintImplementableEvent) void Test();
 };

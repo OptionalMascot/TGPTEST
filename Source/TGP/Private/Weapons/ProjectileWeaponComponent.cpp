@@ -24,25 +24,6 @@ UProjectileWeaponComponent::UProjectileWeaponComponent()
 	// ...
 }
 
-void UProjectileWeaponComponent::SrvOnFire_Implementation()
-{
-	//Super::SrvOnFire_Implementation();
-
-	Cast<AFP_FirstPersonCharacter>(GetOwner())->TestDebug();
-	
-	FHitResult result;
-	FVector CameraLoc;
-	FRotator CameraRot;
-
-	if(_parentController == nullptr)
-		_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
-	
-	_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
-	
-	AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(_weaponInfo->ProjectileToSpawn->ThrowableBlueprint, _parentMesh->GetComponentLocation() + CameraRot.Vector() * 50.0f, FRotator());
-	ThrowableActor->Initialize(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn));
-	ThrowableActor->SetProjectileParameters(_parentController, CameraRot.Vector(), _weaponInfo->ProjectileLaunchSpeed);
-}
 
 void UProjectileWeaponComponent::BeginPlay()
 {
@@ -56,10 +37,10 @@ void UProjectileWeaponComponent::BeginPlay()
 	notPlayedFullyValue = 1.0f;
 }
 
-bool UProjectileWeaponComponent::OnFire()
+void UProjectileWeaponComponent::OnFire()
 {
 	if(!CheckMouseReleased()) // If single fire check is turned on, require a release before firing again
-		return false;
+		return;
 	
 	if(_canUse)
 	{
@@ -92,17 +73,26 @@ bool UProjectileWeaponComponent::OnFire()
 			
 			//DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
 
-			_player->PlayFireAnim();
-			return true;
-		}
-		
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
-		_player->ReloadWeapon();
-		_player->CanFire = false;
-		//TryReload(_parent); // If can't shoot, try and reload
-	}
+			// Spawn Projectile
+			APlayerController* _playerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0);
+			FVector pos;
+			FRotator rot;
+			_playerController->GetPlayerViewPoint(pos, rot);
+	
+			AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(_weaponInfo->ProjectileToSpawn->ThrowableBlueprint, _parentMesh->GetComponentLocation() + rot.Vector() * 50.0f, FRotator());
+			ThrowableActor->Initialize(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn));
+			ThrowableActor->SetProjectileParameters(_playerController, rot.Vector(), _weaponInfo->ProjectileLaunchSpeed);
 
-	return false;
+			_player->PlayFireAnim();
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
+			_player->ReloadWeapon();
+			_player->CanFire = false;
+			//TryReload(_parent); // If can't shoot, try and reload
+		}
+	}
 }
 
 void UProjectileWeaponComponent::OnFireEnd() // Called by parent on releasing left click
@@ -128,7 +118,7 @@ void UProjectileWeaponComponent::OnFireEnd() // Called by parent on releasing le
 	// The only reason the above doesnt happen for single fire, is that the timeline should play in full for single fire
 }
 
-void UProjectileWeaponComponent::StartReloadAmmo()
+void UProjectileWeaponComponent::StartReloadAmmo(AActor* actor)
 {
 	if(!reloading)
 	{

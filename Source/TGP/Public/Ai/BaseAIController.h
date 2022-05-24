@@ -24,4 +24,5 @@ public:
 	ABaseAIController();
 	void RunBT();
 	void ChangeAIControllerStatus(bool status);
+	void SetObjective(AActor* objective);
 };
