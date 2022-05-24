@@ -45,7 +45,7 @@ public:
 	virtual void Init() override;
 	virtual void Shutdown() override;
 	
-	void CreateSession(int32 NumPublicConnections, bool bIsLanMatch);
+	UFUNCTION(BlueprintCallable) void CreateSession(int32 NumPublicConnections, bool bIsLanMatch);
 	bool SendSessionInvite(APlayerController *PlayerController, const FUniqueNetId& FriendId);
 	
 	FOnCreateSessionComplete OnCreateSessionCompleteEvent;
