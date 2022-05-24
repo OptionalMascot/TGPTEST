@@ -1,10 +1,6 @@
 {
 	"FileVersion": 3,
-<<<<<<< HEAD
-	"EngineAssociation": "{97467BF4-4D48-E58A-6923-1688733ACDF2}",
-=======
 	"EngineAssociation": "{715302DC-4455-23AE-8FB9-0FB675F76DBE}",
->>>>>>> Stefan-2
 	"Category": "",
 	"Description": "",
 	"Modules": [
