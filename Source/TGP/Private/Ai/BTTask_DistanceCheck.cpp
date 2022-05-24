@@ -15,7 +15,7 @@ EBTNodeResult::Type UBTTask_DistanceCheck::ExecuteTask(UBehaviorTreeComponent& O
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
 	UBlackboardComponent* blackboardComponent = OwnerComp.GetBlackboardComponent();
-	const FVector targetLocation = Cast<AActor>(blackboardComponent->GetValueAsObject(GetSelectedBlackboardKey()))->GetActorLocation();
+	const FVector targetLocation = Cast<AActor>(blackboardComponent->GetValueAsObject("target"))->GetActorLocation();
 	const FVector actorLocaton = OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation();
 	blackboardComponent->SetValueAsBool("inAttackRange",FVector::Distance(actorLocaton,targetLocation)<200.0f);
 	
