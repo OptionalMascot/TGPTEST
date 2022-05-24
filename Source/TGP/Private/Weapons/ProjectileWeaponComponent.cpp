@@ -82,12 +82,15 @@ void UProjectileWeaponComponent::OnFire()
 			AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(_weaponInfo->ProjectileToSpawn->ThrowableBlueprint, _parentMesh->GetComponentLocation() + rot.Vector() * 50.0f, FRotator());
 			ThrowableActor->Initialize(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn));
 			ThrowableActor->SetProjectileParameters(_playerController, rot.Vector(), _weaponInfo->ProjectileLaunchSpeed);
-			
+
+			_player->PlayFireAnim();
 		}
 		else
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
-			TryReload(_parent); // If can't shoot, try and reload
+			_player->ReloadWeapon();
+			_player->CanFire = false;
+			//TryReload(_parent); // If can't shoot, try and reload
 		}
 	}
 }
