@@ -36,6 +36,7 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) uint8 MaxEnemiesPerSpawnWave = 4;
 
 	FTimerHandle RoundCooldownHandler;
+	FTimerHandle RoundDelayHandler;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DEBUG_VISIBLE", Meta = (AllowPrivateAccess = true)) uint8 EnemiesAlive = 0;
 	
@@ -49,6 +50,7 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Regions", Meta = (AllowPrivateAccess = true)) ARegion* currentRegion;
 
 	void BeginRound();
+	void BeginRoundDelay();
 	void EndRound();
 
 	bool TrySpawnEnemy();
@@ -68,6 +70,9 @@ protected:
 	
 public:
 	ATGPGameModeBase();
+
+	AActor* GetCurrentRegionObjective() const {return currentRegion->GetObjective();}
+	FString GetCurrentRegionName() const {return currentRegion->GetName();}
 
 	virtual void Tick(float DeltaSeconds) override;
 
