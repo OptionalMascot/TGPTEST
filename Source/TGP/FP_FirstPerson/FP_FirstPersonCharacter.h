@@ -40,6 +40,9 @@ class AFP_FirstPersonCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	UChildActorComponent* GunActorComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	USceneComponent* AimOffset;
+
 public:
 	AFP_FirstPersonCharacter();
 
@@ -253,6 +256,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement", meta=(AllowPrivateAccess = true))
 	float M_SprintSpeed;
 
+	FVector M_RifleAimOffset;
+	FVector M_PistolAimoffset;
+
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
@@ -285,6 +291,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void Aim();
 
+	void NewAim();
+	void NewStopAim();
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void StopAim();
 
@@ -310,6 +319,12 @@ public:
 	void SwordColliderOn();
 	UFUNCTION(BlueprintCallable)
 	void SwordColliderOff();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void AdjustToSight();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void AdjustToIrons();
 
 	UFUNCTION()
 	void MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

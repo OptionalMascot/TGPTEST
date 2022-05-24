@@ -35,7 +35,6 @@ void UHitscanWeaponComponent::BeginPlay()
 
 void UHitscanWeaponComponent::OnFire()
 {
-	_player->DisplayGunType(_player->GetCurrentWeaponComponent()->GetWeaponInfo()->WeaponType);
 	if(!CheckMouseReleased()) // If single fire check is turned on, require a release before firing again
 		return;
 
