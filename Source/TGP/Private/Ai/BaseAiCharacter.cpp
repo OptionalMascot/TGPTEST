@@ -97,7 +97,17 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 	SetMoveType();
 
 	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
-		baseAiController->SetObjective(GM->GetCurrentRegionObjective());
+	{
+		int randnum = FMath::RandRange(0,1);
+		if(randnum)
+		{
+			baseAiController->SetObjective(GM->GetCurrentRegionObjective());
+		}
+		else
+		{
+			
+		}
+	}
 	
 	SetHidden(false);
 }

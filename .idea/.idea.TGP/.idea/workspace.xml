@@ -9,13 +9,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/FLoor/M_Floor.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/FLoor/T_Floor.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/FLoor/plain.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiChaseObjective.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiChasePlayer.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiControllerObj.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiControllerP.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_ObjectiveAI.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_PlayerChaseAI.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AiController.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAIController.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAIController.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAi.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_BaseAi.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_AggresiveAI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_AggresiveAI.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" afterDir="false" />
     </list>
