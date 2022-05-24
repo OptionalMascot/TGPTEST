@@ -316,6 +316,7 @@ public:
 	void Aim();
 
 	void NewAim();
+	UFUNCTION(BlueprintCallable)
 	void NewStopAim();
 
 	UFUNCTION(BlueprintImplementableEvent)
