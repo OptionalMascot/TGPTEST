@@ -782,7 +782,7 @@ void AFP_FirstPersonCharacter::StopSprint()
 
 void AFP_FirstPersonCharacter::NewAim()
 {
-	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 	{
 		EndAim();
 		return;
@@ -802,14 +802,7 @@ void AFP_FirstPersonCharacter::NewAim()
 	
 	Mesh1P->SetHiddenInGame(true);
 	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
-<<<<<<< HEAD
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Blue, FP_Gun->SkeletalMesh->GetName());
-	
-	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
-=======
-
 	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
->>>>>>> George
 	{
 	case EWeaponType::TwoHand:
 		if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
@@ -867,14 +860,9 @@ void AFP_FirstPersonCharacter::BeginAim()
 	{
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
-<<<<<<< HEAD
-	}		
-	
-=======
 	}
 	
 	NewAim();
->>>>>>> George
 }
 
 void AFP_FirstPersonCharacter::EndAim()

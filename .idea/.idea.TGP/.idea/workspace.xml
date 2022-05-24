@@ -8,7 +8,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="" />
+    <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,21 +29,27 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/HitscanWeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAIController.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIWidget.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAiCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAiCharacter.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/HealthComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ThrowableWeapon.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/GunHostActor.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIActor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Ai/BaseAIController.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/ThrowableWeapon.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
@@ -76,10 +85,10 @@
       <option value="$PROJECT_DIR$/Source/TGP/Public/Pickups/HealthPickupActor.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Pickups/HealthPickupActor.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.h" />
-      <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/GrenadeWeapon.cpp" />
       <option value="$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ScatterGrenadeWeapon.h" />
       <option value="$PROJECT_DIR$/Source/TGP/Private/Weapons/Throwables/ScatterGrenadeWeapon.cpp" />
+      <option value="$PROJECT_DIR$/Source/TGP/FP_FirstPerson/FP_FirstPersonCharacter.cpp" />
     </changedPaths>
   </component>
   <component name="MarkdownSettingsMigration">
@@ -392,6 +401,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
