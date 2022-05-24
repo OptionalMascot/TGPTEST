@@ -7,20 +7,57 @@
 class UItemInfo;
 class UItemContainer;
 
+USTRUCT()
+struct FItemData
+{
+	GENERATED_BODY()
+
+public:
+	int ItemAmount = 1;
+};
+
+USTRUCT()
+struct FWeaponData : public FItemData
+{
+	GENERATED_BODY()
+
+public:
+	
+};
+
+USTRUCT()
+struct FGunData : public FWeaponData
+{
+	GENERATED_BODY()
+
+public:
+	int AmmoCount = 120;
+	int AmmoInClip;
+	
+};
+
 UCLASS(BlueprintType)
 class TGP_API UBaseItem : public UObject
 {
 	GENERATED_BODY()
 
+	UFUNCTION() void OnRep_UpdateItemInfo();
+
 protected:
-	int ItemAmount = 1;
+	UPROPERTY(ReplicatedUsing = OnRep_UpdateItemInfo, BlueprintReadOnly) int ItemId;
+	UPROPERTY(Replicated, BlueprintReadOnly) int ItemAmount = 1;
+	
 	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn)) UItemInfo* ItemInfo;
 	UPROPERTY() UItemContainer* OwningContainer;
+
+	virtual bool IsSupportedForNetworking() const override { return true; }
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 public:
 	UBaseItem();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure) UItemInfo* GetItemInfo() const { return ItemInfo; }
+	UFUNCTION(BlueprintCallable, BlueprintPure) int GetItemId() const { return ItemId; }
 
 	virtual void Init(UItemInfo* Info, int Amount);
 	void SetOwningContainer(UItemContainer* Container) { OwningContainer = Container; }
@@ -30,6 +67,8 @@ public:
 
 	void OnUse();
 	int TryStack(UBaseItem* Item);
+
+	void UpdateItemInfo();
 };
 
 UCLASS()
@@ -45,8 +84,8 @@ class TGP_API UGunItem : public UWeaponItem
 {
 	GENERATED_BODY()
 
-	int AmmoCount = 120;
-	int AmmoInClip;
+	UPROPERTY(Replicated) int AmmoCount = 120;
+	UPROPERTY(Replicated) int AmmoInClip;
 	
 public:
 	virtual void Init(UItemInfo* Info, int Amount) override;
@@ -56,6 +95,8 @@ public:
 	
 	int GetAmmoCount() const { return AmmoCount; }
 	void SetAmmoCount(int NewAmmoCount) { AmmoCount = NewAmmoCount; }
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
 
 

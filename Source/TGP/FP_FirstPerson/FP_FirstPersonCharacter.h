@@ -16,6 +16,7 @@ class UAnimMontage;
 class UWeaponItem;
 class UPlayerInventory;
 class AGrenadeWeapon;
+class UWeaponComponent;
 
 UCLASS(config=Game)
 class AFP_FirstPersonCharacter : public ACharacter
@@ -37,8 +38,8 @@ class AFP_FirstPersonCharacter : public ACharacter
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	UPlayerInventory* PlayerInventory;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
-	UChildActorComponent* GunActorComponent;
+	UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	UWeaponComponent* WeaponComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USceneComponent* AimOffset;
@@ -209,14 +210,10 @@ protected:
 	 * @returns true if touch controls were enabled.
 	 */
 	void TryEnableTouchscreenMovement(UInputComponent* InputComponent);
-
-	// Health
+	
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true")) class UHealthComponent* _healthComponent;
-
-	// Weapon Stuff
-
-	UPROPERTY() class AGunHostActor* _currentWeapon;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="WeaponComponent") class UWeaponComponent* _currentWeaponComponent;
+	
 	bool _fireHeld;
 	
 	void PickupWeapon();
@@ -224,12 +221,37 @@ protected:
 	void ThrowUtility();
 	
 	bool _weaponQueued;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 	
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
+	
+	UFUNCTION(Server, Reliable) void SrvHitScan();
+	void SrvHitScan_Implementation();
+	
+	UFUNCTION(Server, Reliable) void SrvShootGun();
+	void SrvShootGun_Implementation();
+	
+	UFUNCTION(Server, Reliable) void OnChangeSelectedWeapon(int Slot);
+	void OnChangeSelectedWeapon_Implementation(int Slot);
 
+	UFUNCTION(Server, Reliable) void OnPickUpItem(class AItemActor* ItemActor, int Slot);
+	void OnPickUpItem_Implementation(AItemActor* ItemActor, int Slot);
+	
+	UFUNCTION(Server, Reliable) void OnWeaponDropped();
+	void OnWeaponDropped_Implementation();
+	
+	UFUNCTION(NetMulticast, Reliable) void ChangeWeaponMeshMulti(int ItemId);
+	void ChangeWeaponMeshMulti_Implementation(int ItemId);
+
+	UFUNCTION(Server, Reliable) void RequestWeaponMeshChange(int Slot);
+	void RequestWeaponMeshChange_Implementation(int Slot);
+	
 	UPROPERTY() AActor* _lastLooked;
 	IIInteractable* _lastLookedInterface;
 	void InteractWithObject();
+	
 	void CastForInteractable(float DeltaTime);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) TSubclassOf<AGrenadeWeapon> _grenadeToSpawn;
@@ -265,11 +287,13 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	UFUNCTION(BlueprintImplementableEvent) void TestDebug();
+	
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	UWeaponComponent* GetCurrentWeaponComponent() { return _currentWeaponComponent; }
+	UWeaponComponent* GetCurrentWeaponComponent() { return WeaponComponent; }
 
 	void ReloadWeapon();
 
@@ -300,7 +324,7 @@ public:
 	void BeginAim();
 	UFUNCTION(BlueprintCallable)
 	void EndAim();
-
+ 
 	UFUNCTION(BlueprintCallable)
 	void SwitchWeapon();
 

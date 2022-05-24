@@ -16,28 +16,44 @@ ABaseAiCharacter::ABaseAiCharacter()
 	AddOwnedComponent(HealthComponent);
 
 	RightHandCollider = CreateDefaultSubobject<USphereComponent>(TEXT("Right Hand Collider"));
-	RightHandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RightArmCollider"));
-	//RightHandCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	RightHandCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
-	RightHandCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	RightHandCollider->SetupAttachment(GetMesh());
+	
 	
 	LeftArmCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Left Arm Collider"));
-	LeftArmCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("LeftArmCollider"));
-	LeftArmCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	LeftArmCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
-	LeftArmCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+	LeftArmCollider->SetupAttachment(GetMesh());
 }
 
 void ABaseAiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
-	baseAiController = Cast<ABaseAIController>(GetController());
-	baseAiController->RunBT();
+	RightHandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RightArmCollider"));
+	RightHandCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	RightHandCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+	RightHandCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 
-	LeftArmCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::LeftColliderHit);
-	RightHandCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::RightColliderHit);
+	LeftArmCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("LeftArmCollider"));
+	LeftArmCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	LeftArmCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+	LeftArmCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
+
+	//HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
+//
+	//if (GetWorld()->IsServer())
+	//{
+	//	baseAiController = Cast<ABaseAIController>(GetController());
+	//	baseAiController->RunBT();
+	//}
+	
+	if (HasAuthority())
+	{
+		HealthComponent->onComponentDead.AddDynamic(this, &ABaseAiCharacter::OnEnemyDied);
+		baseAiController = Cast<ABaseAIController>(GetController());
+		baseAiController->RunBT();
+
+		LeftArmCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::LeftColliderHit);
+		RightHandCollider->OnComponentBeginOverlap.AddDynamic(this, &ABaseAiCharacter::RightColliderHit);
+	}
 }
 
 void ABaseAiCharacter::Tick(float DeltaTime)
@@ -93,12 +109,17 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 
 		HealthComponent->health = EnemyStats->DefaultHealth + (EnemyStats->DefaultHealth * FMath::RandRange(-EnemyStats->MaxDeviation, EnemyStats->MaxDeviation));
 		Damage = EnemyStats->DefaultDamage + (EnemyStats->DefaultDamage * FMath::RandRange(0.f, EnemyStats->MaxDeviation));
+
+		/*if (EnemyStats->AiControllerClass)
+		{
+			if (GetController()->StaticClass() != EnemyStats->AiControllerClass) // IF AI Controller is different replace with expected controller. (Used for swapping Ai to bosses/other enemy types)
+			{
+				AController* NewController = NewObject<AController>(EnemyStats->AiControllerClass);
+				NewController->Possess(this);
+			}
+		}*/	
 	}
 	SetMoveType();
-
-	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
-		baseAiController->SetObjective(GM->GetCurrentRegionObjective());
-	
 	SetHidden(false);
 }
 

@@ -1,6 +1,9 @@
 
 #include "Inventory/ItemContainer.h"
+
+#include "Engine/ActorChannel.h"
 #include "Item/BaseItem.h"
+#include "Net/UnrealNetwork.h"
 
 UItemContainer::UItemContainer()
 {
@@ -122,4 +125,22 @@ bool UItemContainer::RemoveItem(int Slot)
 bool UItemContainer::InBounds(int Slot) const
 {
 	return Slot >= 0 && Slot < Items.Num();
+}
+
+void UItemContainer::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	//UObject::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UItemContainer, Items);
+	DOREPLIFETIME(UItemContainer, DebugId);
+}
+
+bool UItemContainer::ReplicateItems(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
+{
+	bool Replicated = false;
+
+	for	(int i = 0; i < Items.Num(); i++)
+		Replicated |= Channel->ReplicateSubobject(Items[i], *Bunch, *RepFlags);
+	
+	return Replicated;
 }

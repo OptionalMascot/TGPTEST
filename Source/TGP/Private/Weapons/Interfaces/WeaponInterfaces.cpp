@@ -43,13 +43,13 @@ bool IHasAmmo::TryUseAmmo(AActor* actor, int amount)
 }
 
 
-void IHasAmmo::StartReloadAmmo(AActor* actor)
+void IHasAmmo::StartReloadAmmo()
 {
 	
 	if(!reloading)
 	{
 		reloading = true;
-		UWorld* world = actor->GetWorld();
+		//UWorld* world = actor->GetWorld();
 		ReloadEnded(); // DELETE WHEN TRYING TO FIX TIMER
 		
 		//FTimerDynamicDelegate eventTest;
@@ -58,11 +58,11 @@ void IHasAmmo::StartReloadAmmo(AActor* actor)
 	}
 }
 
-void IHasAmmo::TryReload(AActor* actor)
+void IHasAmmo::TryReload()
 {
 	if(currentReserves > 0)
 	{
-		StartReloadAmmo(actor);
+		StartReloadAmmo();
 	}
 } 
 
