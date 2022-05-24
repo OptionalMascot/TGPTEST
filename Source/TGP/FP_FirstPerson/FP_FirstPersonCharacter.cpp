@@ -336,7 +336,7 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 
 void AFP_FirstPersonCharacter::OnFireWeapon()
 {
-	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 	{
 		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
 
@@ -403,7 +403,7 @@ void AFP_FirstPersonCharacter::DropWeapon()
 
 void AFP_FirstPersonCharacter::ReloadWeapon()
 {
-	if(!_currentWeapon)
+	if(!WeaponComponent)
 	{
 		/*IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
 		if(AmmoRef != nullptr)
@@ -411,12 +411,13 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 			AmmoRef->TryReload(_currentWeapon);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 		}*/
-		IHasAmmo* AmmoRef = Cast<IHasAmmo>(WeaponComponent);
-		if(AmmoRef != nullptr)
-		{
-			AmmoRef->TryReload();
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
-		}
+		//IHasAmmo* AmmoRef = Cast<IHasAmmo>(WeaponComponent);
+		//if(AmmoRef != nullptr)
+		//{
+		//	AmmoRef->TryReload();
+		//	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+		//}
+		
 		return;
 	}
 
@@ -425,8 +426,7 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
 	if(AnimInstance)
 	{
-	
-		AnimInstance->Montage_Play(CombatMontage, _currentWeaponComponent->GetWeaponInfo()->ReloadSpeed);
+		AnimInstance->Montage_Play(CombatMontage, WeaponComponent->GetWeaponInfo()->ReloadSpeed);
 		AnimInstance->Montage_JumpToSection("Reload", CombatMontage);
 	}
 }
@@ -723,7 +723,7 @@ void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
 
 void AFP_FirstPersonCharacter::AttachWeapon()
 {
-	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
 	{
 	case EWeaponType::OneHand:
 		{
@@ -774,7 +774,7 @@ void AFP_FirstPersonCharacter::NewAim()
 	Mesh1P->SetHiddenInGame(true);
 	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
 
-	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
 	{
 	case EWeaponType::TwoHand:
 		if(FP_Gun->GetName().Contains("SMG"))
@@ -806,7 +806,7 @@ void AFP_FirstPersonCharacter::NewStopAim()
 
 void AFP_FirstPersonCharacter::BeginAim()
 {
-	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 	{
 		EndAim();
 		return;
@@ -822,7 +822,8 @@ void AFP_FirstPersonCharacter::BeginAim()
 	{
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
-	}		
+	}
+	
 	NewAim();
 }
 
@@ -844,7 +845,7 @@ void AFP_FirstPersonCharacter::SwitchWeapon()
 		return;
 	}
 	
-	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
 	{
 	case EWeaponType::TwoHand:
 		AnimInstance->Montage_Play(CombatMontage, 1.0f);
@@ -865,10 +866,10 @@ void AFP_FirstPersonCharacter::SwitchWeapon()
 
 void AFP_FirstPersonCharacter::Reload()
 {
-	IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
+	IHasAmmo* AmmoRef = Cast<IHasAmmo>(WeaponComponent);
 	if(AmmoRef != nullptr)
 	{
-		AmmoRef->TryReload(_currentWeapon);
+		AmmoRef->TryReload();
 		CanFire = true;
 	}
 }
@@ -886,11 +887,11 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 	float GunFireRate = 0.0f;
 	float AdjustedPlayRate =1.0f;
 
-	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
 	{
 	case EWeaponType::TwoHand:
 		AnimLegnth = CombatMontage->GetSectionLength(CombatMontage->GetSectionIndex("RifleFire"));
-		GunFireRate = _currentWeaponComponent->GetWeaponInfo()->AttackRate ;
+		GunFireRate = WeaponComponent->GetWeaponInfo()->AttackRate ;
 		AdjustedPlayRate = (GunFireRate * 60.0f)/AnimLegnth;
 
 		AnimInstance->Montage_Play(CombatMontage, AdjustedPlayRate);
@@ -898,7 +899,7 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 		break;
 	case EWeaponType::OneHand:
 		AnimLegnth = CombatMontage->GetSectionLength(CombatMontage->GetSectionIndex("PistolFire"));
-		GunFireRate = _currentWeaponComponent->GetWeaponInfo()->AttackRate;
+		GunFireRate = WeaponComponent->GetWeaponInfo()->AttackRate;
 		AdjustedPlayRate = (GunFireRate * 60.0f)/AnimLegnth;
 
 		AnimInstance->Montage_Play(CombatMontage, AdjustedPlayRate);
@@ -912,7 +913,7 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 
 void AFP_FirstPersonCharacter::ShowGun()
 {
-	DisplayGunType(_currentWeaponComponent->GetWeaponInfo()->WeaponType);
+	DisplayGunType(WeaponComponent->GetWeaponInfo()->WeaponType);
 }
 
 void AFP_FirstPersonCharacter::SwordColliderOn()
@@ -932,6 +933,6 @@ void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedCompon
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Damage Zombie"));
 		SwordColliderOff();
-		UGameplayStatics::ApplyDamage(OtherActor, _currentWeaponComponent->GetWeaponInfo()->Damage, GetController(), this, UDamageType::StaticClass());
+		UGameplayStatics::ApplyDamage(OtherActor, WeaponComponent->GetWeaponInfo()->Damage, GetController(), this, UDamageType::StaticClass());
 	}
 }

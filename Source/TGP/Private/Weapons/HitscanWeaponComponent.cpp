@@ -125,14 +125,15 @@ void UHitscanWeaponComponent::OnFire()
 			_player->CanFire = false;
 			//TryReload(_parent); // If can't shoot, try and reload
 			//DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 0.0f, 0, 1.0f);
-			
+
+			//TryReload();
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 		}
-		else
-		{
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
-			TryReload(); // If can't shoot, try and reload
-		}
+		//else
+		//{
+		//	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
+		//	TryReload(); // If can't shoot, try and reload
+		//}
 	}
 }
 

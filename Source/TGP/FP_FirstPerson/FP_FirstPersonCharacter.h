@@ -305,12 +305,12 @@ public:
 	void SetAnimation();
 
 	UFUNCTION(BlueprintCallable)
-	void SetWeaponTransformDefaults(){};
+	void SetWeaponTransformDefaults();
 	
-	void AttachWeapon(){};
+	void AttachWeapon();
 
-	void Sprint(){};
-	void StopSprint(){};
+	void Sprint();
+	void StopSprint();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void Aim();
@@ -321,13 +321,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void StopAim();
 
-	void BeginAim(){};
+	void BeginAim();
 	UFUNCTION(BlueprintCallable)
-	void EndAim(){};
+	void EndAim();
  
-	UFUNCTION(BlueprintCallable)
-	void SwitchWeapon(){};
-
 	UFUNCTION(BlueprintCallable)
 	void SwitchWeapon();
 
