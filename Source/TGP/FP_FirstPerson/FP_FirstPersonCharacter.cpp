@@ -83,6 +83,9 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 	SwordCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SwordCollider->SetCollisionResponseToAllChannels(ECR_Ignore);
 
+	AimOffset = CreateDefaultSubobject<USceneComponent>(TEXT("Aim Weapon Location"));
+	AimOffset->SetupAttachment(FirstPersonCameraComponent);
+
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -103,6 +106,9 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFP_FirstPersonCharacter::Sprint);
 	PlayerInputComponent->BindAction("Sprint",  IE_Released,  this, &AFP_FirstPersonCharacter::StopSprint);
+
+	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AFP_FirstPersonCharacter::NewAim);
+	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AFP_FirstPersonCharacter::NewStopAim);
 	
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFP_FirstPersonCharacter::OnFireWeapon);
@@ -650,6 +656,41 @@ void AFP_FirstPersonCharacter::StopSprint()
 	GetCharacterMovement()->MaxWalkSpeed = M_DefaultSpeed;
 }
 
+void AFP_FirstPersonCharacter::NewAim()
+{
+	Mesh1P->SetHiddenInGame(true);
+	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
+
+	switch (_currentWeaponComponent->GetWeaponInfo()->WeaponType)
+	{
+	case EWeaponType::TwoHand:
+		if(FP_Gun->GetName().Contains("SMG"))
+		{
+			AdjustToIrons();
+			break;
+		}
+
+		if(FP_Gun->GetName().Contains("Sniper"))
+		{
+			break;
+		}
+		
+		AdjustToSight();
+		break;
+	case EWeaponType::OneHand:
+		break;
+	default:
+		break;
+	}
+	
+}
+
+void AFP_FirstPersonCharacter::NewStopAim()
+{
+	Mesh1P->SetHiddenInGame(false);
+	AttachWeapon();
+}
+
 void AFP_FirstPersonCharacter::BeginAim()
 {
 	if(_currentWeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
@@ -669,7 +710,7 @@ void AFP_FirstPersonCharacter::BeginAim()
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
 	}		
-	Aim();
+	NewAim();
 }
 
 void AFP_FirstPersonCharacter::EndAim()
@@ -677,7 +718,7 @@ void AFP_FirstPersonCharacter::EndAim()
 	IsAiming = false;
 	M_CameraSensitivity = M_DefaultCameraSensitivity;
 	FirstPersonCameraComponent->SetFieldOfView(100.0f);
-	StopAim();	
+	NewStopAim();
 }
 
 void AFP_FirstPersonCharacter::SwitchWeapon()
@@ -743,7 +784,6 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 		AnimInstance->Montage_JumpToSection("RifleFire", CombatMontage);
 		break;
 	case EWeaponType::OneHand:
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Black, TEXT("Pistol shooting"));
 		AnimLegnth = CombatMontage->GetSectionLength(CombatMontage->GetSectionIndex("PistolFire"));
 		GunFireRate = _currentWeaponComponent->GetWeaponInfo()->AttackRate;
 		AdjustedPlayRate = (GunFireRate * 60.0f)/AnimLegnth;
