@@ -11,7 +11,7 @@ class TGP_API UItemContainer : public UObject
 {
 	GENERATED_BODY()
 
-	UPROPERTY() TArray<UBaseItem*> Items;
+	UPROPERTY(Replicated) TArray<UBaseItem*> Items;
 	
 public:
 	UItemContainer();
@@ -30,4 +30,10 @@ public:
 	bool RemoveItem(int Slot);
 
 	bool InBounds(int Slot) const;
+
+	virtual bool IsSupportedForNetworking() const override { return true; }
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	bool ReplicateItems(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags);
+	
+	UPROPERTY(Replicated) int DebugId;
 };

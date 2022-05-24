@@ -58,8 +58,8 @@ class TGP_API IHasAmmo
 	FTimerHandle reloadTimerHandler;
 	
 	bool TryUseAmmo(AActor* actor, int amount);
-	UFUNCTION()	virtual void StartReloadAmmo(AActor* actor);
-	void TryReload(AActor* actor);
+	UFUNCTION()	virtual void StartReloadAmmo();
+	void TryReload();
 	UFUNCTION() virtual void ReloadEnded();
 	void SetMaxAmmo(int ammo) { maxAmmo = ammo;}
 	int GetAmmoCount() { return currentAmmoClip; }
