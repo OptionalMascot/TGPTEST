@@ -264,6 +264,8 @@ public:
 	void NewStopAim();
 	UFUNCTION(BlueprintCallable)
 	void ResetAim();
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleCrosshair(bool OnOff);
  
 	UFUNCTION(BlueprintCallable)
 	void SwitchWeapon();

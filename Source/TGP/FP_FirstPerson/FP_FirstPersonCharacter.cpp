@@ -692,10 +692,9 @@ void AFP_FirstPersonCharacter::NewAim()
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
 	}
-	
+	ToggleCrosshair(false);
 	Mesh1P->SetHiddenInGame(true);
 	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Blue, FP_Gun->SkeletalMesh->GetName());
 	
 	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
 	{
@@ -733,6 +732,7 @@ void AFP_FirstPersonCharacter::NewStopAim()
 {
 	if(IsAiming)
 	{
+		ToggleCrosshair(true);
 		Mesh1P->SetHiddenInGame(false);
 		IsAiming = false;
 		M_CameraSensitivity = M_DefaultCameraSensitivity;
@@ -743,6 +743,7 @@ void AFP_FirstPersonCharacter::NewStopAim()
 
 void AFP_FirstPersonCharacter::ResetAim()
 {
+	ToggleCrosshair(true);
 	Mesh1P->SetHiddenInGame(false);
 	IsAiming = false;
 	M_CameraSensitivity = M_DefaultCameraSensitivity;
