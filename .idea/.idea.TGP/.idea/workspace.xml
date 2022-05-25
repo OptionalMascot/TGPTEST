@@ -9,10 +9,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fd39f9c-0fd9-4021-9bfb-aaead44abf31" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AIChaseObjective.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AIChaseObjective_2.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BP_AIChasePlayer.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_AIChaseObjective.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_AIChaseObjective_2.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Ai/BT_AIChasePlayer.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TGP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_BasePlayer.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/Public/Inventory/PlayerInventory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Stefan_BuiltData.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TGP/TGPGameModeBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +47,7 @@
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/UI/WeaponStatUIWidget.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/GunHostActor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/Throwables/ThrowableWeapon.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/UI/WeaponStatUIActor.h" root0="FORCE_HIGHLIGHTING" />
@@ -99,6 +106,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -373,6 +384,7 @@
       <workItem from="1653383995946" duration="22000" />
       <workItem from="1653384050484" duration="11127000" />
       <workItem from="1653420074543" duration="674000" />
+      <workItem from="1653486950143" duration="985000" />
     </task>
     <servers />
   </component>

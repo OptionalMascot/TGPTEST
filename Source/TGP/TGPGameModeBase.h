@@ -26,7 +26,8 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "RoundSettings", Meta = (AllowPrivateAccess = true)) float CooldownBetweenRounds = 5.f;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<ABaseAiCharacter> AiActorClass;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<ABaseAiCharacter> AiActorClassCPlayer;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<ABaseAiCharacter> AiActorClassCObjective;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) UAiCharacterData* RegularZombieClass;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) UAiCharacterData* SpitterZombieClass;
