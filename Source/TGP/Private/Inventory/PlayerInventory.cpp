@@ -14,7 +14,7 @@ UPlayerInventory::UPlayerInventory()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 
-	SetIsReplicated(true);
+	SetIsReplicatedByDefault(true);
 }
 
 void UPlayerInventory::SrvDropWeapon_Implementation(int Slot)
