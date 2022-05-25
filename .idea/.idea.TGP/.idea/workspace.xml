@@ -26,7 +26,7 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponComponent.h" root0="FORCE_HIGHLIGHTING" />
@@ -374,7 +374,7 @@
       <workItem from="1653420074543" duration="674000" />
       <workItem from="1653494577142" duration="3177000" />
       <workItem from="1653497983489" duration="1701000" />
-      <workItem from="1653504933878" duration="1630000" />
+      <workItem from="1653504933878" duration="2533000" />
     </task>
     <servers />
   </component>
