@@ -113,7 +113,10 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 	SetMoveType();
 
 	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
-		baseAiController->SetObjective(GM->GetCurrentRegionObjective());
+	{
+		if(baseAiController)
+			baseAiController->SetObjective(GM->GetCurrentRegionObjective());
+	}
 	
 	SetHidden(false);
 }
@@ -126,8 +129,8 @@ void ABaseAiCharacter::SetHidden(bool bEnemyHidden)
 
 	if (bEnemyHidden)
 		GetCharacterMovement()->DisableMovement();
-	
-	baseAiController->ChangeAIControllerStatus(!bEnemyHidden);
+	if(baseAiController)
+		baseAiController->ChangeAIControllerStatus(!bEnemyHidden);
 }
 
 void ABaseAiCharacter::Attack()
