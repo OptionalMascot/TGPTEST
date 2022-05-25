@@ -234,7 +234,6 @@ private:
 
 	UPROPERTY()
 	class AMainPlayerController* MainPlayerController;
-
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
@@ -288,6 +287,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void AdjustToIrons();
+
+	void TriggerHealthUpdate();
 
 	UFUNCTION()
 	void MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

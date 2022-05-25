@@ -571,8 +571,8 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	{
 		MainPlayerController = Cast<AMainPlayerController>(GetController());
 	}
-
-	MainPlayerController->UpdateHealth(_healthComponent->health/_healthComponent->maxHealth);
+	
+	TriggerHealthUpdate();
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -845,6 +845,11 @@ void AFP_FirstPersonCharacter::SwordColliderOn()
 void AFP_FirstPersonCharacter::SwordColliderOff()
 {
 	SwordCollider->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+}
+
+void AFP_FirstPersonCharacter::TriggerHealthUpdate()
+{
+	MainPlayerController->UpdateHealth(static_cast<float>(_healthComponent->health)/_healthComponent->maxHealth);
 }
 
 void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
