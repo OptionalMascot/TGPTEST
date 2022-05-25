@@ -570,8 +570,9 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	if(GetController()->IsA(AMainPlayerController::StaticClass()))
 	{
 		MainPlayerController = Cast<AMainPlayerController>(GetController());
-		UE_LOG(LogTemp, Warning, TEXT("Got Controller"))
 	}
+
+	MainPlayerController->UpdateHealth(_healthComponent->health/_healthComponent->maxHealth);
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

@@ -22,4 +22,8 @@ public:
 
 protected:
 	virtual  void BeginPlay() override;
+
+public:
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateHealth(float HealthPercent);
 };
