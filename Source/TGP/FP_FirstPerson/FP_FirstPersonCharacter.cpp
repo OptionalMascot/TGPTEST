@@ -110,9 +110,11 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	//Bind Sprint events
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFP_FirstPersonCharacter::Sprint);
 	PlayerInputComponent->BindAction("Sprint",  IE_Released,  this, &AFP_FirstPersonCharacter::StopSprint);
 
+	//Bind Aim events
 	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AFP_FirstPersonCharacter::NewAim);
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AFP_FirstPersonCharacter::NewStopAim);
 	
@@ -123,9 +125,6 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	PlayerInputComponent->BindAction("Drop", IE_Pressed, this, &AFP_FirstPersonCharacter::DropWeapon);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AFP_FirstPersonCharacter::ReloadWeapon);
 	PlayerInputComponent->BindAction("ThrowGrenade", IE_Pressed, this, &AFP_FirstPersonCharacter::ThrowUtility);
-	
-	// Attempt to enable touch screen movement
-	TryEnableTouchscreenMovement(PlayerInputComponent);
 
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFP_FirstPersonCharacter::MoveForward);
@@ -214,77 +213,6 @@ void AFP_FirstPersonCharacter::OnFire()
 		WeaponComponent->OnFire();
 }
 
-void AFP_FirstPersonCharacter::BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	// If touch is already pressed check the index. If it is not the same as the current touch assume a second touch and thus we want to fire
-	if (TouchItem.bIsPressed == true)
-	{
-		if( TouchItem.FingerIndex != FingerIndex)
-		{
-			OnFire();			
-		}
-	}
-	else 
-	{
-		// Cache the finger index and touch location and flag we are processing a touch
-		TouchItem.bIsPressed = true;
-		TouchItem.FingerIndex = FingerIndex;
-		TouchItem.Location = Location;
-		TouchItem.bMoved = false;
-	}
-}
-
-void AFP_FirstPersonCharacter::EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	// If we didn't record the start event do nothing, or this is a different index
-	if((TouchItem.bIsPressed == false) || ( TouchItem.FingerIndex != FingerIndex) )
-	{
-		return;
-	}
-
-	// If the index matches the start index and we didn't process any movement we assume we want to fire
-	if ((FingerIndex == TouchItem.FingerIndex) && (TouchItem.bMoved == false))
-	{
-		OnFire();
-	}
-
-	// Flag we are no longer processing the touch event
-	TouchItem.bIsPressed = false;
-}
-
-void AFP_FirstPersonCharacter::TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	// If we are processing a touch event and this index matches the initial touch event process movement
-	if ((TouchItem.bIsPressed == true) && (TouchItem.FingerIndex == FingerIndex))
-	{
-		if (GetWorld() != nullptr)
-		{
-			UGameViewportClient* ViewportClient = GetWorld()->GetGameViewport();
-			if (ViewportClient != nullptr)
-			{
-				FVector MoveDelta = Location - TouchItem.Location;
-				FVector2D ScreenSize;
-				ViewportClient->GetViewportSize(ScreenSize);
-				FVector2D ScaledDelta = FVector2D(MoveDelta.X, MoveDelta.Y) / ScreenSize;
-				if (FMath::Abs(ScaledDelta.X) >= (4.0f / ScreenSize.X))
-				{
-					TouchItem.bMoved = true;
-					float Value = ScaledDelta.X * BaseTurnRate;
-					AddControllerYawInput(Value);
-				}
-				if (FMath::Abs(ScaledDelta.Y) >= (4.0f / ScreenSize.Y))
-				{
-					TouchItem.bMoved = true;
-					float Value = ScaledDelta.Y* BaseTurnRate;
-					AddControllerPitchInput(Value);
-				}
-				TouchItem.Location = Location;
-			}
-			TouchItem.Location = Location;
-		}
-	}
-}
-
 void AFP_FirstPersonCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0f)
@@ -325,13 +253,6 @@ FHitResult AFP_FirstPersonCharacter::WeaponTrace(const FVector& StartTrace, cons
 	GetWorld()->LineTraceSingleByChannel(Hit, StartTrace, EndTrace, COLLISION_WEAPON, TraceParams);
 
 	return Hit;
-}
-
-void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* PlayerInputComponent)
-{
-	PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AFP_FirstPersonCharacter::BeginTouch);
-	PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AFP_FirstPersonCharacter::EndTouch);
-	PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AFP_FirstPersonCharacter::TouchUpdate);	
 }
 
 void AFP_FirstPersonCharacter::OnFireWeapon()
@@ -700,38 +621,6 @@ void AFP_FirstPersonCharacter::Turn(float inputValue)
 	AddControllerYawInput(inputValue * M_CameraSensitivity);
 }
 
-void AFP_FirstPersonCharacter::SetWeaponTransformDefaults()
-{
-	WeaponDefaultLocation = Mesh1P->GetRelativeLocation();
-	WeaponAimLocation = FirstPersonCameraComponent->GetComponentLocation() - FP_Gun->GetSocketLocation(FName("AimSocket"));
-	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Purple, WeaponAimLocation.ToString());
-	const float TempY = WeaponAimLocation.Y;
-	WeaponAimLocation.Y = WeaponAimLocation.X;
-	WeaponAimLocation.X = TempY;
-	WeaponAimLocation.Z = WeaponDefaultLocation.Z;
-
-	//WeaponAimLocation = WeaponDefaultLocation + WeaponAimLocation;
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Black, FString::SanitizeFloat(GetActorRotation().Yaw));
-
-	if(GetActorRotation().Yaw != 0)
-	{
-		WeaponAimLocation.X = WeaponAimLocation.X * FMath::Cos(GetActorRotation().Yaw) - WeaponAimLocation.X * FMath::Sin(GetActorRotation().Yaw);
-		WeaponAimLocation.Y = WeaponAimLocation.Y * FMath::Sin(GetActorRotation().Yaw) + WeaponAimLocation.Y * FMath::Cos(GetActorRotation().Yaw);
-	}
-	
-
-	WeaponDefaultRotation = Mesh1P->GetRelativeRotation();
-	WeaponYawDiff = FirstPersonCameraComponent->GetComponentRotation().Yaw - FP_Gun->GetComponentRotation().Yaw + Mesh1P->GetComponentRotation().Yaw;
-
-	if(WeaponDefaultRotation.Yaw != 0.0f)
-	{
-		WeaponYawDiff -= GetActorRotation().Yaw;
-	}
-
-	AimRotation = FRotator(WeaponDefaultRotation.Pitch + WeaponPitchDiff, WeaponDefaultRotation.Yaw + WeaponYawDiff, WeaponDefaultRotation.Roll);
-}
-
 void AFP_FirstPersonCharacter::AttachWeapon()
 {
 	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
@@ -782,44 +671,13 @@ void AFP_FirstPersonCharacter::StopSprint()
 
 void AFP_FirstPersonCharacter::NewAim()
 {
-	Mesh1P->SetHiddenInGame(true);
-	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
-
-	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
-	{
-	case EWeaponType::TwoHand:
-		if(FP_Gun->GetName().Contains("SMG"))
-		{
-			AdjustToIrons();
-			break;
-		}
-
-		if(FP_Gun->GetName().Contains("Sniper"))
-		{
-			break;
-		}
-		
-		AdjustToSight();
-		break;
-	case EWeaponType::OneHand:
-		break;
-	default:
-		break;
-	}
-	
-}
-
-void AFP_FirstPersonCharacter::NewStopAim()
-{
-	Mesh1P->SetHiddenInGame(false);
-	AttachWeapon();
-}
-
-void AFP_FirstPersonCharacter::BeginAim()
-{
 	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 	{
-		EndAim();
+		if(IsAiming)
+		{
+			NewStopAim();
+		}
+		
 		return;
 	}
 	
@@ -834,16 +692,62 @@ void AFP_FirstPersonCharacter::BeginAim()
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
 	}
+	ToggleCrosshair(false);
+	Mesh1P->SetHiddenInGame(true);
+	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	
-	NewAim();
+	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
+	{
+	case EWeaponType::TwoHand:
+		if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("SMGGGG"));
+			AdjustToIrons();
+			break;
+		}
+
+		if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+		{
+			break;
+		}
+		
+		AdjustToSight();
+		break;
+	case EWeaponType::OneHand:
+		
+		if(FP_Gun->SkeletalMesh->GetName().Contains("Machine"))
+		{
+			AdjustToSight();
+			break;
+		}
+		
+		AdjustToIrons();
+		break;
+	default:
+		break;
+	}
 }
 
-void AFP_FirstPersonCharacter::EndAim()
+void AFP_FirstPersonCharacter::NewStopAim()
 {
+	if(IsAiming)
+	{
+		ToggleCrosshair(true);
+		Mesh1P->SetHiddenInGame(false);
+		IsAiming = false;
+		M_CameraSensitivity = M_DefaultCameraSensitivity;
+		FirstPersonCameraComponent->SetFieldOfView(100.0f);
+		AttachWeapon();
+	}
+}
+
+void AFP_FirstPersonCharacter::ResetAim()
+{
+	ToggleCrosshair(true);
+	Mesh1P->SetHiddenInGame(false);
 	IsAiming = false;
 	M_CameraSensitivity = M_DefaultCameraSensitivity;
 	FirstPersonCameraComponent->SetFieldOfView(100.0f);
-	NewStopAim();
 }
 
 void AFP_FirstPersonCharacter::SwitchWeapon()
@@ -919,12 +823,6 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 	default:
 		break;
 	}
-
-}
-
-void AFP_FirstPersonCharacter::ShowGun()
-{
-	DisplayGunType(WeaponComponent->GetWeaponInfo()->WeaponType);
 }
 
 void AFP_FirstPersonCharacter::SwordColliderOn()
@@ -942,7 +840,6 @@ void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedCompon
 {
 	if(!OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Purple, TEXT("Damage Zombie"));
 		SwordColliderOff();
 		UGameplayStatics::ApplyDamage(OtherActor, WeaponComponent->GetWeaponInfo()->Damage, GetController(), this, UDamageType::StaticClass());
 	}

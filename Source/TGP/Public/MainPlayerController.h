@@ -19,6 +19,10 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void RevealCrosshair();
+
+	UFUNCTION(BlueprintCallable)
+	void TriggerCrossShow() { RevealCrosshair(); }
 	
-	
+	UFUNCTION(BlueprintCallable)
+    void TriggerCrossHide() { HideCrosshair(); }
 };

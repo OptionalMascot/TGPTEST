@@ -161,56 +161,7 @@ protected:
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
-	// End of APawn interface
-
-	/** Structure that handles touch data so we can process the various stages of touch. */
-	struct TouchData
-	{
-		TouchData() { bIsPressed = false; Location = FVector::ZeroVector; }
-		bool bIsPressed;
-		ETouchIndex::Type FingerIndex;
-		FVector Location;
-		bool bMoved;
-	};
-
-	/*
-	 * Handle begin touch event.
-	 * Stores the index and location of the touch in a structure
-	 *
-	 * @param	FingerIndex	The touch index
-	 * @param	Location	Location of the touch
-	 */
-	void BeginTouch(const ETouchIndex::Type FingerIndex, const FVector Location);
-	
-	/*
-	 * Handle end touch event.
-	 * If there was no movement processed this will fire a projectile, otherwise this will reset pressed flag in the touch structure
-	 *
-	 * @param	FingerIndex	The touch index
-	 * @param	Location	Location of the touch
-	 */
-	void EndTouch(const ETouchIndex::Type FingerIndex, const FVector Location);
-	
-	/*
-	 * Handle touch update.
-	 * This will update the look position based on the change in touching position
-	 *
-	 * @param	FingerIndex	The touch index
-	 * @param	Location	Location of the touch
-	 */
-	void TouchUpdate(const ETouchIndex::Type FingerIndex, const FVector Location);
-
-	// Structure to handle touch updating
-	TouchData	TouchItem;
-	
-	/* 
-	 * Configures input for touchscreen devices if there is a valid touch interface for doing so 
-	 *
-	 * @param	InputComponent	The input component pointer to bind controls to
-	 * @returns true if touch controls were enabled.
-	 */
-	void TryEnableTouchscreenMovement(UInputComponent* InputComponent);
-	
+	// End of APawn interface	
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true")) class UHealthComponent* _healthComponent;
 	
@@ -296,34 +247,25 @@ public:
 	UWeaponComponent* GetCurrentWeaponComponent() { return WeaponComponent; }
 
 	void ReloadWeapon();
-
 	
 	void LookUp(float inputValue);
 	void Turn(float inputValue);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetAnimation();
-
-	UFUNCTION(BlueprintCallable)
-	void SetWeaponTransformDefaults();
 	
 	void AttachWeapon();
 
 	void Sprint();
 	void StopSprint();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void Aim();
-
 	void NewAim();
-	void NewStopAim();
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void StopAim();
-
-	void BeginAim();
 	UFUNCTION(BlueprintCallable)
-	void EndAim();
+	void NewStopAim();
+	UFUNCTION(BlueprintCallable)
+	void ResetAim();
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleCrosshair(bool OnOff);
  
 	UFUNCTION(BlueprintCallable)
 	void SwitchWeapon();
@@ -332,12 +274,6 @@ public:
 	void Reload();
 
 	void PlayFireAnim();
-
-	UFUNCTION(BlueprintImplementableEvent)
-	void DisplayGunType(EWeaponType Gun);
-
-	UFUNCTION(BlueprintCallable)
-	void ShowGun();
 
 	UFUNCTION(BlueprintCallable)
 	void SwordColliderOn();
