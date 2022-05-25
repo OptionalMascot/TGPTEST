@@ -52,6 +52,7 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	void BeginRound();
 	void BeginRoundDelay();
 	void EndRound();
+	
 
 	bool TrySpawnEnemy();
 
