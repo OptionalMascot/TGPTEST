@@ -1,6 +1,7 @@
 #include "FP_FirstPersonCharacter.h"
 
 #include "DrawDebugHelpers.h"
+#include "MainPlayerController.h"
 #include "Animation/AnimInstance.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -565,6 +566,12 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	_lastLooked = nullptr;
 
 	SwordCollider->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::MeleeDamage);
+
+	if(GetController()->IsA(AMainPlayerController::StaticClass()))
+	{
+		MainPlayerController = Cast<AMainPlayerController>(GetController());
+		UE_LOG(LogTemp, Warning, TEXT("Got Controller"))
+	}
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
