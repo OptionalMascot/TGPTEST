@@ -823,13 +823,6 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 	default:
 		break;
 	}
-
-	SpawnProjectile();
-}
-
-void AFP_FirstPersonCharacter::ShowGun()
-{
-	DisplayGunType(_currentWeaponComponent->GetWeaponInfo()->WeaponType);
 }
 
 void AFP_FirstPersonCharacter::SwordColliderOn()
