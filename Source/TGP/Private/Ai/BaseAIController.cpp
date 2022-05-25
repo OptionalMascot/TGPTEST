@@ -14,7 +14,7 @@ ABaseAIController::ABaseAIController()
 
 void ABaseAIController::ChangeAIControllerStatus(bool status)
 {
-	//blackboardComponenet->SetValueAsBool("isSpawned", status);
+	blackboardComponenet->SetValueAsBool("isSpawned", status);
 	
 	if (status)
 	{
