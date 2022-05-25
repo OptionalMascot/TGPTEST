@@ -1,6 +1,7 @@
 #include "FP_FirstPersonCharacter.h"
 
 #include "DrawDebugHelpers.h"
+#include "MainPlayerController.h"
 #include "Animation/AnimInstance.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -147,6 +148,7 @@ void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 	{
 		if ((int)Val - 1 != PlayerInventory->GetSelectedWeaponSlot())
 		{
+			ResetAim();
 			PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
 			OnChangeSelectedWeapon(PlayerInventory->GetSelectedWeaponSlot());
 		}
@@ -342,6 +344,9 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 		return;
 	}
 
+	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+		return;
+	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 
 	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
@@ -394,6 +399,8 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 
 	RequestWeaponMeshChange(PlayerInventory->GetSelectedWeaponSlot());
 	AttachWeapon();
+	
+	TriggerPrimaryIconUpdate();
 }
 
 void AFP_FirstPersonCharacter::SrvHitScan_Implementation() // Rep is so scuffed within Gun actor I moved it here. I'm giving up on life at this point.
@@ -561,6 +568,14 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	_lastLooked = nullptr;
 
 	SwordCollider->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::MeleeDamage);
+
+	if(GetController()->IsA(AMainPlayerController::StaticClass()))
+	{
+		MainPlayerController = Cast<AMainPlayerController>(GetController());
+	}
+	
+	TriggerHealthUpdate();
+	TriggerPrimaryIconUpdate();
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -834,6 +849,30 @@ void AFP_FirstPersonCharacter::SwordColliderOff()
 {
 	SwordCollider->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 }
+
+void AFP_FirstPersonCharacter::TriggerHealthUpdate()
+{
+	MainPlayerController->UpdateHealth(static_cast<float>(_healthComponent->health)/_healthComponent->maxHealth);
+}
+
+void AFP_FirstPersonCharacter::TriggerPrimaryIconUpdate()
+{
+	if(MainPlayerController)
+	{
+		MainPlayerController->PrimaryIcon = WeaponComponent->GetWeaponInfo()->ItemIcon;
+		MainPlayerController->UpdatePrimaryWeapon();
+	}
+}
+
+void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
+{
+	if(MainPlayerController)
+	{
+		//MainPlayerController->SecondaryIcon = WeaponComponent->()->ItemIcon;
+		MainPlayerController->UpdatePrimaryWeapon();
+	}
+}
+
 
 void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

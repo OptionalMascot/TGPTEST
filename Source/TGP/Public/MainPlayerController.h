@@ -14,15 +14,34 @@ class TGP_API AMainPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 public:
-	UFUNCTION(BlueprintImplementableEvent)
-	void HideCrosshair();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	TSubclassOf<class UUserWidget> HUDBlueprint;
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void RevealCrosshair();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	UUserWidget* DisplayedHUD;
 
-	UFUNCTION(BlueprintCallable)
-	void TriggerCrossShow() { RevealCrosshair(); }
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	UTexture2D* PrimaryIcon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	UTexture2D* SecondaryIcon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	FString SpawnRegion;
 	
-	UFUNCTION(BlueprintCallable)
-    void TriggerCrossHide() { HideCrosshair(); }
+protected:
+	virtual  void BeginPlay() override;
+
+public:
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateHealth(float HealthPercent);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdatePrimaryWeapon();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateSecondaryWeapon();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateEnemyRegion();
 };

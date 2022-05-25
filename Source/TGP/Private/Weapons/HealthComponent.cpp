@@ -3,7 +3,9 @@
 
 #include "Weapons/HealthComponent.h"
 
+#include "MainPlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -65,5 +67,11 @@ void UHealthComponent::KillObject()
 void UHealthComponent::ApplyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser )
 {
 	AdjustHealth(InstigatedBy, Damage);
+
+	if(DamagedActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
+	{
+		AFP_FirstPersonCharacter* MainPlayer = Cast<AFP_FirstPersonCharacter>(DamagedActor);
+		MainPlayer->TriggerHealthUpdate();
+	}
 }
 

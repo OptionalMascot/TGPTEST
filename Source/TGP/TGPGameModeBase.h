@@ -53,6 +53,7 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	void BeginRound();
 	void BeginRoundDelay();
 	void EndRound();
+	
 
 	bool TrySpawnEnemy();
 
@@ -63,7 +64,7 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	bool IsLookingAtDir(const FVector& PawnDir, const FVector& DirToPoint) const;
 
 	void SetRegions();
-	
+	void GetMainController();
 	UFUNCTION(CallInEditor) void DEBUG_KILL_ENEMY();
 
 protected:
@@ -84,6 +85,9 @@ public:
 
 	template<class T>
 	T* CreateItemByUniqueId(int UniqueId, const int Amount = 1, AActor* Owner = nullptr);
+
+	UPROPERTY()
+	class AMainPlayerController* MainPlayerController;
 };
 
 template <class T>
