@@ -864,6 +864,16 @@ void AFP_FirstPersonCharacter::TriggerPrimaryIconUpdate()
 	}
 }
 
+void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
+{
+	if(MainPlayerController)
+	{
+		MainPlayerController->SecondaryIcon = WeaponComponent->()->ItemIcon;
+		MainPlayerController->UpdatePrimaryWeapon();
+	}
+}
+
+
 void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {

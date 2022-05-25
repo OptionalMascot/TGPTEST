@@ -290,6 +290,7 @@ public:
 
 	void TriggerHealthUpdate();
 	void TriggerPrimaryIconUpdate();
+	void TriggerSecondaryIconUpdate();
 
 	UFUNCTION()
 	void MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

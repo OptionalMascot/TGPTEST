@@ -24,6 +24,9 @@ public:
 	UTexture2D* PrimaryIcon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	UTexture2D* SecondaryIcon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
 	FString SpawnRegion;
 	
 protected:
@@ -35,6 +38,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdatePrimaryWeapon();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateSecondaryWeapon();
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateEnemyRegion();
