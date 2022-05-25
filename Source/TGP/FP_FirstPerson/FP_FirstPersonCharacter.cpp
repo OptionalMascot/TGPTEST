@@ -399,6 +399,8 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 
 	RequestWeaponMeshChange(PlayerInventory->GetSelectedWeaponSlot());
 	AttachWeapon();
+	
+	TriggerPrimaryIconUpdate();
 }
 
 void AFP_FirstPersonCharacter::SrvHitScan_Implementation() // Rep is so scuffed within Gun actor I moved it here. I'm giving up on life at this point.
@@ -573,6 +575,7 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	}
 	
 	TriggerHealthUpdate();
+	TriggerPrimaryIconUpdate();
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -850,6 +853,15 @@ void AFP_FirstPersonCharacter::SwordColliderOff()
 void AFP_FirstPersonCharacter::TriggerHealthUpdate()
 {
 	MainPlayerController->UpdateHealth(static_cast<float>(_healthComponent->health)/_healthComponent->maxHealth);
+}
+
+void AFP_FirstPersonCharacter::TriggerPrimaryIconUpdate()
+{
+	if(MainPlayerController)
+	{
+		MainPlayerController->PrimaryIcon = WeaponComponent->GetWeaponInfo()->ItemIcon;
+		MainPlayerController->UpdatePrimaryWeapon();
+	}
 }
 
 void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
