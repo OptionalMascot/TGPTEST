@@ -342,6 +342,9 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 		return;
 	}
 
+	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+		return;
+	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
 
 	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
