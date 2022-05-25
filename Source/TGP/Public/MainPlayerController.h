@@ -20,10 +20,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
 	UUserWidget* DisplayedHUD;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	FString SpawnRegion;
+	
 protected:
 	virtual  void BeginPlay() override;
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateHealth(float HealthPercent);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateEnemyRegion();
 };

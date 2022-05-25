@@ -1,6 +1,7 @@
 #include "TGPGameModeBase.h"
 
 #include "DrawDebugHelpers.h"
+#include "MainPlayerController.h"
 #include "FP_FirstPerson/FP_FirstPersonCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Ai/BaseAiCharacter.h"
@@ -68,6 +69,15 @@ void ATGPGameModeBase::BeginRound()
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, currentRegion->GetName());
 	}
 	GetWorld()->GetTimerManager().SetTimer(RoundDelayHandler, this, &ATGPGameModeBase::BeginRoundDelay, 20, false);
+	
+	AMainPlayerController* MainPlayerController = nullptr;
+	if(UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsA(AMainPlayerController::StaticClass()))
+	{
+		MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		MainPlayerController->SpawnRegion = currentRegion->GetName();
+		MainPlayerController->UpdateEnemyRegion();
+	}
+	
 }
 
 void ATGPGameModeBase::BeginRoundDelay()
