@@ -147,6 +147,7 @@ void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 	{
 		if ((int)Val - 1 != PlayerInventory->GetSelectedWeaponSlot())
 		{
+			ResetAim();
 			PlayerInventory->ChangeWeapon(EWeaponSlot(Val - 1.f));
 			OnChangeSelectedWeapon(PlayerInventory->GetSelectedWeaponSlot());
 		}
