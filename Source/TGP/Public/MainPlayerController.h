@@ -14,15 +14,12 @@ class TGP_API AMainPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 public:
-	UFUNCTION(BlueprintImplementableEvent)
-	void HideCrosshair();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	TSubclassOf<class UUserWidget> HUDBlueprint;
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void RevealCrosshair();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	UUserWidget* DisplayedHUD;
 
-	UFUNCTION(BlueprintCallable)
-	void TriggerCrossShow() { RevealCrosshair(); }
-	
-	UFUNCTION(BlueprintCallable)
-    void TriggerCrossHide() { HideCrosshair(); }
+protected:
+	virtual  void BeginPlay() override;
 };

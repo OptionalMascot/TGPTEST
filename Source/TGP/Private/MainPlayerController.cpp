@@ -3,3 +3,15 @@
 
 #include "MainPlayerController.h"
 
+#include "Blueprint/UserWidget.h"
+
+void AMainPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if(HUDBlueprint)
+	{
+		DisplayedHUD = CreateWidget(this, HUDBlueprint);
+		DisplayedHUD->AddToViewport();
+	}
+}
