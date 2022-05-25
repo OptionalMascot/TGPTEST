@@ -3,6 +3,8 @@
 #include "Ai/BaseAIController.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 
 ABaseAIController::ABaseAIController()
 {
@@ -22,7 +24,16 @@ void ABaseAIController::ChangeAIControllerStatus(bool status)
 
 void ABaseAIController::SetObjective(AActor* objective)
 {
-	blackboardComponenet->SetValueAsObject("objective",objective);
+	if(chasePlayer)
+	{
+		ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(),0);
+		blackboardComponenet->SetValueAsObject("target",player);
+	}
+	else
+	{
+		blackboardComponenet->SetValueAsObject("objective",objective);
+	}
+	
 }
 
 void ABaseAIController::BeginPlay()

@@ -236,7 +236,6 @@ void ABaseAiCharacter::LeftColliderHit(UPrimitiveComponent* OverlappedComponent,
 void ABaseAiCharacter::Die()
 {
 	SetHidden(true);
-
 	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
 		GM->OnEnemyKilled(this);
 }
