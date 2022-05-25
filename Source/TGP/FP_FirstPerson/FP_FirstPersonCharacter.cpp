@@ -868,7 +868,7 @@ void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
 {
 	if(MainPlayerController)
 	{
-		MainPlayerController->SecondaryIcon = WeaponComponent->()->ItemIcon;
+		//MainPlayerController->SecondaryIcon = WeaponComponent->()->ItemIcon;
 		MainPlayerController->UpdatePrimaryWeapon();
 	}
 }
