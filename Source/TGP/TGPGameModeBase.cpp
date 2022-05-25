@@ -31,6 +31,11 @@ void ATGPGameModeBase::BeginPlay()
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
+
+	if(UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsA(AMainPlayerController::StaticClass()))
+	{
+		MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	}
 }
 
 void ATGPGameModeBase::Tick(float DeltaSeconds)
@@ -69,15 +74,12 @@ void ATGPGameModeBase::BeginRound()
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, currentRegion->GetName());
 	}
 	GetWorld()->GetTimerManager().SetTimer(RoundDelayHandler, this, &ATGPGameModeBase::BeginRoundDelay, 20, false);
-	
-	AMainPlayerController* MainPlayerController = nullptr;
-	if(UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsA(AMainPlayerController::StaticClass()))
+
+	if(MainPlayerController)
 	{
-		MainPlayerController = Cast<AMainPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		MainPlayerController->SpawnRegion = currentRegion->GetName();
 		MainPlayerController->UpdateEnemyRegion();
-	}
-	
+	}	
 }
 
 void ATGPGameModeBase::BeginRoundDelay()
@@ -196,6 +198,10 @@ bool ATGPGameModeBase::IsLookingAtDir(const FVector& PawnDir, const FVector& Dir
 void ATGPGameModeBase::SetRegions()
 {
 	
+}
+
+void ATGPGameModeBase::GetMainController()
+{
 }
 
 void ATGPGameModeBase::DEBUG_KILL_ENEMY()
