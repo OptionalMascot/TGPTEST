@@ -74,7 +74,7 @@ void ATGPGameModeBase::BeginRound()
 		currentRegion->BeginRound();
 		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, currentRegion->GetName());
 	}
-	GetWorld()->GetTimerManager().SetTimer(RoundDelayHandler, this, &ATGPGameModeBase::BeginRoundDelay, 20, false);
+	GetWorld()->GetTimerManager().SetTimer(RoundDelayHandler, this, &ATGPGameModeBase::BeginRoundDelay, CooldownBetweenRounds, false);
 }
 
 void ATGPGameModeBase::BeginRoundDelay()
@@ -108,17 +108,31 @@ bool ATGPGameModeBase::TrySpawnEnemy()
 		}
 		else
 		{
-			AttemptedSpawnPoint = FVector(FMath::RandRange(SpawnMinRange.X, SpawnMaxRange.X), FMath::RandRange(SpawnMinRange.Y, SpawnMaxRange.Y), 3000.f);
+			AttemptedSpawnPoint = FVector(FMath::RandRange(SpawnMinRange.X, SpawnMaxRange.X), FMath::RandRange(SpawnMinRange.Y, SpawnMaxRange.Y), 10000.f);
 		}
 		 
 
-		DrawDebugLine(GetWorld(),AttemptedSpawnPoint, AttemptedSpawnPoint + (FVector::DownVector * 6000.f), FColor::Red, false, 1.f);
+		DrawDebugLine(GetWorld(),AttemptedSpawnPoint, AttemptedSpawnPoint + (FVector::DownVector * 15000.f), FColor::Red, false, 1.f);
 		
 		FHitResult Result;
-		if (GetWorld()->LineTraceSingleByChannel(Result, AttemptedSpawnPoint, AttemptedSpawnPoint + (FVector::DownVector * 6000.f), ECollisionChannel::ECC_Visibility))
+		if (GetWorld()->LineTraceSingleByChannel(Result, AttemptedSpawnPoint, AttemptedSpawnPoint + (FVector::DownVector * 15000.f), ECollisionChannel::ECC_Visibility))
 		{
 			if (Result.Actor->Tags.Contains("Ground"))
 			{
+				FHitResult Result2;
+				if (GetWorld()->LineTraceSingleByChannel(Result2, Result.Location, Result.Location + FVector(0.f, 0.f, 5000.f), ECollisionChannel::ECC_WorldStatic))
+				{
+					DrawDebugSphere(GetWorld(), Result.Location + FVector(0.f, 0.f, 75.f), 50.f, 8, FColor::Red, true); // Remove this <- Used for debugging zombs spawning in walls
+					continue;
+				}
+				
+				//FHitResult Res;
+				//if (GetWorld()->SweepSingleByChannel(Res, SpherePos, SpherePos, FQuat::Identity, ECC_WorldStatic, MyColSphere))
+				//{
+				//	DrawDebugSphere(GetWorld(), SpherePos, MyColSphere.GetSphereRadius(), 8, FColor::Red, true);
+				//	continue;
+				//}
+				
 				bool bCanSpawn = false;
 
 				for (int j = 0; j < GetNumPlayers(); j++)
