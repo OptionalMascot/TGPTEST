@@ -3,3 +3,9 @@
 
 #include "MainPlayerController.h"
 
+void AMainPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	InitHUD();
+}
