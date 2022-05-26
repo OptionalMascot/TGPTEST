@@ -2,11 +2,15 @@
 
 
 #include "Weapons/Throwables/ScatterGrenadeWeapon.h"
+
+#include "Kismet/GameplayStatics.h"
 #include "Weapons/Throwables/GrenadeWeapon.h"
+#include "Sound/SoundCue.h"
 
 void AScatterGrenadeWeapon::ExplodeGrenade()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("BOOM"));
+	UGameplayStatics::PlaySound2D(this, NadeBoom);
 	_particleSystem->Activate();
 	ItemSkeletalMesh->SetHiddenInGame(true);
 

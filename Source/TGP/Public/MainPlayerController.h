@@ -62,4 +62,13 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateCurrentZone();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateCurrentAmmo(int ammo);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateReserveAmmo(int ReserveAmmo);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleAmmoDisplay(bool Hidden);
 };

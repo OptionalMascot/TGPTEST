@@ -5,9 +5,11 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Item/ItemInfo.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Sound/SoundCue.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 
 // Sets default values
@@ -46,6 +48,7 @@ void AGrenadeWeapon::StartWaitTimer(AActor* actor, float time)
 void AGrenadeWeapon::ExplodeGrenade()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("BOOM"));
+	UGameplayStatics::PlaySound2D(this, NadeBoom);
 	_particleSystem->Activate();
 	ItemSkeletalMesh->SetHiddenInGame(true);
 

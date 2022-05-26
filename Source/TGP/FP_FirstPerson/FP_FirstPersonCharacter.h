@@ -117,8 +117,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Combat")
 	bool IsMeleeAttacking;
-
-
 protected:
 
 	void OnFireWeapon();
@@ -218,6 +216,9 @@ private:
 
 	UPROPERTY()
 	class AMainPlayerController* MainPlayerController;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio", meta=(AllowPrivateAccess = true))
+	class USoundCue* ReloadSound;
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
@@ -281,6 +282,12 @@ public:
 	void TriggerCrosshairToggle(bool Hidden);
 	void TriggerSniperToggle(bool Hidden);
 	void TriggerRarityUpdate();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleSniperScopeVisibility(bool Hidden);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleIronSightVisiblity(bool Hidden);
 };
 
 

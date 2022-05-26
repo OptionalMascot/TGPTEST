@@ -2,6 +2,7 @@
 
 #include "Weapons/HitscanWeaponComponent.h"
 #include "Weapons/UI/MyDamageMarker.h"
+#include "Sound/SoundCue.h"
 #include "Weapons/UI/UserWidgetTest.h"
 #include "Weapons/HealthComponent.h"
 #include "Item/BaseItem.h"
@@ -9,6 +10,7 @@
 #include "Components/WidgetComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Ai/BaseAiCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
@@ -83,6 +85,12 @@ bool UHitscanWeaponComponent::OnFire()
 					{
 						AActor* hit = result.GetActor(); // Get Actor
 						float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parentController->GetPawn(), UDamageType::StaticClass()); // Attempt to apply damage
+
+						if(hit->IsA(ABaseAiCharacter::StaticClass()))
+						{
+							ABaseAiCharacter* EnemyHit = Cast<ABaseAiCharacter>(hit);
+							UGameplayStatics::PlaySound2D(this, EnemyHit->DamagedSound);
+						}
 					}
 				}
 				onFireSuccess.Broadcast(newSpread, _weaponInfo->Damage);

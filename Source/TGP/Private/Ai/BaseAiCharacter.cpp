@@ -2,6 +2,7 @@
 #include "Ai/AiCharacterData.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
+#include "Sound/SoundCue.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TGP/TGPGameModeBase.h"
@@ -223,6 +224,7 @@ void ABaseAiCharacter::RightColliderHit(UPrimitiveComponent* OverlappedComponent
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("Damage Player"));
 		UGameplayStatics::ApplyDamage(OtherActor, Damage * 1.5f, GetController(), this, UDamageType::StaticClass());
+		UGameplayStatics::PlaySound2D(this, HeavyAttackSound);
 		RightColliderOff();
 	}
 }
@@ -245,6 +247,7 @@ void ABaseAiCharacter::LeftColliderHit(UPrimitiveComponent* OverlappedComponent,
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("Damage Player"));
 		UGameplayStatics::ApplyDamage(OtherActor, Damage, GetController(), this, UDamageType::StaticClass());
+		UGameplayStatics::PlaySound2D(this, AttackSound);
 		LeftColliderOff();
 	}
 }
