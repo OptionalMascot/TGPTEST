@@ -826,7 +826,7 @@ void AFP_FirstPersonCharacter::TriggerHealthUpdate()
 
 void AFP_FirstPersonCharacter::TriggerPrimaryIconUpdate()
 {
-	if(MainPlayerController)
+	if(MainPlayerController && WeaponComponent->GetWeaponInfo())
 	{
 		MainPlayerController->PrimaryIcon = WeaponComponent->GetWeaponInfo()->ItemIcon;
 		MainPlayerController->UpdatePrimaryWeapon();
@@ -835,11 +835,11 @@ void AFP_FirstPersonCharacter::TriggerPrimaryIconUpdate()
 
 void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
 {
-	if(MainPlayerController)
-	{
-		MainPlayerController->SecondaryIcon = GetUnusedItem()->GetItemInfo()->ItemIcon;
-		MainPlayerController->UpdateSecondaryWeapon();
-	}
+	//if(MainPlayerController)
+	//{
+	//	MainPlayerController->SecondaryIcon = GetUnusedItem()->GetItemInfo()->ItemIcon;
+	//	MainPlayerController->UpdateSecondaryWeapon();
+	//}
 }
 
 void AFP_FirstPersonCharacter::TriggerCrosshairToggle(bool Hidden)
@@ -860,7 +860,7 @@ void AFP_FirstPersonCharacter::TriggerSniperToggle(bool Hidden)
 
 void AFP_FirstPersonCharacter::TriggerRarityUpdate()
 {
-	if(MainPlayerController)
+	if(MainPlayerController && GetUnusedItem())
 	{
 		ERarity CurrentRarity = WeaponComponent->GetWeaponInfo()->ItemRarity;
 
