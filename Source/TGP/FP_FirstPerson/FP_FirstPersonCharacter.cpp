@@ -739,7 +739,7 @@ void AFP_FirstPersonCharacter::NewAim()
 			TriggerSniperToggle(false);
 		}
 		
-		AdjustToSight();
+		//AdjustToSight();
 		break;
 	case EWeaponType::OneHand:
 		
