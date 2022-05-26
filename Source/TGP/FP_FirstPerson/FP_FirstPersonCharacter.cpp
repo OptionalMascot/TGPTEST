@@ -331,11 +331,11 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	{
 		if(WeaponComponent->GetWeaponInfo()->WeaponType == Sword)
 		{
-			MainPlayerController->ToggleAmmoDisplay(true);
+			MainPlayerController->ToggleAmmoDisplay(false);
 		}
 		else
 		{
-			MainPlayerController->ToggleAmmoDisplay(false);
+			MainPlayerController->ToggleAmmoDisplay(true);
 			MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
 			MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
 		}
