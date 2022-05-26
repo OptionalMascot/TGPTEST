@@ -135,9 +135,7 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
 	PlayerInputComponent->BindAxis("Turn", this, &AFP_FirstPersonCharacter::Turn);
-	PlayerInputComponent->BindAxis("TurnRate", this, &AFP_FirstPersonCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this,&AFP_FirstPersonCharacter::LookUp);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &AFP_FirstPersonCharacter::LookUpAtRate);
 
 	PlayerInputComponent->BindAxis("ChangeWeapon", this, &AFP_FirstPersonCharacter::ChangeWeapon);
 }
@@ -155,65 +153,6 @@ void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 	}
 }
 
-void AFP_FirstPersonCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-}
-
-void AFP_FirstPersonCharacter::OnFire()
-{
-	// Play a sound if there is one
-	if (FireSound != nullptr)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// Try and play a firing animation if specified
-	if (FireAnimation != nullptr)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if (AnimInstance != nullptr)
-		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
-		}
-	}
-
-	// Now send a trace from the end of our gun to see if we should hit anything
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	
-	FVector ShootDir = FVector::ZeroVector;
-	FVector StartTrace = FVector::ZeroVector;
-
-	if (PlayerController)
-	{
-		// Calculate the direction of fire and the start location for trace
-		FRotator CamRot;
-		PlayerController->GetPlayerViewPoint(StartTrace, CamRot);
-		ShootDir = CamRot.Vector();
-
-		// Adjust trace so there is nothing blocking the ray between the camera and the pawn, and calculate distance from adjusted start
-		StartTrace = StartTrace + ShootDir * ((GetActorLocation() - StartTrace) | ShootDir);
-	}
-
-	// Calculate endpoint of trace
-	const FVector EndTrace = StartTrace + ShootDir * WeaponRange;
-
-	// Check for impact
-	const FHitResult Impact = WeaponTrace(StartTrace, EndTrace);
-
-	// Deal with impact
-	AActor* DamagedActor = Impact.GetActor();
-	UPrimitiveComponent* DamagedComponent = Impact.GetComponent();
-
-	// If we hit an actor, with a component that is simulating physics, apply an impulse
-	if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr) && DamagedComponent->IsSimulatingPhysics())
-	{
-		//DamagedComponent->AddImpulseAtLocation(ShootDir * WeaponDamage, Impact.Location);
-	}
-	
-	if(WeaponComponent != nullptr)
-		WeaponComponent->OnFire();
-}
 
 void AFP_FirstPersonCharacter::MoveForward(float Value)
 {
@@ -244,18 +183,6 @@ void AFP_FirstPersonCharacter::MoveRight(float Value)
 	{
 		IsMovingRight = false;
 	}
-}
-
-void AFP_FirstPersonCharacter::TurnAtRate(float Rate)
-{
-	// Calculate delta for this frame from the rate information
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-}
-
-void AFP_FirstPersonCharacter::LookUpAtRate(float Rate)
-{
-	// Calculate delta for this frame from the rate information
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
 FHitResult AFP_FirstPersonCharacter::WeaponTrace(const FVector& StartTrace, const FVector& EndTrace) const
@@ -322,16 +249,6 @@ void AFP_FirstPersonCharacter::PickupWeapon()
 
 void AFP_FirstPersonCharacter::DropWeapon()
 {
-	//if(_currentWeapon != nullptr)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Detach"));
-	//	_currentWeaponComponent->DropWeapon();
-	//	_currentWeaponComponent = nullptr;
-	//	FDetachmentTransformRules rules = FDetachmentTransformRules(EDetachmentRule::KeepWorld, EDetachmentRule::KeepWorld, EDetachmentRule::KeepWorld, false);
-	//	_currentWeapon->DetachFromActor(rules);
-	//	_currentWeapon = nullptr;
-	//}
-
 	WeaponComponent->DropWeapon();
 	PlayerInventory->SrvDropWeapon(PlayerInventory->GetSelectedWeaponSlot());
 	//PlayerInventory->DropWeapon();
@@ -341,19 +258,6 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 {
 	if(!WeaponComponent)
 	{
-		/*IHasAmmo* AmmoRef = Cast<IHasAmmo>(_currentWeaponComponent);
-		if(AmmoRef != nullptr)
-		{
-			AmmoRef->TryReload(_currentWeapon);
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
-		}*/
-		//IHasAmmo* AmmoRef = Cast<IHasAmmo>(WeaponComponent);
-		//if(AmmoRef != nullptr)
-		//{
-		//	AmmoRef->TryReload();
-		//	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
-		//}
-		
 		return;
 	}
 
@@ -417,36 +321,9 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	TriggerRarityUpdate();
 }
 
-void AFP_FirstPersonCharacter::SrvHitScan_Implementation() // Rep is so scuffed within Gun actor I moved it here. I'm giving up on life at this point.
-{
-	FHitResult result;
-	FVector CameraLoc;
-	FRotator CameraRot;
-	
-	GetController()->GetPlayerViewPoint(CameraLoc, CameraRot);
-	if(GetWorld()->LineTraceSingleByChannel(result, CameraLoc, CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
-	{
-		UWeaponItem* Wep = PlayerInventory->GetSelectedWeapon();
-		UWeaponInfo* WepInfo =  Cast<UWeaponInfo>(Wep->GetItemInfo());
-
-		if (WepInfo)
-		{
-			AActor* hit = result.GetActor(); // Get Actor
-			UGameplayStatics::ApplyDamage(hit, WepInfo->Damage, GetController(), this, UDamageType::StaticClass());
-
-			TestDebug();
-		}
-		
-		//float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass()); // Attempt to apply damage
-	}
-
-	AttachWeapon();
-}
 
 void AFP_FirstPersonCharacter::SrvShootGun_Implementation()
 {
-	//Cast<AGunHostActor>(GunActorComponent->GetChildActor())->GetWeaponComponent()->SrvOnFire();
-
 	WeaponComponent->SrvOnFire();
 }
 
@@ -463,13 +340,6 @@ void AFP_FirstPersonCharacter::OnPickUpItem_Implementation(AItemActor* ItemActor
 		ItemActor->Destroy();
 }
 
-void AFP_FirstPersonCharacter::OnWeaponDropped_Implementation()
-{
-	//AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(PlayerInventory->GetItemActor(), GetActorLocation() + (GetOwner()->GetActorForwardVector() * 100.f), FRotator());
-	//ItemActor->Initialize(PlayerInventory->GetSelectedWeapon());
-//
-	//PlayerInventory->DropWeapon();
-}
  
 void AFP_FirstPersonCharacter::ChangeWeaponMeshMulti_Implementation(int ItemId)
 {

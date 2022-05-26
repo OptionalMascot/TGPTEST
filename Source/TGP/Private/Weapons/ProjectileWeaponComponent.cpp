@@ -42,6 +42,7 @@ void UProjectileWeaponComponent::SrvOnFire_Implementation()
 	AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(_weaponInfo->ProjectileToSpawn->ThrowableBlueprint, _parentMesh->GetComponentLocation() + CameraRot.Vector() * 50.0f, FRotator());
 	ThrowableActor->Initialize(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn));
 	ThrowableActor->SetProjectileParameters(_parentController, CameraRot.Vector(), _weaponInfo->ProjectileLaunchSpeed);
+	onFireSuccess.Broadcast(FVector(), _weaponInfo->Damage);
 }
 
 void UProjectileWeaponComponent::BeginPlay()

@@ -120,12 +120,6 @@ public:
 
 protected:
 
-	/** Handler for a touch input beginning. */
-	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
-
-	/** Fires a virtual projectile. */
-	void OnFire();
-
 	void OnFireWeapon();
 
 	void OnFireWeaponRelease();
@@ -138,17 +132,6 @@ protected:
 
 	void ChangeWeapon(float Val);
 
-	/**
-	 * Called via input to turn at a given rate.
-	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
-	 */
-	void TurnAtRate(float Rate);
-
-	/**
-	 * Called via input to turn look up/down at a given rate.
-	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
-	 */
-	void LookUpAtRate(float Rate);
 
 	/* 
 	 * Performs a trace between two points
@@ -178,9 +161,6 @@ protected:
 	
 	UFUNCTION() void OnWeaponChanged(UWeaponItem* WeaponItem);
 	
-	UFUNCTION(Server, Reliable) void SrvHitScan();
-	void SrvHitScan_Implementation();
-	
 	UFUNCTION(Server, Reliable) void SrvShootGun();
 	void SrvShootGun_Implementation();
 	
@@ -189,9 +169,6 @@ protected:
 
 	UFUNCTION(Server, Reliable) void OnPickUpItem(class AItemActor* ItemActor, int Slot);
 	void OnPickUpItem_Implementation(AItemActor* ItemActor, int Slot);
-	
-	UFUNCTION(Server, Reliable) void OnWeaponDropped();
-	void OnWeaponDropped_Implementation();
 	
 	UFUNCTION(NetMulticast, Reliable) void ChangeWeaponMeshMulti(int ItemId);
 	void ChangeWeaponMeshMulti_Implementation(int ItemId);

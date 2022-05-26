@@ -39,16 +39,6 @@ void UHitscanWeaponComponent::SrvOnFire_Implementation()
 	
 	_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
 
-	//DrawDebugLine(GetWorld(), _parentMesh->GetComponentLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 1.0f, 0, 1.0f);
-//
-	//if(DoRaycastReturnResult(GetWorld(), result, _parentMesh->GetComponentLocation(), CameraLoc + CameraRot.Vector() * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
-	//{
-	//	AActor* hit = result.GetActor(); // Get Actor
-	//	UGameplayStatics::ApplyDamage(hit, 100.f, _parentController, _parentController->GetPawn(), UDamageType::StaticClass());
-	//	
-	//	//float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, GetOwner(), UDamageType::StaticClass()); // Attempt to apply damage
-	//}
-
 	for(int i = 0; i < _weaponInfo->BulletsPerShot; i++)
 	{
 		FVector newSpread = BulletSpreadCalculation(CameraRot.Vector(), _parent->GetActorUpVector(), _parent->GetActorRightVector(), FVector2D(_weaponInfo->Spread.X, _weaponInfo->Spread.Y));
@@ -58,6 +48,7 @@ void UHitscanWeaponComponent::SrvOnFire_Implementation()
 			AActor* hit = result.GetActor(); // Get Actor
 			float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parentController->GetPawn(), UDamageType::StaticClass()); // Attempt to apply damage
 		}
+		onFireSuccess.Broadcast(newSpread, _weaponInfo->Damage);
 	}
 }
 
@@ -125,7 +116,6 @@ bool UHitscanWeaponComponent::OnFire()
 			//	onFireSuccess.Broadcast(newSpread, _weaponInfo->Damage);
 			//}
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
-			
 			_player->PlayFireAnim();
 			return true;
 		}
