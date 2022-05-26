@@ -542,8 +542,6 @@ void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	_healthComponent->health -= 80.0f;
-	
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::OnOverlapWithActor);
 
 	//_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
