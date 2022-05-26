@@ -31,6 +31,8 @@ protected:
 
 	// Particle System
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components", Meta = (AllowPrivateAccess = true)) UNiagaraComponent* _particleSystem;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio") class USoundCue* NadeBoom;
+	
 	
 	bool _startFuse;
 	virtual void StartWaitTimer(AActor* actor, float time) override;

@@ -325,6 +325,20 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	
 	TriggerPrimaryIconUpdate();
 	TriggerRarityUpdate();
+
+	if(MainPlayerController)
+	{
+		if(WeaponComponent->GetWeaponInfo()->WeaponType == Sword)
+		{
+			MainPlayerController->ToggleAmmoDisplay(false);
+		}
+		else
+		{
+			MainPlayerController->ToggleAmmoDisplay(true);
+			MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
+			MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
+		}
+	}
 }
 
 
@@ -476,11 +490,24 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	{
 		MainPlayerController = Cast<AMainPlayerController>(GetController());
 	}
-	
-	TriggerHealthUpdate();
-	TriggerPrimaryIconUpdate();
-	TriggerRarityUpdate();
-	TriggerSniperToggle(true);
+
+	if(MainPlayerController)
+	{
+		TriggerHealthUpdate();
+		TriggerPrimaryIconUpdate();
+		TriggerRarityUpdate();
+		TriggerSniperToggle(true);
+
+		if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+		{
+			MainPlayerController->ToggleAmmoDisplay(true);
+		}
+		else
+		{
+			MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
+			MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
+		}
+	}
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -737,6 +764,8 @@ void AFP_FirstPersonCharacter::Reload()
 	{
 		AmmoRef->TryReload();
 		CanFire = true;
+		MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
+		MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
 	}
 }
 
@@ -774,6 +803,8 @@ void AFP_FirstPersonCharacter::PlayFireAnim()
 	default:
 		break;
 	}
+	MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
+	MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
 }
 
 void AFP_FirstPersonCharacter::SwordColliderOn()

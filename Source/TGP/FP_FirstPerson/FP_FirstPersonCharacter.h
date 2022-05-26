@@ -117,8 +117,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Combat")
 	bool IsMeleeAttacking;
-
-
 protected:
 
 	void OnFireWeapon();
