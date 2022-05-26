@@ -44,4 +44,7 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateEnemyRegion();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleCrosshair(bool hidden);
 };

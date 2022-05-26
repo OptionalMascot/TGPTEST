@@ -707,7 +707,7 @@ void AFP_FirstPersonCharacter::NewAim()
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
 	}
-	ToggleCrosshair(false);
+	TriggerCrosshairToggle(true);
 	Mesh1P->SetHiddenInGame(true);
 	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	
@@ -747,7 +747,7 @@ void AFP_FirstPersonCharacter::NewStopAim()
 {
 	if(IsAiming)
 	{
-		ToggleCrosshair(true);
+		TriggerCrosshairToggle(false);
 		Mesh1P->SetHiddenInGame(false);
 		IsAiming = false;
 		M_CameraSensitivity = M_DefaultCameraSensitivity;
@@ -758,7 +758,7 @@ void AFP_FirstPersonCharacter::NewStopAim()
 
 void AFP_FirstPersonCharacter::ResetAim()
 {
-	ToggleCrosshair(true);
+	TriggerCrosshairToggle(false);
 	Mesh1P->SetHiddenInGame(false);
 	IsAiming = false;
 	M_CameraSensitivity = M_DefaultCameraSensitivity;
@@ -870,6 +870,14 @@ void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
 	{
 		//MainPlayerController->SecondaryIcon = WeaponComponent->()->ItemIcon;
 		MainPlayerController->UpdatePrimaryWeapon();
+	}
+}
+
+void AFP_FirstPersonCharacter::TriggerCrosshairToggle(bool Hidden)
+{
+	if(MainPlayerController)
+	{
+		MainPlayerController->ToggleCrosshair(Hidden);
 	}
 }
 

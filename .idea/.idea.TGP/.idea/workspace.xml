@@ -42,6 +42,7 @@
     <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Weapons/WeaponGenerators/WeaponSpawnerChest.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Ai/BaseAIController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/TGP/Public/Weapons/WeaponGenerators/WeaponSpawnerChest.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TGP/Private/Inventory/PlayerInventory.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -371,6 +372,7 @@
       <workItem from="1653503103384" duration="824000" />
       <workItem from="1653514830895" duration="12000" />
       <workItem from="1653514921725" duration="398000" />
+      <workItem from="1653532625925" duration="313000" />
     </task>
     <servers />
   </component>

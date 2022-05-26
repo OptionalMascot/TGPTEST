@@ -288,10 +288,11 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void AdjustToIrons();
 
+	UFUNCTION()
+	void MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	void TriggerHealthUpdate();
 	void TriggerPrimaryIconUpdate();
 	void TriggerSecondaryIconUpdate();
-
-	UFUNCTION()
-	void MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void TriggerCrosshairToggle(bool Hidden);
 };
