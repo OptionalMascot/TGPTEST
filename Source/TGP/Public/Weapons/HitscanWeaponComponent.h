@@ -30,8 +30,6 @@ protected:
 public:
 	UHitscanWeaponComponent();
 	
-	virtual void SrvOnFire_Implementation() override;
-	
 	virtual void BeginPlay() override;
 	virtual bool OnFire() override;
 	virtual void OnFireEnd() override;

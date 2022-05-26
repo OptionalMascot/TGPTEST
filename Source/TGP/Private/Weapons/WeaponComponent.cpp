@@ -56,16 +56,6 @@ FVector UWeaponComponent::BulletSpreadCalculation(FVector dir, FVector up, FVect
 	return dir;
 }
 
-void UWeaponComponent::SrvOnFire_Implementation()
-{
-	//auto t = Cast<AFP_FirstPersonCharacter>((GetOwner()));
-//
-	//if (t)
-	//{
-	//	t->TestDebug();
-	//}
-}
-
 bool UWeaponComponent::OnFire()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Pew Pew"));

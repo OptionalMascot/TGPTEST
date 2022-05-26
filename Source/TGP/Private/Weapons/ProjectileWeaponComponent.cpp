@@ -24,27 +24,6 @@ UProjectileWeaponComponent::UProjectileWeaponComponent()
 	// ...
 }
 
-void UProjectileWeaponComponent::SrvOnFire_Implementation()
-{
-	//Super::SrvOnFire_Implementation();
-
-	Cast<AFP_FirstPersonCharacter>(GetOwner())->TestDebug();
-	
-	FHitResult result;
-	FVector CameraLoc;
-	FRotator CameraRot;
-
-	if(_parentController == nullptr)
-		_parentController = Cast<APlayerController>(Cast<APawn>(_parent)->GetController());
-	
-	_parentController->GetPlayerViewPoint(CameraLoc, CameraRot);
-	
-	AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(_weaponInfo->ProjectileToSpawn->ThrowableBlueprint, _parentMesh->GetComponentLocation() + CameraRot.Vector() * 50.0f, FRotator());
-	ThrowableActor->Initialize(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn));
-	ThrowableActor->SetProjectileParameters(_parentController, CameraRot.Vector(), _weaponInfo->ProjectileLaunchSpeed);
-	onFireSuccess.Broadcast(FVector(), _weaponInfo->Damage);
-}
-
 void UProjectileWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -91,8 +70,11 @@ bool UProjectileWeaponComponent::OnFire()
 			
 			StartWaitTimer(_parent, _weaponInfo->AttackRate); // Start timer for gun to be able to shoot again
 			
-			//DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + CameraRot.Vector() * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
-
+			AProjectile* ThrowableActor = GetWorld()->SpawnActor<AProjectile>(_weaponInfo->ProjectileToSpawn->ThrowableBlueprint, _parentMesh->GetComponentLocation() + CameraRot.Vector() * 50.0f, FRotator());
+			ThrowableActor->Initialize(Cast<UThrowableInfo>(_weaponInfo->ProjectileToSpawn));
+			ThrowableActor->SetProjectileParameters(_parentController, CameraRot.Vector(), _weaponInfo->ProjectileLaunchSpeed);
+			onFireSuccess.Broadcast(FVector(), _weaponInfo->Damage);
+			
 			_player->PlayFireAnim();
 			return true;
 		}

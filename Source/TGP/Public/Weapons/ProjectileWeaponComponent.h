@@ -32,7 +32,6 @@ protected:
 public:
 	UProjectileWeaponComponent();
 
-	virtual void SrvOnFire_Implementation() override;
 	
 	virtual void BeginPlay() override;
 	virtual bool OnFire() override;

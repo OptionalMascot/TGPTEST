@@ -324,7 +324,7 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 
 void AFP_FirstPersonCharacter::SrvShootGun_Implementation()
 {
-	WeaponComponent->SrvOnFire();
+	//WeaponComponent->SrvOnFire();
 }
 
 void AFP_FirstPersonCharacter::OnChangeSelectedWeapon_Implementation(int Slot)
@@ -494,8 +494,7 @@ void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 			//if (HasAuthority())
 			//	WeaponComponent->SrvOnFire();
 			//else
-			if (WeaponComponent->OnFire())
-				SrvShootGun();
+			WeaponComponent->OnFire();
 		}
 	}
 	
