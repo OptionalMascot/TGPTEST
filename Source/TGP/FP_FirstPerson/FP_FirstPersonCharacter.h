@@ -118,6 +118,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Combat")
 	bool IsMeleeAttacking;
 
+
 protected:
 
 	void OnFireWeapon();
@@ -211,6 +212,9 @@ private:
 
 	FVector M_RifleAimOffset;
 	FVector M_PistolAimoffset;
+
+	UFUNCTION(BlueprintCallable)
+	UWeaponItem* GetUnusedItem();
 
 	UPROPERTY()
 	class AMainPlayerController* MainPlayerController;

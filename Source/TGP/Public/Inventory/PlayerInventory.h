@@ -95,6 +95,8 @@ public:
 
 	UFUNCTION(BlueprintCallable) int GetNadeAmount() const;
 	UFUNCTION(BlueprintCallable) int GetFlashAmount() const;
+
+	UWeaponItem* GetWeaponAtSlot(EWeaponSlot slot);	
 	
 	void OnUseUtility();
 };

@@ -90,10 +90,10 @@ class TGP_API UGunItem : public UWeaponItem
 public:
 	virtual void Init(UItemInfo* Info, int Amount) override;
 	
-	int GetAmmoInClip() const { return AmmoInClip; }
+	UFUNCTION(BlueprintCallable) int GetAmmoInClip() const { return AmmoInClip; }
 	void SetAmmoInClip(int NewAmmo) { AmmoInClip = NewAmmo; }
 	
-	int GetAmmoCount() const { return AmmoCount; }
+	UFUNCTION(BlueprintCallable) int GetAmmoCount() const { return AmmoCount; }
 	void SetAmmoCount(int NewAmmoCount) { AmmoCount = NewAmmoCount; }
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

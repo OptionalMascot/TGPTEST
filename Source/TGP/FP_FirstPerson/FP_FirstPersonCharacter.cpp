@@ -422,6 +422,18 @@ void AFP_FirstPersonCharacter::OnOverlapWithActor(UPrimitiveComponent* Overlappe
 }
 
 
+UWeaponItem* AFP_FirstPersonCharacter::GetUnusedItem()
+{
+	EWeaponSlot currentSlot = PlayerInventory->GetSelectedWeaponSlot();
+	EWeaponSlot slotToGet;
+	if(currentSlot == EWeaponSlot::Primary)
+		slotToGet = EWeaponSlot::Secondary;
+	else
+		slotToGet = EWeaponSlot::Primary;
+
+	return PlayerInventory->GetWeaponAtSlot(slotToGet);
+}
+
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();

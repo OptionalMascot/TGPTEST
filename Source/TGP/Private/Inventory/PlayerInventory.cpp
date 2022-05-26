@@ -297,3 +297,8 @@ int UPlayerInventory::GetFlashAmount() const
 
 	return 0;
 }
+
+UWeaponItem* UPlayerInventory::GetWeaponAtSlot(EWeaponSlot slot)
+{
+	return Cast<UWeaponItem>(WeaponContainer->GetItemAt(slot)); 
+}
