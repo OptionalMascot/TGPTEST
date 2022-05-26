@@ -58,5 +58,8 @@ public:
 	void UpdateWeaponRarity(int rarity);
 
 	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateSecondWeaponRarity(int rarity);
+	
+	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateCurrentZone();
 };

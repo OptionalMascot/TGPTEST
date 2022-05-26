@@ -318,6 +318,7 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	AttachWeapon();
 	
 	TriggerPrimaryIconUpdate();
+	TriggerSecondaryIconUpdate();
 	TriggerRarityUpdate();
 }
 
@@ -470,6 +471,7 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	
 	TriggerHealthUpdate();
 	TriggerPrimaryIconUpdate();
+	TriggerSecondaryIconUpdate();
 	TriggerRarityUpdate();
 	TriggerSniperToggle(true);
 }
@@ -772,8 +774,8 @@ void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
 {
 	if(MainPlayerController)
 	{
-		//MainPlayerController->SecondaryIcon = WeaponComponent->()->ItemIcon;
-		MainPlayerController->UpdatePrimaryWeapon();
+		MainPlayerController->SecondaryIcon = GetUnusedItem()->GetItemInfo()->ItemIcon;
+		MainPlayerController->UpdateSecondaryWeapon();
 	}
 }
 
@@ -815,6 +817,28 @@ void AFP_FirstPersonCharacter::TriggerRarityUpdate()
 			break;
 		case Legendary:
 			MainPlayerController->UpdateWeaponRarity(4);
+			break;
+		default:
+			break;
+		}
+
+		ERarity CurrentSecondaryRarity = GetUnusedItem()->GetItemInfo()->ItemRarity;
+		switch (CurrentSecondaryRarity)
+		{
+		case Common:
+			MainPlayerController->UpdateSecondWeaponRarity(0);
+			break;
+		case Uncommon:
+			MainPlayerController->UpdateSecondWeaponRarity(1);
+			break;
+		case Rare:
+			MainPlayerController->UpdateSecondWeaponRarity(2);
+			break;
+		case SuperRare:
+			MainPlayerController->UpdateSecondWeaponRarity(3);
+			break;
+		case Legendary:
+			MainPlayerController->UpdateSecondWeaponRarity(4);
 			break;
 		default:
 			break;
