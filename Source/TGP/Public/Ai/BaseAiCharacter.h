@@ -37,6 +37,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class USphereComponent* RightHandCollider;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Attack") class UCapsuleComponent* LeftArmCollider;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio") class USoundCue* DamagedSound;
  
 protected:
 	virtual void BeginPlay() override;
@@ -45,6 +46,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio") class USoundCue* AttackSound;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio") class USoundCue* HeavyAttackSound;
+	
 
 public:
 	ABaseAiCharacter();

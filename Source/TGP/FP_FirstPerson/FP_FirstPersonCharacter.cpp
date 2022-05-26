@@ -2,6 +2,7 @@
 
 #include "DrawDebugHelpers.h"
 #include "MainPlayerController.h"
+#include "Ai/BaseAiCharacter.h"
 #include "Animation/AnimInstance.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
@@ -15,6 +16,7 @@
 #include "Weapons/Interfaces/WeaponInterfaces.h"
 #include "Inventory/PlayerInventory.h"
 #include "Item/BaseItem.h"
+#include "Sound/SoundCue.h"
 #include "Item/ItemActor.h"
 #include "Item/ItemInfo.h"
 #include "Net/UnrealNetwork.h"
@@ -830,5 +832,11 @@ void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedCompon
 	{
 		SwordColliderOff();
 		UGameplayStatics::ApplyDamage(OtherActor, WeaponComponent->GetWeaponInfo()->Damage, GetController(), this, UDamageType::StaticClass());
+		if(OtherActor->IsA(ABaseAiCharacter::StaticClass()))
+		{
+			ABaseAiCharacter* HitEnemy = Cast<ABaseAiCharacter>(OtherActor);
+			UGameplayStatics::PlaySound2D(this, HitEnemy->DamagedSound);
+		}
+		
 	}
 }
