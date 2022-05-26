@@ -37,7 +37,7 @@ void ATGPGameModeBase::BeginPlay()
 			EnemyPool[i]->SetHidden(true);
 	}
 
-	//GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
+	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
 
 	if(UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsA(AMainPlayerController::StaticClass()))
 	{
