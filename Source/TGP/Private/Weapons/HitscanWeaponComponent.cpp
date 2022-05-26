@@ -42,7 +42,6 @@ void UHitscanWeaponComponent::SrvOnFire_Implementation()
 	for(int i = 0; i < _weaponInfo->BulletsPerShot; i++)
 	{
 		FVector newSpread = BulletSpreadCalculation(CameraRot.Vector(), _parent->GetActorUpVector(), _parent->GetActorRightVector(), FVector2D(_weaponInfo->Spread.X, _weaponInfo->Spread.Y));
-		DrawDebugLine(GetWorld(), _parentMesh->GetComponentTransform().GetLocation() + FVector(0.0f, 0.0f, 15.0f), CameraLoc + newSpread * 10000.0f, FColor::Red, false, 5.0f, 0, 1.0f);
 		if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + newSpread * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
 		{
 			AActor* hit = result.GetActor(); // Get Actor
@@ -115,12 +114,12 @@ bool UHitscanWeaponComponent::OnFire()
 			//	}
 			//	onFireSuccess.Broadcast(newSpread, _weaponInfo->Damage);
 			//}
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CurrentAmmoInClip:") + FString::FromInt(currentAmmoClip) + " CurrentReserves:" + FString::FromInt(currentReserves));
 			_player->PlayFireAnim();
 			return true;
 		}
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Attempt Reload"));
 		_player->ReloadWeapon();
 		_player->CanFire = false;
 		//TryReload(_parent); // If can't shoot, try and reload
