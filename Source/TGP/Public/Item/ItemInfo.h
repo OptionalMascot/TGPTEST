@@ -62,6 +62,7 @@ public:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Identifiers") int32 UniqueId;
 
 	UFUNCTION(CallInEditor, Category = "Identifiers") virtual void GenerateStats();
+	UFUNCTION(CallInEditor, Category = "Identifiers") virtual void GenerateNewId();
 	
 	virtual FPrimaryAssetId GetPrimaryAssetId() const override;
 };
