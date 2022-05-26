@@ -43,6 +43,9 @@ protected:
 
 	UPROPERTY() ABaseAIController* baseAiController;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio") class USoundCue* AttackSound;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio") class USoundCue* HeavyAttackSound;
+
 public:
 	ABaseAiCharacter();
 	
