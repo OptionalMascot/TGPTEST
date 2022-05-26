@@ -78,10 +78,13 @@ bool UHitscanWeaponComponent::OnFire()
 			{
 				FVector newSpread = BulletSpreadCalculation(CameraRot.Vector(), _parent->GetActorUpVector(), _parent->GetActorRightVector(), FVector2D(_weaponInfo->Spread.X, _weaponInfo->Spread.Y));
 				if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + newSpread * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
+				{
+					if(!result.GetActor()->ActorHasTag("Player"))
 					{
-					AActor* hit = result.GetActor(); // Get Actor
-					float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parentController->GetPawn(), UDamageType::StaticClass()); // Attempt to apply damage
+						AActor* hit = result.GetActor(); // Get Actor
+						float dealtDamage = UGameplayStatics::ApplyDamage(hit, _weaponInfo->Damage, _parentController, _parentController->GetPawn(), UDamageType::StaticClass()); // Attempt to apply damage
 					}
+				}
 				onFireSuccess.Broadcast(newSpread, _weaponInfo->Damage);
 			}
 			_player->PlayFireAnim();
