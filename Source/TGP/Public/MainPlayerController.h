@@ -28,6 +28,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
 	FString SpawnRegion;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="HUD")
+	FString PlayerRegion;
 	
 protected:
 	virtual  void BeginPlay() override;
@@ -44,4 +47,16 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateEnemyRegion();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleCrosshair(bool hidden);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleSniperScope(bool hidden);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateWeaponRarity(int rarity);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateCurrentZone();
 };

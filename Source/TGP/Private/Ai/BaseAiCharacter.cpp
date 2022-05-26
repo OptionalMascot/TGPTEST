@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TGP/TGPGameModeBase.h"
+#include "TGP/FP_FirstPerson/FP_FirstPersonCharacter.h"
 
 ABaseAiCharacter::ABaseAiCharacter()
 {
@@ -206,6 +207,7 @@ void ABaseAiCharacter::SetMoveType()
 
 void ABaseAiCharacter::RightColliderOn()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("Right collider On"));
 	RightHandCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 }
 
@@ -216,12 +218,18 @@ void ABaseAiCharacter::RightColliderOff()
 
 void ABaseAiCharacter::RightColliderHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("DAMAGE PLAYER"));
-	RightColliderOff();
+	//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, OtherActor->GetName());
+	if(OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
+	{
+		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("Damage Player"));
+		UGameplayStatics::ApplyDamage(OtherActor, Damage * 1.5f, GetController(), this, UDamageType::StaticClass());
+		RightColliderOff();
+	}
 }
 
 void ABaseAiCharacter::LeftColliderOn()
 {
+    GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("Left collider On"));
 	LeftArmCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 }
 
@@ -232,8 +240,13 @@ void ABaseAiCharacter::LeftColliderOff()
 
 void ABaseAiCharacter::LeftColliderHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Purple, TEXT("DAMAGE PLAYER"));
-	LeftColliderOff();
+	//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, OtherActor->GetName());
+	if(OtherActor->IsA(AFP_FirstPersonCharacter::StaticClass()))
+	{
+		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("Damage Player"));
+		UGameplayStatics::ApplyDamage(OtherActor, Damage, GetController(), this, UDamageType::StaticClass());
+		LeftColliderOff();
+	}
 }
 
 void ABaseAiCharacter::Die()

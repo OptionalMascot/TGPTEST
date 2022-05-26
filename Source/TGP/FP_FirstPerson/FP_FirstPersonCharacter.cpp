@@ -219,8 +219,16 @@ void AFP_FirstPersonCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0f)
 	{
+		IsMovingForward = true;
 		// Add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
+	}
+	else
+	{
+		if(!IsMovingRight)
+		{
+			StopSprint();
+		}
 	}
 }
 
@@ -228,8 +236,13 @@ void AFP_FirstPersonCharacter::MoveRight(float Value)
 {
 	if (Value != 0.0f)
 	{
+		IsMovingRight = true;
 		// Add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
+	}
+	else
+	{
+		IsMovingRight = false;
 	}
 }
 
@@ -401,6 +414,7 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	AttachWeapon();
 	
 	TriggerPrimaryIconUpdate();
+	TriggerRarityUpdate();
 }
 
 void AFP_FirstPersonCharacter::SrvHitScan_Implementation() // Rep is so scuffed within Gun actor I moved it here. I'm giving up on life at this point.
@@ -542,8 +556,6 @@ void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	_healthComponent->health -= 80.0f;
-	
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::OnOverlapWithActor);
 
 	//_currentWeapon = Cast<AGunHostActor>(GunActorComponent->GetChildActor());
@@ -576,6 +588,8 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	
 	TriggerHealthUpdate();
 	TriggerPrimaryIconUpdate();
+	TriggerRarityUpdate();
+	TriggerSniperToggle(true);
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -671,7 +685,7 @@ void AFP_FirstPersonCharacter::AttachWeapon()
 
 void AFP_FirstPersonCharacter::Sprint()
 {
-	if(!IsReloading)
+	if(!IsReloading && GetVelocity().Size() != 0)
 	{
 		IsSprinting = true;
 		GetCharacterMovement()->MaxWalkSpeed = M_SprintSpeed;
@@ -707,7 +721,7 @@ void AFP_FirstPersonCharacter::NewAim()
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_AimSensitivity;
 		FirstPersonCameraComponent->SetFieldOfView(85.0f);
 	}
-	ToggleCrosshair(false);
+	TriggerCrosshairToggle(true);
 	Mesh1P->SetHiddenInGame(true);
 	FP_Gun->AttachToComponent(AimOffset, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	
@@ -716,14 +730,13 @@ void AFP_FirstPersonCharacter::NewAim()
 	case EWeaponType::TwoHand:
 		if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("SMGGGG"));
 			AdjustToIrons();
 			break;
 		}
 
 		if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 		{
-			break;
+			TriggerSniperToggle(false);
 		}
 		
 		AdjustToSight();
@@ -747,7 +760,12 @@ void AFP_FirstPersonCharacter::NewStopAim()
 {
 	if(IsAiming)
 	{
-		ToggleCrosshair(true);
+		if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+		{
+			TriggerSniperToggle(true);
+		}
+		
+		TriggerCrosshairToggle(false);
 		Mesh1P->SetHiddenInGame(false);
 		IsAiming = false;
 		M_CameraSensitivity = M_DefaultCameraSensitivity;
@@ -758,7 +776,12 @@ void AFP_FirstPersonCharacter::NewStopAim()
 
 void AFP_FirstPersonCharacter::ResetAim()
 {
-	ToggleCrosshair(true);
+	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+	{
+		TriggerSniperToggle(true);
+	}
+	
+	TriggerCrosshairToggle(false);
 	Mesh1P->SetHiddenInGame(false);
 	IsAiming = false;
 	M_CameraSensitivity = M_DefaultCameraSensitivity;
@@ -870,6 +893,51 @@ void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
 	{
 		//MainPlayerController->SecondaryIcon = WeaponComponent->()->ItemIcon;
 		MainPlayerController->UpdatePrimaryWeapon();
+	}
+}
+
+void AFP_FirstPersonCharacter::TriggerCrosshairToggle(bool Hidden)
+{
+	if(MainPlayerController)
+	{
+		MainPlayerController->ToggleCrosshair(Hidden);
+	}
+}
+
+void AFP_FirstPersonCharacter::TriggerSniperToggle(bool Hidden)
+{
+	if(MainPlayerController)
+	{
+		MainPlayerController->ToggleSniperScope(Hidden);
+	}
+}
+
+void AFP_FirstPersonCharacter::TriggerRarityUpdate()
+{
+	if(MainPlayerController)
+	{
+		ERarity CurrentRarity = WeaponComponent->GetWeaponInfo()->ItemRarity;
+
+		switch (CurrentRarity)
+		{
+		case Common:
+			MainPlayerController->UpdateWeaponRarity(0);
+			break;
+		case Uncommon:
+			MainPlayerController->UpdateWeaponRarity(1);
+			break;
+		case Rare:
+			MainPlayerController->UpdateWeaponRarity(2);
+			break;
+		case SuperRare:
+			MainPlayerController->UpdateWeaponRarity(3);
+			break;
+		case Legendary:
+			MainPlayerController->UpdateWeaponRarity(4);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
