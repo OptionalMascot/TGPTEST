@@ -65,15 +65,16 @@ void AGrenadeWeapon::SphereCastForTargets()
 	{
 		for(int i = 0; i < OutHits.Num(); i++)
 		{
-			UGameplayStatics::ApplyDamage(OutHits[i].GetActor(), _throwableInfo->Damage, _spawnedBy, _spawnedBy->GetPawn(), UDamageType::StaticClass());
-			if(OutHits[i].GetActor() != nullptr)
+			AActor* actor = OutHits[i].GetActor();
+			if(actor != nullptr)
 			{
-				if(!appliedPhysics.Contains(OutHits[i].GetActor()))
+				if(!appliedPhysics.Contains(actor))
 				{
-					appliedPhysics.Add(OutHits[i].GetActor());
-					//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, OutHits[i].GetActor()->GetName());
-					UStaticMeshComponent* mesh = OutHits[i].GetActor()->FindComponentByClass<UStaticMeshComponent>();
-					USkeletalMeshComponent* skeleMesh = OutHits[i].GetActor()->FindComponentByClass<USkeletalMeshComponent>();
+					UGameplayStatics::ApplyDamage(actor, _throwableInfo->Damage, _spawnedBy, _spawnedBy->GetPawn(), UDamageType::StaticClass());
+					appliedPhysics.Add(actor);
+					UStaticMeshComponent* mesh = actor->FindComponentByClass<UStaticMeshComponent>();
+					USkeletalMeshComponent* skeleMesh = actor->FindComponentByClass<USkeletalMeshComponent>();
+					
 					if(skeleMesh)
 					{
 						skeleMesh->AddRadialForce(ItemSkeletalMesh->GetComponentLocation(), _throwableInfo->ExplosionRadius, _throwableInfo->KnockbackForce, ERadialImpulseFalloff::RIF_Linear, false);
@@ -84,6 +85,7 @@ void AGrenadeWeapon::SphereCastForTargets()
 						mesh->AddRadialForce(ItemSkeletalMesh->GetComponentLocation(), _throwableInfo->ExplosionRadius, _throwableInfo->KnockbackForce, ERadialImpulseFalloff::RIF_Linear, false);
 						continue;
 					}
+					
 				}
 			}
 		}

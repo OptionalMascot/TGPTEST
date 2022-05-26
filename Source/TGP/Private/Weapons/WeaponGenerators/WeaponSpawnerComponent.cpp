@@ -53,22 +53,44 @@ void UWeaponSpawnerComponent::BeginPlay()
 
 void UWeaponSpawnerComponent::SpawnRandomWeapon()
 {
+	bool validItem = false;
 	UBaseGameInstance* instance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	ATGPGameModeBase* GameMode = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
-	UGunItem* newGun = GameMode->CreateItemByUniqueId<UGunItem>(instance->GetRandomItemIdOfCategory(EItemCategory::Gun), 1);
-	AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(_itemActorClass, GetOwner()->GetActorLocation(), FRotator());
-	ItemActor->Initialize(newGun);
-	ItemActor->AddInitialThrowForce(FVector(0.0f, 0.0f, 1.0f), 400000.0f);
+	UGunItem* newGun = nullptr;
+	while(!validItem)
+	{
+		newGun = GameMode->CreateItemByUniqueId<UGunItem>(instance->GetRandomItemIdOfCategory(EItemCategory::Gun), 1);
+		UItemInfo* info = newGun->GetItemInfo();
+		if(info->WeaponType != EWeaponType::Sword)
+			validItem = true;
+	}
+	if(newGun)
+	{
+		AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(_itemActorClass, GetOwner()->GetActorLocation(), FRotator());
+		ItemActor->Initialize(newGun);
+		ItemActor->AddInitialThrowForce(FVector(0.0f, 0.0f, 1.0f), 400000.0f);
+	}
 }
 
 void UWeaponSpawnerComponent::SpawnRandomRarityWeapon()
 {
+	bool validItem = false;
 	UBaseGameInstance* instance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	ATGPGameModeBase* GameMode = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
-	UGunItem* newGun = GameMode->CreateItemByUniqueId<UGunItem>(instance->GetRandomItemIdOfCategory(EItemCategory::Gun, _itemRarity), 1);
-	AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(_itemActorClass, GetOwner()->GetActorLocation(), FRotator());
-	ItemActor->Initialize(newGun);
-	ItemActor->AddInitialThrowForce(FVector(0.0f, 0.0f, 1.0f), 400000.0f);
+	UGunItem* newGun = nullptr;
+	while(!validItem)
+	{
+		newGun = GameMode->CreateItemByUniqueId<UGunItem>(instance->GetRandomItemIdOfCategory(EItemCategory::Gun, _itemRarity), 1);
+		UItemInfo* info = newGun->GetItemInfo();
+		if(info->WeaponType != EWeaponType::Sword)
+			validItem = true;
+	}
+	if(newGun)
+	{
+		AItemActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(_itemActorClass, GetOwner()->GetActorLocation(), FRotator());
+		ItemActor->Initialize(newGun);
+		ItemActor->AddInitialThrowForce(FVector(0.0f, 0.0f, 1.0f), 400000.0f);
+	}
 }
 
 void UWeaponSpawnerComponent::SpawnSetWeapon()

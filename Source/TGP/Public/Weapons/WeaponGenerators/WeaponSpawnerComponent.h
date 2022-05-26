@@ -35,10 +35,10 @@ protected:
 	void SpawnRandomRarityWeapon();
 	void SpawnSetWeapon();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) UGunInfo* _gunInfo;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) TEnumAsByte<EItemSpawn> _itemSpawnMode;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) TEnumAsByte<enum ERarity> _itemRarity;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) int _spawnAmount;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) UGunInfo* _gunInfo;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) TEnumAsByte<EItemSpawn> _itemSpawnMode;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) TEnumAsByte<enum ERarity> _itemRarity;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawn Info", Meta = (AllowPrivateAccess = true)) int _spawnAmount;
 	
 public:	
 	void SpawnWeapon();
