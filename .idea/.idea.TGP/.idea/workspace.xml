@@ -94,6 +94,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="C++ Project.TGP">
@@ -372,7 +376,7 @@
       <workItem from="1653503103384" duration="824000" />
       <workItem from="1653514830895" duration="12000" />
       <workItem from="1653514921725" duration="398000" />
-      <workItem from="1653532625925" duration="313000" />
+      <workItem from="1653532625925" duration="1523000" />
     </task>
     <servers />
   </component>

@@ -716,13 +716,13 @@ void AFP_FirstPersonCharacter::NewAim()
 	case EWeaponType::TwoHand:
 		if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("SMGGGG"));
 			AdjustToIrons();
 			break;
 		}
 
 		if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 		{
+			FP_Gun->SetHiddenInGame(true);
 			break;
 		}
 		
@@ -747,6 +747,11 @@ void AFP_FirstPersonCharacter::NewStopAim()
 {
 	if(IsAiming)
 	{
+		if(FP_Gun->bHiddenInGame)
+		{
+			FP_Gun->SetHiddenInGame(false);
+		}
+		
 		TriggerCrosshairToggle(false);
 		Mesh1P->SetHiddenInGame(false);
 		IsAiming = false;
@@ -758,6 +763,11 @@ void AFP_FirstPersonCharacter::NewStopAim()
 
 void AFP_FirstPersonCharacter::ResetAim()
 {
+	if(FP_Gun->bHiddenInGame)
+	{
+		FP_Gun->SetHiddenInGame(false);
+	}
+	
 	TriggerCrosshairToggle(false);
 	Mesh1P->SetHiddenInGame(false);
 	IsAiming = false;
