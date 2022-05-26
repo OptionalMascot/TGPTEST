@@ -218,6 +218,9 @@ private:
 
 	UPROPERTY()
 	class AMainPlayerController* MainPlayerController;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio", meta=(AllowPrivateAccess = true))
+	class USoundCue* ReloadSound;
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }

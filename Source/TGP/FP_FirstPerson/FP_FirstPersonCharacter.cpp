@@ -267,11 +267,15 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 		return;
 	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Start Reload"));
+	StopSprint();
 
 	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
 	if(AnimInstance)
 	{
-		AnimInstance->Montage_Play(CombatMontage, WeaponComponent->GetWeaponInfo()->ReloadSpeed);
+		float ReloadID = CombatMontage->GetSectionIndex("Reload");
+		float ReloadRawLength = CombatMontage->GetSectionLength(ReloadID);
+		float AdjustedTime = ReloadRawLength / WeaponComponent->GetWeaponInfo()->ReloadSpeed;
+		AnimInstance->Montage_Play(CombatMontage, AdjustedTime);
 		AnimInstance->Montage_JumpToSection("Reload", CombatMontage);
 	}
 }
