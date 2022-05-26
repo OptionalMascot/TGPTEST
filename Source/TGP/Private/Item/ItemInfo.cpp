@@ -7,13 +7,13 @@
 
 void UItemInfo::GenerateStats()
 {
-	if (UniqueId == 0)
-	{
-		FMath::RandInit(FDateTime::Now().GetMillisecond() + FDateTime::Now().GetSecond());
-		UniqueId = FMath::RandRange(78000, INT32_MAX);
-	}
-	
 	ItemShortName = FString::Printf(TEXT("%s.%s"), *UEnum::GetValueAsString(ItemCategory), *ItemName);
+}
+
+void UItemInfo::GenerateNewId()
+{
+	FMath::RandInit(FDateTime::Now().GetMillisecond() + FDateTime::Now().GetSecond());
+	UniqueId = FMath::RandRange(78000, INT32_MAX);
 }
 
 FPrimaryAssetId UItemInfo::GetPrimaryAssetId() const
