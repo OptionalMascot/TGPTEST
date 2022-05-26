@@ -270,7 +270,7 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 	StopSprint();
 
 	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-	if(AnimInstance)
+	if(AnimInstance && WeaponComponent->GetCurrentAmmo().Y > 0)
 	{
 		float ReloadID = CombatMontage->GetSectionIndex("Reload");
 		float ReloadRawLength = CombatMontage->GetSectionLength(ReloadID);
@@ -443,6 +443,9 @@ UWeaponItem* AFP_FirstPersonCharacter::GetUnusedItem()
 void AFP_FirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ToggleIronSightVisiblity(true);
+	ToggleSniperScopeVisibility(true);
 	
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AFP_FirstPersonCharacter::OnOverlapWithActor);
 
@@ -544,6 +547,16 @@ void AFP_FirstPersonCharacter::AttachWeapon()
 	case EWeaponType::OneHand:
 		{
 			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("PistolSocket"));
+			if(FP_Gun->SkeletalMesh->GetName().Contains("Machine"))
+			{
+				ToggleIronSightVisiblity(false);
+				ToggleSniperScopeVisibility(true);
+			}
+			else
+			{
+				ToggleIronSightVisiblity(true);
+				ToggleSniperScopeVisibility(true);
+			}
 			break;
 		}
 	case EWeaponType::TwoHand:
@@ -551,10 +564,23 @@ void AFP_FirstPersonCharacter::AttachWeapon()
 			if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
 			{
 				FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("SubMachineSocket"));
+				ToggleIronSightVisiblity(true);
+				ToggleSniperScopeVisibility(true);
 			}
 			else
 			{
 				FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+				if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+				{
+					ToggleIronSightVisiblity(true);
+					ToggleSniperScopeVisibility(false);
+				}
+				else
+				{
+					ToggleIronSightVisiblity(false);
+					ToggleSniperScopeVisibility(true);
+				}
+					
 			}
 			break;
 		}

@@ -284,6 +284,12 @@ public:
 	void TriggerCrosshairToggle(bool Hidden);
 	void TriggerSniperToggle(bool Hidden);
 	void TriggerRarityUpdate();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleSniperScopeVisibility(bool Hidden);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleIronSightVisiblity(bool Hidden);
 };
 
 
