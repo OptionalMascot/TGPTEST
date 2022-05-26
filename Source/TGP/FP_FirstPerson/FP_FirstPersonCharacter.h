@@ -229,6 +229,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Movement", meta=(AllowPrivateAccess = true))
 	float M_SprintSpeed;
 
+	bool IsMovingForward = false;
+	bool IsMovingRight = false;
+
 	FVector M_RifleAimOffset;
 	FVector M_PistolAimoffset;
 

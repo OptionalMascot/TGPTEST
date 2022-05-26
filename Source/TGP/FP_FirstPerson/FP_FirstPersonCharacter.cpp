@@ -219,8 +219,16 @@ void AFP_FirstPersonCharacter::MoveForward(float Value)
 {
 	if (Value != 0.0f)
 	{
+		IsMovingForward = true;
 		// Add movement in that direction
 		AddMovementInput(GetActorForwardVector(), Value);
+	}
+	else
+	{
+		if(!IsMovingRight)
+		{
+			StopSprint();
+		}
 	}
 }
 
@@ -228,8 +236,13 @@ void AFP_FirstPersonCharacter::MoveRight(float Value)
 {
 	if (Value != 0.0f)
 	{
+		IsMovingRight = true;
 		// Add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
+	}
+	else
+	{
+		IsMovingRight = false;
 	}
 }
 
@@ -670,7 +683,7 @@ void AFP_FirstPersonCharacter::AttachWeapon()
 
 void AFP_FirstPersonCharacter::Sprint()
 {
-	if(!IsReloading)
+	if(!IsReloading && GetVelocity().Size() != 0)
 	{
 		IsSprinting = true;
 		GetCharacterMovement()->MaxWalkSpeed = M_SprintSpeed;
