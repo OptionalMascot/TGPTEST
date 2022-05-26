@@ -295,4 +295,7 @@ public:
 	void TriggerPrimaryIconUpdate();
 	void TriggerSecondaryIconUpdate();
 	void TriggerCrosshairToggle(bool Hidden);
+	void TriggerSniperToggle(bool Hidden);
 };
+
+

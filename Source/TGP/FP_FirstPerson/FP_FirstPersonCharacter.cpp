@@ -574,6 +574,7 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	
 	TriggerHealthUpdate();
 	TriggerPrimaryIconUpdate();
+	TriggerSniperToggle(true);
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -720,8 +721,7 @@ void AFP_FirstPersonCharacter::NewAim()
 
 		if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 		{
-			FP_Gun->SetHiddenInGame(true);
-			break;
+			TriggerSniperToggle(false);
 		}
 		
 		AdjustToSight();
@@ -745,9 +745,9 @@ void AFP_FirstPersonCharacter::NewStopAim()
 {
 	if(IsAiming)
 	{
-		if(FP_Gun->bHiddenInGame)
+		if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 		{
-			FP_Gun->SetHiddenInGame(false);
+			TriggerSniperToggle(true);
 		}
 		
 		TriggerCrosshairToggle(false);
@@ -761,9 +761,9 @@ void AFP_FirstPersonCharacter::NewStopAim()
 
 void AFP_FirstPersonCharacter::ResetAim()
 {
-	if(FP_Gun->bHiddenInGame)
+	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 	{
-		FP_Gun->SetHiddenInGame(false);
+		TriggerSniperToggle(true);
 	}
 	
 	TriggerCrosshairToggle(false);
@@ -886,6 +886,14 @@ void AFP_FirstPersonCharacter::TriggerCrosshairToggle(bool Hidden)
 	if(MainPlayerController)
 	{
 		MainPlayerController->ToggleCrosshair(Hidden);
+	}
+}
+
+void AFP_FirstPersonCharacter::TriggerSniperToggle(bool Hidden)
+{
+	if(MainPlayerController)
+	{
+		MainPlayerController->ToggleSniperScope(Hidden);
 	}
 }
 

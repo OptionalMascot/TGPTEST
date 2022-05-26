@@ -47,4 +47,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void ToggleCrosshair(bool hidden);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ToggleSniperScope(bool hidden);	
 };
