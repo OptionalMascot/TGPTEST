@@ -49,5 +49,8 @@ public:
 	void ToggleCrosshair(bool hidden);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void ToggleSniperScope(bool hidden);	
+	void ToggleSniperScope(bool hidden);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateWeaponRarity(int rarity);
 };

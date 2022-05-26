@@ -299,6 +299,8 @@ public:
 	void TriggerSecondaryIconUpdate();
 	void TriggerCrosshairToggle(bool Hidden);
 	void TriggerSniperToggle(bool Hidden);
+	void TriggerRarityUpdate();
 };
+
 
 

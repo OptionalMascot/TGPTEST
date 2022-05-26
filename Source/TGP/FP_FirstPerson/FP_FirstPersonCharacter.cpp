@@ -414,6 +414,7 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	AttachWeapon();
 	
 	TriggerPrimaryIconUpdate();
+	TriggerRarityUpdate();
 }
 
 void AFP_FirstPersonCharacter::SrvHitScan_Implementation() // Rep is so scuffed within Gun actor I moved it here. I'm giving up on life at this point.
@@ -587,6 +588,7 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	
 	TriggerHealthUpdate();
 	TriggerPrimaryIconUpdate();
+	TriggerRarityUpdate();
 	TriggerSniperToggle(true);
 }
 
@@ -907,6 +909,35 @@ void AFP_FirstPersonCharacter::TriggerSniperToggle(bool Hidden)
 	if(MainPlayerController)
 	{
 		MainPlayerController->ToggleSniperScope(Hidden);
+	}
+}
+
+void AFP_FirstPersonCharacter::TriggerRarityUpdate()
+{
+	if(MainPlayerController)
+	{
+		ERarity CurrentRarity = WeaponComponent->GetWeaponInfo()->ItemRarity;
+
+		switch (CurrentRarity)
+		{
+		case Common:
+			MainPlayerController->UpdateWeaponRarity(0);
+			break;
+		case Uncommon:
+			MainPlayerController->UpdateWeaponRarity(1);
+			break;
+		case Rare:
+			MainPlayerController->UpdateWeaponRarity(2);
+			break;
+		case SuperRare:
+			MainPlayerController->UpdateWeaponRarity(3);
+			break;
+		case Legendary:
+			MainPlayerController->UpdateWeaponRarity(4);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
