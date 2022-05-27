@@ -255,6 +255,11 @@ void AFP_FirstPersonCharacter::PickupWeapon()
 
 void AFP_FirstPersonCharacter::DropWeapon()
 {
+	if (PlayerInventory->GetSelectedWeaponSlot() == EWeaponSlot::Melee)
+	{
+		return;
+	}
+	
 	WeaponComponent->DropWeapon();
 	PlayerInventory->SrvDropWeapon(PlayerInventory->GetSelectedWeaponSlot());
 	//PlayerInventory->DropWeapon();
