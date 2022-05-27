@@ -102,7 +102,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") class UThrowableInfo* ProjectileToSpawn;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float ProjectileLaunchSpeed;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") bool RequiresTracer = true;
-    	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") float ADSMultiplier = 1.0f;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GunInfo") bool UnlimitedAmmo = false;
 

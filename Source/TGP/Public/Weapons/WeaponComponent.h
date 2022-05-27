@@ -35,6 +35,8 @@ protected:
 	
 	bool _canUse;
 	bool _singleFireCheck;
+
+	bool _IsADS;
 	
 	UPROPERTY() class UGunItem* _weaponItem;
 	UPROPERTY() class UGunInfo* _weaponInfo;
@@ -54,6 +56,8 @@ public:
 	UFUNCTION(BlueprintCallable) UGunInfo* GetWeaponInfo() { return _weaponInfo; }
 	UFUNCTION(BlueprintCallable) virtual FVector2D GetCurrentAmmo() { return FVector2D(); };
 	UPROPERTY(BlueprintAssignable, Category = "Components") FOnFireSuccess onFireSuccess;
+
+	void SetADS(bool value) { _IsADS = value;}
 	
 	void StartUse(){ _canUse = false;	}
 	void EndUse(){ _canUse = true;	}
