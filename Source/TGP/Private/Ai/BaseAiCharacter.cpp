@@ -127,6 +127,8 @@ void ABaseAiCharacter::SetHidden(bool bEnemyHidden)
 {
 	GetMesh()->SetVisibility(!bEnemyHidden);
 	GetCapsuleComponent()->SetCollisionEnabled(bEnemyHidden ? ECollisionEnabled::Type::NoCollision : ECollisionEnabled::Type::QueryAndPhysics);
+	if (bEnemyHidden)
+	 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
 	GetCharacterMovement()->SetMovementMode(bEnemyHidden ? EMovementMode::MOVE_None : EMovementMode::MOVE_Walking);
 
 	if (bEnemyHidden)
