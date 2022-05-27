@@ -352,6 +352,45 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 			MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
 		}
 	}
+
+	switch (WeaponComponent->GetWeaponInfo()->WeaponType)
+	{
+	case EWeaponType::Sword:
+		ToggleIronSightVisiblity(false);
+		ToggleSniperScopeVisibility(false);
+		break;
+	case EWeaponType::OneHand:
+		if(FP_Gun->SkeletalMesh->GetName().Contains("Machine"))
+		{
+			ToggleIronSightVisiblity(true);
+			ToggleSniperScopeVisibility(false);
+		}
+		else
+		{
+			ToggleIronSightVisiblity(true);
+			ToggleSniperScopeVisibility(false);
+		}
+		break;
+	case EWeaponType::TwoHand:
+		
+		if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
+		{
+			ToggleIronSightVisiblity(true);
+			ToggleSniperScopeVisibility(false);
+			break;
+		}
+
+		if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
+		{
+			ToggleIronSightVisiblity(false);
+			ToggleSniperScopeVisibility(true);
+			break;
+		}
+
+		ToggleIronSightVisiblity(true);
+		ToggleSniperScopeVisibility(false);
+		break;
+	}
 }
 
 
