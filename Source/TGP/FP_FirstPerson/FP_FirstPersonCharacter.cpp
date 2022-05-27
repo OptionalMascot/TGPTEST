@@ -146,10 +146,12 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 
 void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 {
-	IsReloading = false;
-	CanFire = true;
 	if (Val != 0.f)
 	{
+		IsMeleeAttacking = false;
+		IsReloading = false;
+		CanFire = true;
+		
 		if ((int)Val - 1 != PlayerInventory->GetSelectedWeaponSlot())
 		{
 			ResetAim();
@@ -279,7 +281,7 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 	StopSprint();
 
 	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-	if(AnimInstance && WeaponComponent->GetCurrentAmmo().Y > 0 && !IsReloading)
+	if(AnimInstance && WeaponComponent->GetCurrentAmmo().Y > 0)
 	{
 		IsReloading = true;
 		float ReloadID = CombatMontage->GetSectionIndex("Reload");
@@ -341,11 +343,11 @@ void AFP_FirstPersonCharacter::OnWeaponChanged(UWeaponItem* WeaponItem)
 	{
 		if(WeaponComponent->GetWeaponInfo()->WeaponType == Sword)
 		{
-			MainPlayerController->ToggleAmmoDisplay(false);
+			MainPlayerController->ToggleAmmoDisplay(true);
 		}
 		else
 		{
-			MainPlayerController->ToggleAmmoDisplay(true);
+			MainPlayerController->ToggleAmmoDisplay(false);
 			MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
 			MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
 		}
