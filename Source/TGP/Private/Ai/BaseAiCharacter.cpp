@@ -187,23 +187,26 @@ void ABaseAiCharacter::SetMoveType()
 {
 	const int MoveType = FMath::RandRange(0,2);
 
-	switch (MoveType)
-	{
-		case 0:
-			ZombieType = EZombieMoveType::MoveState_SlowWalking;
-			GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed * SlowWalkMultiplier;
-			break;
-		case 1:
-			ZombieType = EZombieMoveType::MoveState_NormalWalking;
-			GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed;
-			break;
-		case 2:
-			ZombieType = EZombieMoveType::MoveState_Running;
-			GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed * RunMultiplier;
-			break;
-		default:
-			break;
-	}
+	ZombieType = EZombieMoveType::MoveState_Running;
+	GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed * RunMultiplier;
+	
+	//switch (MoveType)
+	//{
+	//	case 0:
+	//		ZombieType = EZombieMoveType::MoveState_SlowWalking;
+	//		GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed * SlowWalkMultiplier;
+	//		break;
+	//	case 1:
+	//		ZombieType = EZombieMoveType::MoveState_NormalWalking;
+	//		GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed;
+	//		break;
+	//	case 2:
+	//		ZombieType = EZombieMoveType::MoveState_Running;
+	//		GetCharacterMovement()->MaxWalkSpeed = EnemyStats->DefaultWalkSpeed * RunMultiplier;
+	//		break;
+	//	default:
+	//		break;
+	//}
 }
 
 void ABaseAiCharacter::RightColliderOn()
