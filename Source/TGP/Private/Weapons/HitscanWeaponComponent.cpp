@@ -79,7 +79,7 @@ bool UHitscanWeaponComponent::OnFire()
 			for(int i = 0; i < _weaponInfo->BulletsPerShot; i++)
 			{
 				FVector newSpread = BulletSpreadCalculation(CameraRot.Vector(), _parent->GetActorUpVector(), _parent->GetActorRightVector(), FVector2D(_weaponInfo->Spread.X, _weaponInfo->Spread.Y));
-				if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + newSpread * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
+				if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + newSpread * 50000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
 				{
 					if(!result.GetActor()->ActorHasTag("Player"))
 					{
