@@ -24,12 +24,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class UWidgetComponent* _widget;
 
 	UPROPERTY() AActor* _spawnedBy;
-		
+	UPROPERTY() APlayerController* _controller;
 	float _aliveTime;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable) void SetText(int num);
-	UFUNCTION(BlueprintCallable) void SetSpawnedBy(AActor* spawned) { _spawnedBy = spawned; }
+	UFUNCTION(BlueprintCallable) void SetSpawnedBy(AActor* spawned);
 	UWidgetComponent* GetWidget() { return _widget; }
 };
+
