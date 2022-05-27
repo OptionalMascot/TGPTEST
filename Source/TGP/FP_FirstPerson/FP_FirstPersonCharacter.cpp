@@ -835,11 +835,11 @@ void AFP_FirstPersonCharacter::TriggerPrimaryIconUpdate()
 
 void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
 {
-	//if(MainPlayerController)
-	//{
-	//	MainPlayerController->SecondaryIcon = GetUnusedItem()->GetItemInfo()->ItemIcon;
-	//	MainPlayerController->UpdateSecondaryWeapon();
-	//}
+	if(MainPlayerController)
+	{
+		MainPlayerController->SecondaryIcon = GetUnusedItem()->GetItemInfo()->ItemIcon;
+		MainPlayerController->UpdateSecondaryWeapon();
+	}
 }
 
 void AFP_FirstPersonCharacter::TriggerCrosshairToggle(bool Hidden)
