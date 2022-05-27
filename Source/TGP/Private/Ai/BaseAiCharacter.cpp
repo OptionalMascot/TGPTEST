@@ -29,6 +29,8 @@ void ABaseAiCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	StopRepeatAnim = false;
+	
 	RightHandCollider->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RightArmCollider"));
 	RightHandCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	RightHandCollider->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
@@ -79,11 +81,13 @@ void ABaseAiCharacter::OnEnemyDied(AController* Causer)
 
 	UE_LOG(LogTemp, Warning, TEXT("Zombie Died"));
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "Kill Zombie");
 
 	GetCharacterMovement()->MaxWalkSpeed = 0.0f;
 
-	if(AnimInstance)
+	if(AnimInstance && !StopRepeatAnim)
 	{
+		StopRepeatAnim = true;
 		if(!GetMesh()->GetAnimInstance()->Montage_IsPlaying(DeathMontage))
 		{
 			int DeathAnim = FMath::RandRange(0, DeathMontage->CompositeSections.Num() - 1);
@@ -101,6 +105,8 @@ void ABaseAiCharacter::OnEnemyDied(AController* Causer)
 
 void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 {
+	StopRepeatAnim = false;
+	
 	SetActorLocation(RespawnPos + FVector(0.f, 0.f, 300.f), false, nullptr, ETeleportType::TeleportPhysics);
 
 	if (EnemyStats)

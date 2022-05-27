@@ -47,7 +47,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio") class USoundCue* AttackSound;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Audio") class USoundCue* HeavyAttackSound;
 	
-
+	bool StopRepeatAnim;
+	
 public:
 	ABaseAiCharacter();
 	
