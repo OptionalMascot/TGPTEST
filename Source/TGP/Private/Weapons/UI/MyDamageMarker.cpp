@@ -6,6 +6,7 @@
 #include "Components/SceneComponent.h"
 #include "Weapons/UI/UserWidgetTest.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMyDamageMarker::AMyDamageMarker()
@@ -30,10 +31,16 @@ void AMyDamageMarker::BeginPlay()
 
 void AMyDamageMarker::WidgetBillboardAndMove(float DeltaTime)
 {
-	if(_spawnedBy)
+	if(_spawnedBy && _controller)
 	{
+		FVector CameraLoc;
+		FRotator CameraRot;
+		
+		_controller->GetPlayerViewPoint(CameraLoc, CameraRot);
+
+		
 		FVector start = GetActorLocation();
-		FVector target = _spawnedBy->GetActorLocation();
+		FVector target = CameraLoc;
 		FRotator rotator = UKismetMathLibrary::FindLookAtRotation(start, target);
 		SetActorRotation(rotator);
 	}
@@ -44,6 +51,13 @@ void AMyDamageMarker::WidgetBillboardAndMove(float DeltaTime)
 		Destroy();
 	}
 }
+
+void AMyDamageMarker::SetSpawnedBy(AActor* spawned)
+{
+	_spawnedBy = spawned;
+	_controller = Cast<APlayerController>(UGameplayStatics::GetPlayerControllerFromID(GetWorld(), 0));
+}
+
 
 // Called every frame
 void AMyDamageMarker::Tick(float DeltaTime)
