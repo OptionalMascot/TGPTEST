@@ -16,11 +16,7 @@ AWeaponSpawnerChest::AWeaponSpawnerChest()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	_sceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
-	SetRootComponent(_sceneRoot);
-	
-	_staticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	_staticMesh->SetupAttachment(_sceneRoot);
+	_sceneRoot = _staticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	_health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health Component"));
 	AddOwnedComponent(_health);

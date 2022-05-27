@@ -11,6 +11,16 @@
 class ABaseAiCharacter;
 class UAiCharacterData;
 
+USTRUCT(BlueprintType)
+struct FPlayerStats
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) int EnemiesKilled = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) int RoundAchieved = 0;
+};
+
 UCLASS()
 class TGP_API ATGPGameModeBase : public AGameModeBase
 {
@@ -28,6 +38,8 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<ABaseAiCharacter> AiActorClassCPlayer;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<ABaseAiCharacter> AiActorClassCObjective;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) TSubclassOf<class AWeaponSpawnerChest> ChestClass;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) UAiCharacterData* RegularZombieClass;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemies", Meta = (AllowPrivateAccess = true)) UAiCharacterData* SpitterZombieClass;
@@ -50,10 +62,13 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Regions", Meta = (AllowPrivateAccess = true)) TArray<ARegion*> regions;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Regions", Meta = (AllowPrivateAccess = true)) ARegion* currentRegion;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats", Meta = (AllowPrivateAccess = true)) FPlayerStats PlayerStats;
+
 	void BeginRound();
 	void BeginRoundDelay();
 	void EndRound();
 	
+	UFUNCTION(CallInEditor) void SpawnAirDrop();
 
 	bool TrySpawnEnemy();
 
@@ -67,6 +82,8 @@ class TGP_API ATGPGameModeBase : public AGameModeBase
 	void GetMainController();
 	UFUNCTION(CallInEditor) void DEBUG_KILL_ENEMY();
 
+	UFUNCTION(BlueprintCallable) FPlayerStats GetStats() const { return PlayerStats; }
+	
 protected:
 	virtual void BeginPlay() override;
 	
