@@ -146,6 +146,8 @@ void AFP_FirstPersonCharacter::SetupPlayerInputComponent(class UInputComponent* 
 
 void AFP_FirstPersonCharacter::ChangeWeapon(float Val)
 {
+	IsReloading = false;
+	CanFire = true;
 	if (Val != 0.f)
 	{
 		if ((int)Val - 1 != PlayerInventory->GetSelectedWeaponSlot())
