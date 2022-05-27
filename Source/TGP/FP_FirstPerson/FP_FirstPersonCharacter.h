@@ -282,6 +282,7 @@ public:
 	void TriggerCrosshairToggle(bool Hidden);
 	void TriggerSniperToggle(bool Hidden);
 	void TriggerRarityUpdate();
+	void HUDSetUP();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void ToggleSniperScopeVisibility(bool Visible);

@@ -503,25 +503,7 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	{
 		MainPlayerController = Cast<AMainPlayerController>(GetController());
 	}
-
-	if(MainPlayerController)
-	{
-		TriggerHealthUpdate();
-		TriggerPrimaryIconUpdate();
-		TriggerSecondaryIconUpdate();
-		TriggerRarityUpdate();
-		TriggerSniperToggle(true);
-
-		if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
-		{
-			MainPlayerController->ToggleAmmoDisplay(true);
-		}
-		else
-		{
-			MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
-			MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
-		}
-	}
+	
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -930,6 +912,28 @@ void AFP_FirstPersonCharacter::TriggerRarityUpdate()
 	}
 }
 
+void AFP_FirstPersonCharacter::HUDSetUP()
+{
+	if(MainPlayerController)
+	{
+		TriggerHealthUpdate();
+		TriggerPrimaryIconUpdate();
+		TriggerSecondaryIconUpdate();
+		TriggerRarityUpdate();
+		TriggerSniperToggle(true);
+
+		if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
+		{
+			MainPlayerController->ToggleAmmoDisplay(true);
+		}
+		else
+		{
+			MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
+			MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
+		}
+	}
+}
+
 
 void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -943,6 +947,5 @@ void AFP_FirstPersonCharacter::MeleeDamage(UPrimitiveComponent* OverlappedCompon
 			ABaseAiCharacter* HitEnemy = Cast<ABaseAiCharacter>(OtherActor);
 			UGameplayStatics::PlaySound2D(this, HitEnemy->DamagedSound);
 		}
-		
 	}
 }
