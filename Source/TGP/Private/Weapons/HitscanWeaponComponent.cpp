@@ -79,7 +79,7 @@ bool UHitscanWeaponComponent::OnFire()
 			for(int i = 0; i < _weaponInfo->BulletsPerShot; i++)
 			{
 				FVector newSpread = BulletSpreadCalculation(CameraRot.Vector(), _parent->GetActorUpVector(), _parent->GetActorRightVector(), FVector2D(_weaponInfo->Spread.X, _weaponInfo->Spread.Y));
-				if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + newSpread * 10000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
+				if(DoRaycastReturnResult(GetWorld(), result, CameraLoc, CameraLoc + newSpread * 50000.0f, ECollisionChannel::ECC_Visibility)) // If hitting something
 				{
 					if(!result.GetActor()->ActorHasTag("Player"))
 					{
@@ -168,12 +168,18 @@ void UHitscanWeaponComponent::CancelReload(AActor* actor)
 // If backwards and full auto, AdjustRecoilForCompensate judges how far the gun should move back down, and cancels any movement lower than origin
 void UHitscanWeaponComponent::RecoilTimelineProgressPitch(float Value)
 {
-	ApplyRecoilPitch(_parentController, Value * 100.0f, _weaponInfo->FireType == EFireType::Single);
+	float adsNum = 1.0f;
+	if(_IsADS)
+		adsNum = _weaponInfo->ADSMultiplier;
+	ApplyRecoilPitch(_parentController, Value * 100.0f * adsNum, _weaponInfo->FireType == EFireType::Single);
 }
 
 void UHitscanWeaponComponent::RecoilTimelineProgressYaw(float Value)
 {
-	ApplyRecoilYaw(_parentController, Value * 100.0f, _weaponInfo->FireType == EFireType::Single);
+	float adsNum = 1.0f;
+	if(_IsADS)
+		adsNum = _weaponInfo->ADSMultiplier;
+	ApplyRecoilYaw(_parentController, Value * 100.0f * adsNum, _weaponInfo->FireType == EFireType::Single);
 }
 
 void UHitscanWeaponComponent::RecoilTimelineFinished()

@@ -89,8 +89,8 @@ void UPlayerInventory::InitDefaultGuns()
 
 	if (GM)
 	{
-		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(72953608), 0);
-		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(214248416), 1);
+		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(216148944), 0);
+		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(193932368), 1);
 		AddWeapon(GM->CreateItemByUniqueId<UGunItem>(137833872), 2);
 
 		AddUtility(GM->CreateItemByUniqueId<UThrowableItem>(92876440, 3), 0);

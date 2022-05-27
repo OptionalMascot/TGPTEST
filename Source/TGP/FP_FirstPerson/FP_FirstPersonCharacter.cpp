@@ -262,7 +262,7 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 	{
 		return;
 	}
-
+	
 	if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 		return;
 	
@@ -653,6 +653,7 @@ void AFP_FirstPersonCharacter::NewAim()
 	}
 	
 	IsAiming = true;
+	WeaponComponent->SetADS(true);
 	if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 	{
 		M_CameraSensitivity = M_DefaultCameraSensitivity/M_SniperSensitivity;
@@ -706,6 +707,8 @@ void AFP_FirstPersonCharacter::NewStopAim()
 		{
 			TriggerSniperToggle(true);
 		}
+
+		WeaponComponent->SetADS(false);
 		
 		TriggerCrosshairToggle(false);
 		Mesh1P->SetHiddenInGame(false);
