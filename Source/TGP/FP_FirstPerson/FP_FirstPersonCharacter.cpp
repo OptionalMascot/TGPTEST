@@ -95,6 +95,8 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 	AimOffset = CreateDefaultSubobject<USceneComponent>(TEXT("Aim Weapon Location"));
 	AimOffset->SetupAttachment(FirstPersonCameraComponent);
 
+	IsReloading = false;
+
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
@@ -270,8 +272,9 @@ void AFP_FirstPersonCharacter::ReloadWeapon()
 	StopSprint();
 
 	UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-	if(AnimInstance && WeaponComponent->GetCurrentAmmo().Y > 0)
+	if(AnimInstance && WeaponComponent->GetCurrentAmmo().Y > 0 && !IsReloading)
 	{
+		IsReloading = true;
 		float ReloadID = CombatMontage->GetSectionIndex("Reload");
 		float ReloadRawLength = CombatMontage->GetSectionLength(ReloadID);
 		float AdjustedTime = ReloadRawLength / WeaponComponent->GetWeaponInfo()->ReloadSpeed;
@@ -544,7 +547,8 @@ void AFP_FirstPersonCharacter::Tick(float DeltaSeconds)
 			//if (HasAuthority())
 			//	WeaponComponent->SrvOnFire();
 			//else
-			WeaponComponent->OnFire();
+			if(WeaponComponent->OnFire())
+				IsReloading = false;
 		}
 	}
 	
@@ -767,6 +771,7 @@ void AFP_FirstPersonCharacter::Reload()
 	IHasAmmo* AmmoRef = Cast<IHasAmmo>(WeaponComponent);
 	if(AmmoRef != nullptr)
 	{
+		IsReloading = false;
 		AmmoRef->TryReload();
 		CanFire = true;
 		MainPlayerController->UpdateCurrentAmmo(WeaponComponent->GetCurrentAmmo().X);
