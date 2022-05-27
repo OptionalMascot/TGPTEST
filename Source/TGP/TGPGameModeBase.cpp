@@ -105,7 +105,7 @@ void ATGPGameModeBase::EndRound()
 	currentRegion->EndOfRound();
 	CurrentRound++;
 
-	PlayerStats.RoundAcheived = CurrentRound;
+	PlayerStats.RoundAchieved = CurrentRound;
 	
 	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false); // Begin Cooldown between rounds
 }
