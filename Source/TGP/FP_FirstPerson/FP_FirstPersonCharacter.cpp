@@ -265,7 +265,7 @@ void AFP_FirstPersonCharacter::DropWeapon()
 
 void AFP_FirstPersonCharacter::ReloadWeapon()
 {
-	if(!WeaponComponent)
+	if(!WeaponComponent || IsReloading)
 	{
 		return;
 	}
