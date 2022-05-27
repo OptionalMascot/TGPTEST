@@ -119,7 +119,8 @@ void ABaseAiCharacter::SpawnEnemy(const FVector& RespawnPos)
 		if(baseAiController)
 			baseAiController->SetObjective(GM->GetCurrentRegionObjective());
 	}
-	
+
+	bIsDead = false;
 	SetHidden(false);
 }
 
@@ -259,6 +260,8 @@ void ABaseAiCharacter::LeftColliderHit(UPrimitiveComponent* OverlappedComponent,
 
 void ABaseAiCharacter::Die()
 {
+	bIsDead = true;
+	
 	SetHidden(true);
 	if (ATGPGameModeBase* GM = Cast<ATGPGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
 		GM->OnEnemyKilled(this);

@@ -29,13 +29,14 @@ void ATGPGameModeBase::BeginPlay()
 	{
 		if(i%2==0)
 		{
-			EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClassCPlayer ? AiActorClassCPlayer : ABaseAiCharacter::StaticClass(), FVector() + (FVector(200.f, 0.f, 500.f) * i), FRotator(), SpawnParams));
+			EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClassCPlayer ? AiActorClassCPlayer : ABaseAiCharacter::StaticClass(), FVector(0.f, 0.f, 10000.f) + (FVector(200.f, 0.f, 0.f) * i), FRotator(), SpawnParams));
 		}
 		else
 		{
-			EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClassCObjective ? AiActorClassCObjective :  ABaseAiCharacter::StaticClass(), FVector() + (FVector(200.f, 0.f, 500.f) * i), FRotator(), SpawnParams));
+			EnemyPool.Add(GetWorld()->SpawnActor<ABaseAiCharacter>(AiActorClassCObjective ? AiActorClassCObjective :  ABaseAiCharacter::StaticClass(), FVector(0.f, 0.f, 10000.f) + (FVector(200.f, 0.f, 0.f) * i), FRotator(), SpawnParams));
 		}
-			EnemyPool[i]->SetHidden(true);
+		
+		EnemyPool[i]->SetHidden(true);
 	}
 
 	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false);
@@ -208,7 +209,7 @@ bool ATGPGameModeBase::TrySpawnEnemy()
 int ATGPGameModeBase::FindAvailableEnemy()
 {
 	for	(uint8 i = 0; i < EnemyPool.Num(); i++)
-		if (!EnemyPool[i]->IsAlive())
+		if (EnemyPool[i]->bIsDead)
 			return i;
 
 	return -1;
