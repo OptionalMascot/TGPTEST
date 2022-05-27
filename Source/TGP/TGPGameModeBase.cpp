@@ -7,6 +7,7 @@
 #include "Ai/BaseAiCharacter.h"
 #include "Ai/AiCharacterData.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Weapons/WeaponGenerators/WeaponSpawnerChest.h"
 
 ATGPGameModeBase::ATGPGameModeBase()
 {
@@ -99,9 +100,27 @@ void ATGPGameModeBase::BeginRoundDelay()
 
 void ATGPGameModeBase::EndRound()
 {
+	SpawnAirDrop();
+	
 	currentRegion->EndOfRound();
 	CurrentRound++;
+
+	PlayerStats.RoundAchieved = CurrentRound;
+	
 	GetWorld()->GetTimerManager().SetTimer(RoundCooldownHandler, this, &ATGPGameModeBase::BeginRound, CooldownBetweenRounds, false); // Begin Cooldown between rounds
+}
+
+void ATGPGameModeBase::SpawnAirDrop()
+{
+	if (const APlayerController* Player = GetWorld()->GetFirstPlayerController())
+	{
+		if (const APawn* Pawn = Player->GetPawn())
+		{
+			const FVector SpawnPoint = Pawn->GetActorLocation() + (FVector::UpVector * 5000.f) + FVector(FMath::RandRange(-200.f, 200.f), FMath::RandRange(-200.f, 200.f), FMath::RandRange(-200.f, 200.f));
+			GetWorld()->SpawnActor<AWeaponSpawnerChest>(ChestClass, SpawnPoint, FRotator());
+		}
+	}
+	
 }
 
 bool ATGPGameModeBase::TrySpawnEnemy()
@@ -198,6 +217,7 @@ int ATGPGameModeBase::FindAvailableEnemy()
 void ATGPGameModeBase::OnEnemyKilled(ABaseAiCharacter* Enemy)
 {
 	EnemiesAlive--;
+	PlayerStats.EnemiesKilled++;
 }
 
 void ATGPGameModeBase::SpawnEnemy(uint8 EnemyIndex, const FVector& Position) // TODO: RESET OTHER PROPERTIES LIKE HEALTH

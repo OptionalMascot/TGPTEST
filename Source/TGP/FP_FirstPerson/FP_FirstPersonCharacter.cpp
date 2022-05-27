@@ -838,7 +838,7 @@ void AFP_FirstPersonCharacter::TriggerPrimaryIconUpdate()
 
 void AFP_FirstPersonCharacter::TriggerSecondaryIconUpdate()
 {
-	if(MainPlayerController)
+	if(MainPlayerController && GetUnusedItem())
 	{
 		MainPlayerController->SecondaryIcon = GetUnusedItem()->GetItemInfo()->ItemIcon;
 		MainPlayerController->UpdateSecondaryWeapon();
