@@ -81,13 +81,11 @@ void ABaseAiCharacter::OnEnemyDied(AController* Causer)
 
 	UE_LOG(LogTemp, Warning, TEXT("Zombie Died"));
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Cyan, "Kill Zombie");
 
 	GetCharacterMovement()->MaxWalkSpeed = 0.0f;
 
-	if(AnimInstance && !StopRepeatAnim)
+	if(AnimInstance)
 	{
-		StopRepeatAnim = true;
 		if(!GetMesh()->GetAnimInstance()->Montage_IsPlaying(DeathMontage))
 		{
 			int DeathAnim = FMath::RandRange(0, DeathMontage->CompositeSections.Num() - 1);
