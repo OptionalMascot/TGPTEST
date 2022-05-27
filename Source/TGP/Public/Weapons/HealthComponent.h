@@ -31,9 +31,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentDeadSignature onComponentDead;
 	UPROPERTY(BlueprintAssignable, Category = "Components") FComponentTookDamageSignature onComponentTakeDamage;
 	
-	UPROPERTY(EditAnywhere) int maxHealth;
-	UPROPERTY(EditAnywhere) bool destroyOnDeath;
-	int health;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) int maxHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool destroyOnDeath;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) int health;
 	bool dead;
 	
 	void SetHealth(float newHealth) { health = newHealth; dead = false; }

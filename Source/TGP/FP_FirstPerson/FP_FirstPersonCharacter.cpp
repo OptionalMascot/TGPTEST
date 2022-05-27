@@ -503,15 +503,8 @@ void AFP_FirstPersonCharacter::BeginPlay()
 	{
 		MainPlayerController = Cast<AMainPlayerController>(GetController());
 	}
-
 	if(MainPlayerController)
 	{
-		TriggerHealthUpdate();
-		TriggerPrimaryIconUpdate();
-		TriggerSecondaryIconUpdate();
-		TriggerRarityUpdate();
-		TriggerSniperToggle(true);
-
 		if(WeaponComponent->GetWeaponInfo()->WeaponType == EWeaponType::Sword)
 		{
 			MainPlayerController->ToggleAmmoDisplay(true);
@@ -522,6 +515,9 @@ void AFP_FirstPersonCharacter::BeginPlay()
 			MainPlayerController->UpdateReserveAmmo(WeaponComponent->GetCurrentAmmo().Y);
 		}
 	}
+
+	ChangeWeapon(2);
+	ChangeWeapon(1);
 }
 
 void AFP_FirstPersonCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -928,6 +924,15 @@ void AFP_FirstPersonCharacter::TriggerRarityUpdate()
 			break;
 		}
 	}
+}
+
+void AFP_FirstPersonCharacter::SetHUD()
+{
+	TriggerHealthUpdate();
+	TriggerPrimaryIconUpdate();
+	TriggerSecondaryIconUpdate();
+	TriggerRarityUpdate();
+	TriggerSniperToggle(true);
 }
 
 

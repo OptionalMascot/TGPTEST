@@ -283,6 +283,8 @@ public:
 	void TriggerSniperToggle(bool Hidden);
 	void TriggerRarityUpdate();
 
+	void SetHUD();
+	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ToggleSniperScopeVisibility(bool Visible);
 
