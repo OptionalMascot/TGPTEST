@@ -591,13 +591,13 @@ void AFP_FirstPersonCharacter::AttachWeapon()
 			FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("PistolSocket"));
 			if(FP_Gun->SkeletalMesh->GetName().Contains("Machine"))
 			{
-				ToggleIronSightVisiblity(false);
-				ToggleSniperScopeVisibility(true);
+				ToggleIronSightVisiblity(true);
+				ToggleSniperScopeVisibility(false);
 			}
 			else
 			{
-				ToggleIronSightVisiblity(true);
-				ToggleSniperScopeVisibility(true);
+				ToggleIronSightVisiblity(false);
+				ToggleSniperScopeVisibility(false);
 			}
 			break;
 		}
@@ -606,23 +606,27 @@ void AFP_FirstPersonCharacter::AttachWeapon()
 			if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
 			{
 				FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("SubMachineSocket"));
-				ToggleIronSightVisiblity(true);
-				ToggleSniperScopeVisibility(true);
+				ToggleIronSightVisiblity(false);
+				ToggleSniperScopeVisibility(false);
 			}
 			else
 			{
 				FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
 				if(FP_Gun->SkeletalMesh->GetName().Contains("Sniper"))
 				{
-					ToggleIronSightVisiblity(true);
-					ToggleSniperScopeVisibility(false);
-				}
-				else
-				{
 					ToggleIronSightVisiblity(false);
 					ToggleSniperScopeVisibility(true);
+					break;
 				}
-					
+				if(FP_Gun->SkeletalMesh->GetName().Contains("SMG"))
+				{
+					ToggleIronSightVisiblity(false);
+					ToggleSniperScopeVisibility(false);
+					break;
+				}
+				ToggleIronSightVisiblity(true);
+				ToggleSniperScopeVisibility(false);
+				
 			}
 			break;
 		}
