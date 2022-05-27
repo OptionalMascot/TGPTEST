@@ -284,10 +284,10 @@ public:
 	void TriggerRarityUpdate();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void ToggleSniperScopeVisibility(bool Hidden);
+	void ToggleSniperScopeVisibility(bool Visible);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void ToggleIronSightVisiblity(bool Hidden);
+	void ToggleIronSightVisiblity(bool Visible);
 };
 
 
